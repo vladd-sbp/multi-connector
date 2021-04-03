@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/hubspot/result
-connectors/hubspot/connector_tests.robot

@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/lvi-info/result
-connectors/lvi-info/connector_tests.robot

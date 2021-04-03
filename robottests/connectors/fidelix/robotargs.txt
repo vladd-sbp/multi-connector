@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/fidelix/result
-connectors/fidelix/connector_tests.robot

@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/a-3/result
-connectors/a-3/connector_tests.robot

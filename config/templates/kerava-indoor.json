@@ -1,0 +1,69 @@
+{
+  "plugins": [
+    "kerava-indoor"
+  ],
+  "protocol": "rest",
+  "authConfig": {
+    "method": "POST",
+    "url": "${url}",
+    "authPath": "login",
+    "authContentType": "application/json",
+    "email": "${email}",
+    "password": "${password}",
+    "headers": {
+      "authToken": "",
+      "Cookie": "",
+      "Content-Type": "application/json"
+    },
+    "path": "v2/retrieve/data",
+    "body": {
+      "idOfLocation": "${idOfLocation}",
+      "start": "${start}",
+      "end": "${end}"
+    }
+  },
+  "dataObjects": [
+    ""
+  ],
+  "dataPropertyMappings": {
+    "": ""
+  },
+  "measurementUnit": {
+    "temperature": "MeasureAirTemperatureCelsiusDegree",
+    "humidity": "MeasureAirHumidityPercentage",
+    "co2": "MeasureAirCO2LevelPPM",
+    "voc2": "MeasureAirVOC2PPB",
+    "pressdiff": "MeasureAirPRESSDIFFPA"
+  },
+  "generalConfig": {
+    "query": {},
+    "sourceName": {
+      "dataObjectProperty": "name"
+    },
+    "hardwareId": {
+      "pathIndex": 4
+    },
+    "measurement": {
+      "pathIndex": 5
+    },
+    "timestamp": {
+      "dataObjectProperty": "timestamp"
+    }
+  },
+  "input": {
+    "required": [
+      "parameters.start",
+    
+      "parameters.idOfLocation"
+    ]
+  },
+  "output": {
+    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/",
+    "timestamp": "timestamp",
+    "array": "content",
+    "object": "data",
+    "value": "value",
+    "data": "measurements",
+    "id": "id"
+  }
+}

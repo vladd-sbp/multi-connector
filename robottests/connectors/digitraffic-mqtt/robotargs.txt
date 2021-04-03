@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/digitraffic-mqtt/result
-connectors/digitraffic-mqtt/connector_tests.robot

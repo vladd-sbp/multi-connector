@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/rakennustieto/result
-connectors/rakennustieto/connector_tests.robot

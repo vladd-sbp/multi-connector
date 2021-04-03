@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/orfer/result
-connectors/orfer/connector_tests.robot

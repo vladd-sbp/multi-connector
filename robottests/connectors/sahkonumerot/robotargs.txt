@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/sahkonumerot/result
-connectors/sahkonumerot/connector_tests.robot

@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/office365/result
-connectors/office365/connector_tests.robot

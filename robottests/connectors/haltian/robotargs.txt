@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/haltian/result
-connectors/haltian/connector_tests.robot

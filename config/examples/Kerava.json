@@ -1,0 +1,18 @@
+{
+  "template": "kerava",
+  "static": {
+    "url": "https://iisycloud.fi/rest/",
+    "email": "",
+    "password": ""
+  },
+  "dynamic": {
+    "authConfig.body": [
+      "idOfLocation",
+      "start",
+      "end"
+    ]
+  },
+  "request": {
+    "idOfLocation": "<idOfLocation>"
+  }
+}

@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/vtt-ids/result
-connectors/vtt-ids/connector_tests.robot

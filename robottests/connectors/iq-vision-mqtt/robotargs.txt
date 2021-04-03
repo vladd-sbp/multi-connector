@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/iq-vision-mqtt/result
-connectors/iq-vision-mqtt/connector_tests.robot

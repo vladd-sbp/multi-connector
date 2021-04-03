@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/nysse/result
-connectors/nysse/connector_tests.robot
