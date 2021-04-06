@@ -1,9 +1,9 @@
 *** Settings ***
-Documentation     Senaatti - REST
+Documentation     kerava-indoor - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
-Library           REST         ${CONNECTOR_URL}
+Library           REST         ${API_URL}
 
 *** Variables ***
 ${LOCAL_TZ}                  +02:00
@@ -11,19 +11,20 @@ ${TEST_ENV}                  sandbox
 ${API_URL}                   https://api-${TEST_ENV}.oftrust.net
 ${API_PATH}                  /broker/v1/fetch-data-product
 ${CONNECTOR_URL}             http://localhost:8080
-${CONNECTOR_PATH}            /translator/v1/fetch
+${CONNECTOR_PATH}            /pot/connector/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-${IDS1}                      5d779cb9541b0613acf44c25
-@{IDS}                       ${IDS1}
+${ID1}                       5d779cb9541b0613acf44c24
+${ID2}                       5d779cb9541b0613acf44c26
+${ID3}                       5d779cb9541b0613acf44c25
+${STARTDATE}               	 1614808800000
+${ENDDATE}                 	 1614895200000
+@{IDS}                       ${ID1}  ${ID2}  ${ID3}
 
-${START_DATE}               1614162002000
-${END_DATE}                 1614165002000
-
-&{BROKER_BODY_PARAMETERS}    idOfLocation=${IDS1}
-...                          start=${START_DATE}
-...                          end=${END_DATE}
+&{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+...                          startDate=${STARTDATE}
+...                          endDate=${ENDDATE}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -32,7 +33,7 @@ Fetch Data Product
     [Arguments]     ${body}
     ${signature}    Calculate PoT Signature          ${body}    ${CLIENT_SECRET}
     Set Headers     {"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}
-    POST            ${CONNECTOR_PATH}                      ${body}
+    POST            ${API_PATH}                      ${body}
     Output schema   response body
 
 Get Body
@@ -73,7 +74,7 @@ fetch, 200
     Integer               response status                                         200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
-    Array                 response body data rooms
-    String                response body data rooms 0 id
-    Array                 response body data rooms 0 measurements
-    String                response body data rooms 0 measurements 0 @type
+    Array                 response body data content
+    String                response body data content 0 id
+    Array                 response body data content 0 measurements
+    String                response body data content 0 measurements 0 @type

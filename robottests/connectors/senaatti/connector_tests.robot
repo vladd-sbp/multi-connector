@@ -11,7 +11,7 @@ ${TEST_ENV}                  sandbox
 ${API_URL}                   https://api-${TEST_ENV}.oftrust.net
 ${API_PATH}                  /broker/v1/fetch-data-product
 ${CONNECTOR_URL}             http://localhost:8080
-${CONNECTOR_PATH}            /translator/v1/fetch
+${CONNECTOR_PATH}            /pot/connector/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}

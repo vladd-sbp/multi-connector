@@ -17,9 +17,9 @@
     },
     "path": "v2/retrieve/data",
     "body": {
-      "idOfLocation": "${idOfLocation}",
-      "start": "${start}",
-      "end": "${end}"
+      "ids": "${id}",
+      "start": "${startDate}",
+      "end": "${endDate}"
     }
   },
   "dataObjects": [
@@ -52,9 +52,9 @@
   },
   "input": {
     "required": [
-      "parameters.start",
-    
-      "parameters.idOfLocation"
+      "parameters.startDate",
+      "parameters.endDate",
+      "parameters.ids"
     ]
   },
   "output": {

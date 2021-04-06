@@ -1,5 +1,5 @@
 {
-  "template": "kerava",
+  "template": "kerava-indoor",
   "static": {
     "url": "https://iisycloud.fi/rest/",
     "email": "",
@@ -7,12 +7,12 @@
   },
   "dynamic": {
     "authConfig.body": [
-      "idOfLocation",
-      "start",
-      "end"
+      "ids",
+      "startDate",
+      "endDate"
     ]
   },
   "request": {
-    "idOfLocation": "<idOfLocation>"
+    "ids": ["<id>"]
   }
 }

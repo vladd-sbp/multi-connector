@@ -8,9 +8,6 @@ const rp = require('request-promise');
 const crypto = require('crypto');
 const tough = require('tough-cookie');
 const Cookie = tough.Cookie;
-/**
- * OAuth2 authentication plugin.
- */
 
 // Store failed authorization attempts.
 const failures = {};
@@ -69,7 +66,7 @@ const updateCookie = async (authConfig, refresh) => {
  * @return {Promise}
  */
 function getCookieWithPassword(authConfig) {
-   
+
     const option = {
         method: 'POST',
         url: authConfig.url + authConfig.authPath,
@@ -104,12 +101,12 @@ function getCookieWithPassword(authConfig) {
  */
 const requestCookie = async (authConfig, refresh) => {
     // Get grant from cache (only for refresh purposes)
-    
+
     let grant;
     grant = cache.getDoc('grants', authConfig.productCode);
     if (!grant) grant = {};
     return (authConfig ? getCookieWithPassword(authConfig) : authConfig).then(function (result) {
-        
+
         if (result) {
             cache.setDoc('grants', authConfig.productCode, result);
             return Promise.resolve(result);
@@ -167,6 +164,7 @@ const onerror = async (authConfig, err) => {
  * @param {Object} options
  * @return {Object}
  */
+var ids = [];
 const request = async (config, options) => {
     // Check for necessary information.
     if (!config.authConfig.authPath || !config.authConfig.url) {
@@ -183,15 +181,28 @@ const request = async (config, options) => {
     }
     const cookie = Cookie.parse(grant.headers['set-cookie'][0]);
     var authToken = (cookie.cookieString().split("=")[1]);
-   
     // Authorize request.
     options.headers = {
         "authToken": authToken,
         "Cookie": cookie.cookieString(),
         "Content-Type": "application/json"
     }
+    var startdate = JSON.parse(options.body[0].start);
+    var enddate = JSON.parse(options.body[0].end);
+
+    for (let i = 0; i < options.body.length; i++) {
+        ids.push(options.body[i].ids);
+    }
+    for (let j = 0; j < ids.length; j++) {
+        options.body = {
+            "idOfLocation": ids[j],
+            "start": new Date(startdate),
+            "end": new Date(enddate)
+        }
+    }
     options.json = true;
     return options;
+
 };
 
 /**
@@ -216,7 +227,6 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-
     const result = {
         [config.output.context]: config.output.contextValue,
         [config.output.object]: {
@@ -227,29 +237,28 @@ const output = async (config, output) => {
     // Hand over data objects to transformer.
 
     const array = output.data.content[0].measurements[0].value;
-
     for (let i = 0; i < array.measurementUnitData.length; i++) {
         let measurements = [];
         for (let k = 0; k < array.measurementUnitData[i]['measurementPointData'].length; k++) {
             let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData']
             for (let j = 0; j < data.length; j++) {
                 let measurementType = array.measurementUnitData[i]['measurementPointData'][k]['measurementPoint'];
-                measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': data[j]['time'], 'value': data[j]['value'] });
+                measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
 
             }
         }
 
         measurement.push({ 'id': array.measurementUnitData[i]['measurementUnit']['id'], 'measurements': measurements })
     }
-    for (let i=0;i<measurement.length;i++){
-    result[config.output.object][config.output.array].push(measurement[i]);
+    for (let i = 0; i < measurement.length; i++) {
+        result[config.output.object][config.output.array].push(measurement[i]);
     }
     return result;
 }
 
 
 module.exports = {
-    name: 'kerava',
+    name: 'kerava-indoor',
     request,
     onerror,
     response,

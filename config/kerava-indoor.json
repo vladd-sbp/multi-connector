@@ -7,12 +7,12 @@
   },
   "dynamic": {
     "authConfig.body": [
-      "idOfLocation",
-      "start",
-      "end"
+      "ids",
+      "startDate",
+      "endDate"
     ]
   },
   "request": {
-    "idOfLocation": "<idOfLocation>"
+    "ids": ["<id>"]
   }
 }
