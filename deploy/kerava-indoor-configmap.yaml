@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  kerava-indoor.json: |-
+    {
+        "template": "kerava-indoor",
+        "static": {
+            "url": "https://iisycloud.fi/rest/",
+            "email": "",
+            "password": ""
+        },
+        "dynamic": {
+            "authConfig.body": [
+                "ids",
+                "startDate",
+                "endDate"
+            ]
+        },
+        "request": {
+            "ids": [
+                "<id>"
+            ]
+        }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: kerava-indoor-config

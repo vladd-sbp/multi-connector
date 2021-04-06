@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-connector
+  labels:
+    app: multi-connector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-connector
+  template:
+    metadata:
+      labels:
+        app: multi-connector
+    spec:
+      containers:
+      - name: multi-connector
+        image: eeneman/multi-connector:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+          - name: smartwatcher-config
+            mountPath: /usr/src/app/config/smartwatcher.json
+            subPath: smartwatcher.json
+          - name: kerava-indoor-config
+            mountPath:  /usr/src/app/config/kerava-indoor.json
+            subPath: kerava-indoor.json
+      volumes:
+        - name: smartwatcher-config
+          configMap:
+            name: smartwatcher-config
+        - name: kerava-indoor-config
+          configMap:
+            name: kerava-indoor-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-connector
+  labels:
+    app: multi-connector
+spec:
+  selector:
+    app: multi-connector
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
