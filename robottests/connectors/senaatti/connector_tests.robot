@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     Senaatti - REST
+Documentation     Smartwatcher - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
@@ -11,24 +11,29 @@ ${TEST_ENV}                  sandbox
 ${API_URL}                   https://api-${TEST_ENV}.oftrust.net
 ${API_PATH}                  /broker/v1/fetch-data-product
 ${CONNECTOR_URL}             http://localhost:8080
-${CONNECTOR_PATH}            /pot/connector/v1/fetch
+${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-&{IDS1}                       id=30676c91-7d3f-46d9-81e3-0e91e9341ad3  type=MeasureAirHumidityPercentage
-&{IDS2}                       id=63048599-5895-43d5-865a-4de533d24900  type=MeasureAirHumidityPercentage
-&{IDS3}                       id=9cc364b0-acce-494a-9343-06ddc7fe0601  type=MeasureAirHumidityPercentage
-&{IDS4}                       id=30676c91-7d3f-46d9-81e3-0e91e9341ad3  type=MeasureAirTemperatureCelsiusDegree
-&{IDS5}                       id=63048599-5895-43d5-865a-4de533d24900  type=MeasureAirTemperatureCelsiusDegree
-&{IDS6}                       id=9cc364b0-acce-494a-9343-06ddc7fe0601  type=MeasureAirTemperatureCelsiusDegree
-@{IDS}                       ${IDS1}  ${IDS2}  ${IDS3}  ${IDS4}  ${IDS5}  ${IDS6}
+${ID1}                       30676c91-7d3f-46d9-81e3-0e91e9341ad3
+${ID2}                       9cc364b0-acce-494a-9343-06ddc7fe0601
+${ID3}                       11a44990-99cd-4a28-ab91-e42cc54b3ee9
+@{IDS}                       ${ID1}  ${ID2}  ${ID3}
+${DATA_TYPE_1}               MeasureAirTemperatureCelsiusDegree
+${DATA_TYPE_2}               MeasureAirHumidityPercentage
 
-${START_DATE}               1614162002000
-${END_DATE}                 1614165002000
+@{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
+#...                          ${DATA_TYPE_2}
+
+#@{DATA_TYPES}                &{DATA_TYPES_LIST}
+
+${START_TIME}               2021-02-24T10:20:02.000Z
+${END_TIME}                 2021-02-24T11:10:02.000Z
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
-...                          startDate=${START_DATE}
-...                          endDate=${END_DATE}
+...                          dataTypes=@{DATA_TYPES_LIST}
+...                          startTime=${START_TIME}
+...                          endTime=${END_TIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 

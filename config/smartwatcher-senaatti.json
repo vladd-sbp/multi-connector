@@ -8,15 +8,15 @@
     "dynamic": {
         "authConfig.path": [
             "ids",
-            "startDate",
-            "endDate"
+            "startTime",
+            "endTime",
+            "dataTypes"
         ]
     },
     "request": {
         "ids": [
             {
-                "id": "<id>",
-                "dataTypes": "<dataType>"
+                "id": "<id>"
             }
         ]
     }

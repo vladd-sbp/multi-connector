@@ -2,19 +2,22 @@
   "template": "smartwatcher",
   "static": {
     "url": "https://smartwatcher.northeurope.cloudapp.azure.com:4443/",
-    "email" : "",
-    "password" : ""
-
+    "email": "",
+    "password": ""
   },
   "dynamic": {
-    "authConfig.path": ["ids","startDate","endDate"]
+    "authConfig.path": [
+      "ids",
+      "startTime",
+      "endTime",
+      "dataTypes"
+    ]
   },
   "request": {
-      "ids": [
-        {
-        "id" : "<id>","dataTypes":"<dataType>"
-        }
+    "ids": [
+      {
+        "id": "<id>"
+      }
     ]
-    
   }
 }
