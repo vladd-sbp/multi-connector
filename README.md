@@ -1,37 +1,13 @@
 # Multi-Connector
-
+- Eeneman
 > HTTP server to handle Platform of Trust Broker API requests.
 
 ## Supported Data Sources
 
 Following data sources are supported out of the box. Example configs can be found at the repo.
 
-- A-3 Integration API
-- Congrid Public API
-- Digitraffic Live Trains API
-- EnerKey Data API
-- ENTSO-E Transparency Platform
-- Fidelix Pilvivalvomo
-- GeoServer Web Feature Service
-- Haltian Thingsee API
-- HubSpot API
-- Trend Controls IQ Vision MQTT
-- Microsoft 365
-- Nuuka Solutions Platform
-- Nysse GTFS RT public API
-- LVI-Info.fi API
-- Orfer Production Line
-- Rakennustieto API
-- Sähkönumerot.fi API
-- Schneider EcoStruxure Cloud
-- Senaatti Smartwatcher
-- Siemens Mindsphere
-- Siemens Navigator
-- Talotohtori API
-- Trackinno Service API
-- Vastuu Group Company API
-- VTT Transport Data Platform
-- Wapice IoT-Ticket
+- Smartwatcher API
+- Kerava Indoor API
 
 ## Getting Started
 
@@ -174,8 +150,9 @@ Docker image can be build with the following command.
 npm run docker:build
 ```
 
-Deploying from the official repo [polkuio/connector](https://hub.docker.com/r/polkuio/connector) is accomplished the following way.
+Deploying from the official repo [eeneman/multi-connector](https://hub.docker.com/r/eeneman/multi-connector) is accomplished the following way.
 ```
-docker pull polkuio/connector
-docker run -p 8080:8080 -d polkuio/connector
+docker pull eeneman/multi-connector
+docker run -p 8080:8080 -d eeneman/multi-connector
+
 ```
