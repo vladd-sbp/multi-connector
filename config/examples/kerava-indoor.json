@@ -8,11 +8,15 @@
   "dynamic": {
     "authConfig.body": [
       "ids",
-      "startDate",
-      "endDate"
+      "startTime",
+      "endTime"
     ]
   },
   "request": {
-    "ids": ["<id>"]
+    "ids": [
+      {
+        "idOfLocation": "<idOfLocation>"
+      }
+    ]
   }
 }

@@ -11,20 +11,20 @@ ${TEST_ENV}                  sandbox
 ${API_URL}                   https://api-${TEST_ENV}.oftrust.net
 ${API_PATH}                  /broker/v1/fetch-data-product
 ${CONNECTOR_URL}             http://localhost:8080
-${CONNECTOR_PATH}            /pot/connector/v1/fetch
+${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-${ID1}                       5d779cb9541b0613acf44c24
-${ID2}                       5d779cb9541b0613acf44c26
-${ID3}                       5d779cb9541b0613acf44c25
-${STARTDATE}               	 1614808800000
-${ENDDATE}                 	 1614895200000
+&{ID1}                       idOfLocation=5d779cb9541b0613acf44c25
+&{ID2}                       idOfLocation=5d779cb9541b0613acf44c25
+&{ID3}                       idOfLocation=5d779cb9541b0613acf44c25
+${STARTTIME}               	 2021-03-03T22:00:00.000
+${ENDTIME}                 	 2021-03-03T22:05:00.000
 @{IDS}                       ${ID1}  ${ID2}  ${ID3}
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
-...                          startDate=${STARTDATE}
-...                          endDate=${ENDDATE}
+...                          startTime=${STARTTIME}
+...                          endTime=${ENDTIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -74,7 +74,7 @@ fetch, 200
     Integer               response status                                         200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
-    Array                 response body data content
-    String                response body data content 0 id
-    Array                 response body data content 0 measurements
-    String                response body data content 0 measurements 0 @type
+    Array                 response body data sensors
+    String                response body data sensors 0 id
+    Array                 response body data sensors 0 measurements
+    String                response body data sensors 0 measurements 0 @type

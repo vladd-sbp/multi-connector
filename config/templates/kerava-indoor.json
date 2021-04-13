@@ -2,7 +2,7 @@
   "plugins": [
     "kerava-indoor"
   ],
-  "protocol": "rest",
+  "protocol": "custom",
   "authConfig": {
     "method": "POST",
     "url": "${url}",
@@ -17,9 +17,9 @@
     },
     "path": "v2/retrieve/data",
     "body": {
-      "ids": "${id}",
-      "start": "${startDate}",
-      "end": "${endDate}"
+      "ids": "${idOfLocation}",
+      "start": "${startTime}",
+      "end": "${endTime}"
     }
   },
   "dataObjects": [
@@ -30,7 +30,7 @@
   },
   "measurementUnit": {
     "temperature": "MeasureAirTemperatureCelsiusDegree",
-    "humidity": "MeasureAirHumidityPercentage",
+    "humidity": "MeasureAirHumidityRH",
     "co2": "MeasureAirCO2LevelPPM",
     "voc2": "MeasureAirVOC2PPB",
     "pressdiff": "MeasureAirPRESSDIFFPA"
@@ -52,15 +52,15 @@
   },
   "input": {
     "required": [
-      "parameters.startDate",
-      "parameters.endDate",
+      "parameters.startTime",
+      "parameters.endTime",
       "parameters.ids"
     ]
   },
   "output": {
     "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/",
     "timestamp": "timestamp",
-    "array": "content",
+    "array": "sensors",
     "object": "data",
     "value": "value",
     "data": "measurements",

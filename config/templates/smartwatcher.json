@@ -19,7 +19,7 @@
   "dataPropertyMappings": {
     "type": "value",
     "MeasureAirTemperatureCelsiusDegree": "temperature",
-    "MeasureAirHumidityPercentage": "humidity"
+    "MeasureAirHumidityRH": "humidity"
   },
   "generalConfig": {
     "query": {},
@@ -45,7 +45,7 @@
   "output": {
     "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/",
     "timestamp": "timestamp",
-    "array": "rooms",
+    "array": "sensors",
     "object": "data",
     "value": "value",
     "data": "measurements",

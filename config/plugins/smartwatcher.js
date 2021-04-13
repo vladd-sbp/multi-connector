@@ -168,26 +168,33 @@ const onerror = async (authConfig, err) => {
  * @return {Object}
  */
 const request = async (config, options) => {
-    // Check for necessary information.
-    if (!config.authConfig.authPath || !config.authConfig.url) {
-        return promiseRejectWithError(500, 'Insufficient authentication configurations.');
+
+    try {
+        // Check for necessary information.
+        if (!config.authConfig.authPath || !config.authConfig.url) {
+            return promiseRejectWithError(500, 'Insufficient authentication configurations.');
+        }
+        // Check for existing grant.
+        let grant = cache.getDoc('grants', config.authConfig.productCode);
+        if (!grant && config.authConfig.headers.Authorization) grant = { token: config.authConfig.headers.Authorization };
+        if (!grant) grant = {};
+        if (!Object.hasOwnProperty.call(grant, 'token')) {
+            // Request access token.
+            grant = await requestToken(config.authConfig);
+            if (!grant.token) return promiseRejectWithError(500, 'Authentication failed.');
+        }
+        const pathType = (options.url.split("?")[0]).split("/")[8];
+        const newpathType = config.dataPropertyMappings[pathType] != undefined ? config.dataPropertyMappings[pathType] : pathType
+        options.url = options.url.replace(pathType, newpathType);
+        config.measurementType = pathType;
+        // Authorize request.
+        options.headers.Authorization = 'Bearer ' + (grant.token);
+        return options;
     }
-    // Check for existing grant.
-    let grant = cache.getDoc('grants', config.authConfig.productCode);
-    if (!grant && config.authConfig.headers.Authorization) grant = { token: config.authConfig.headers.Authorization };
-    if (!grant) grant = {};
-    if (!Object.hasOwnProperty.call(grant, 'token')) {
-        // Request access token.
-        grant = await requestToken(config.authConfig);
-        if (!grant.token) return promiseRejectWithError(500, 'Authentication failed.');
+    catch (err) {
+        return Promise.reject(err);
     }
-    const pathType = (options.url.split("?")[0]).split("/")[8];
-    const newpathType = config.dataPropertyMappings[pathType] != undefined ? config.dataPropertyMappings[pathType] : pathType
-    options.url = options.url.replace(pathType, newpathType);
-    config.measurementType = pathType;
-    // Authorize request.
-    options.headers.Authorization = 'Bearer ' + (grant.token);
-    return options;
+
 };
 
 /**
@@ -198,6 +205,7 @@ const request = async (config, options) => {
  * @return {Object}
  */
 const parameters = async (config, parameters) => {
+
     try {
         const combine = ([head, ...[headTail, ...tailTail]]) => {
             if (!headTail) return head;
@@ -215,9 +223,23 @@ const parameters = async (config, parameters) => {
         let endDate = parameters.end;
         parameters.startTime = startDate.valueOf();
         parameters.endTime = endDate.valueOf();
-        return parameters;
+        if (parameters.startTime && parameters.endTime) {
+            // Sort timestamps to correct order.
+            if (parameters.endTime < parameters.startTime) {
+                const start = parameters.endTime;
+                parameters.endTime = parameters.startTime;
+                parameters.startTime = start;
+            }
+            let time = parameters.endTime - parameters.startTime;
+            if (time <= 86400000) {
+
+                return parameters;
+            }
+            else
+                return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
+        }
     } catch (err) {
-        return parameters;
+        return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
     }
 };
 
@@ -235,10 +257,51 @@ const data = async (config, data) => {
     return tmp;
 };
 
+
+/**
+ * Transforms output to Platform of Trust context schema.
+ *
+ * @param {Object} config
+ * @param {Object} output
+ * @return {Object}
+ */
+const output = async (config, output) => {
+    if (output.data.sensors.length === 0) {
+        return promiseRejectWithError(500, 'Incorrect Parameters');
+    }
+    else {
+        var arr = [];
+        output.data.sensors.forEach(function (item) {
+            var existing = arr.filter(function (v, i) {
+                return v.id == item.id;
+            });
+            if (existing.length) {
+                var existingIndex = arr.indexOf(existing[0]);
+                arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
+            } else {
+                arr.push(item);
+            }
+        });
+
+        const result = {
+            [config.output.context]: config.output.contextValue,
+            [config.output.object]: {
+                [config.output.array]: [],
+            },
+        };
+        for (let i = 0; i < arr.length; i++) {
+            result[config.output.object][config.output.array].push(arr[i]);
+        }
+
+        return result;
+    }
+}
+
 module.exports = {
     name: 'smartwatcher',
     request,
     onerror,
     data,
     parameters,
+    output,
 };

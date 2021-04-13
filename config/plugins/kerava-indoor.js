@@ -164,7 +164,7 @@ const onerror = async (authConfig, err) => {
  * @param {Object} options
  * @return {Object}
  */
-var ids = [];
+
 const request = async (config, options) => {
     // Check for necessary information.
     if (!config.authConfig.authPath || !config.authConfig.url) {
@@ -181,29 +181,43 @@ const request = async (config, options) => {
     }
     const cookie = Cookie.parse(grant.headers['set-cookie'][0]);
     var authToken = (cookie.cookieString().split("=")[1]);
+
     // Authorize request.
     options.headers = {
         "authToken": authToken,
         "Cookie": cookie.cookieString(),
         "Content-Type": "application/json"
     }
-    var startdate = JSON.parse(options.body[0].start);
-    var enddate = JSON.parse(options.body[0].end);
-
-    for (let i = 0; i < options.body.length; i++) {
-        ids.push(options.body[i].ids);
-    }
-    for (let j = 0; j < ids.length; j++) {
-        options.body = {
-            "idOfLocation": ids[j],
-            "start": new Date(startdate),
-            "end": new Date(enddate)
-        }
+    options.body = {
+        "idOfLocation": options.body.ids,
+        "start": options.body.start,
+        "end": options.body.end
     }
     options.json = true;
-    return options;
 
+    return rp(options).then(function (result) {
+        return Promise.resolve(result);
+    }).catch(function (err) {
+        return Promise.reject(err);
+    });
 };
+/**
+* Manipulates request parameters.
+*
+* @param {Object} config
+* @param {Object} parameters
+* @return {Object}
+*/
+const parameters = async (config, parameters) => {
+    try {
+        parameters.startTime = parameters.start;
+        parameters.endTime = parameters.end;
+        return parameters;
+    } catch (err) {
+        return parameters;
+    }
+};
+
 
 /**
  * Splits processes.
@@ -215,9 +229,7 @@ const request = async (config, options) => {
 const response = async (config, data) => {
     let measurementData = JSON.parse(JSON.stringify(data.body)).content[0];
     return measurementData;
-
-
-}
+};
 
 /**
  * Transforms output to Platform of Trust context schema.
@@ -227,6 +239,14 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
+    let dataArray = [];
+    const data = config.authConfig.body;
+    if (!Array.isArray(data)) dataArray.push(data);
+    else dataArray = data;
+    let items = [];
+
+    items = await getData(config, dataArray);
+    if (!items) items = [];
     const result = {
         [config.output.context]: config.output.contextValue,
         [config.output.object]: {
@@ -235,32 +255,56 @@ const output = async (config, output) => {
     };
     let measurement = [];
     // Hand over data objects to transformer.
-
-    const array = output.data.content[0].measurements[0].value;
-    for (let i = 0; i < array.measurementUnitData.length; i++) {
-        let measurements = [];
-        for (let k = 0; k < array.measurementUnitData[i]['measurementPointData'].length; k++) {
-            let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData']
-            for (let j = 0; j < data.length; j++) {
-                let measurementType = array.measurementUnitData[i]['measurementPointData'][k]['measurementPoint'];
-                measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
-
+    for (let x = 0; x < items.length; x++) {
+        const array = items[x];
+        for (let i = 0; i < array.measurementUnitData.length; i++) {
+            let measurements = [];
+            for (let k = 0; k < array.measurementUnitData[i]['measurementPointData'].length; k++) {
+                let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData']
+                for (let j = 0; j < data.length; j++) {
+                    let measurementType = array.measurementUnitData[i]['measurementPointData'][k]['measurementPoint'];
+                    measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
+                }
             }
+            measurement.push({ 'id': array.measurementUnitData[i]['measurementUnit']['id'], 'measurements': measurements })
         }
-
-        measurement.push({ 'id': array.measurementUnitData[i]['measurementUnit']['id'], 'measurements': measurements })
-    }
-    for (let i = 0; i < measurement.length; i++) {
-        result[config.output.object][config.output.array].push(measurement[i]);
+        for (let i = 0; i < measurement.length; i++) {
+            result[config.output.object][config.output.array].push(measurement[i]);
+        }
     }
     return result;
 }
 
+const getData = async (config, dataArray) => {
+    const itemse = [];
+    for (let p = 0; p < dataArray.length; p++) {
+        const item = await requestData(config, dataArray[p], p);
+        if (item) itemse.push(item);
+    }
+    return itemse;
+};
+
+const requestData = async (config, path, index) => {
+    // Initialize request options.
+    let options = {
+        method: config.authConfig.method || 'GET',
+        url: config.authConfig.url + config.authConfig.path,
+        body: path || undefined,
+        headers: config.authConfig.headers || {},
+        resolveWithFullResponse: true,
+        query: [],
+        gzip: true,
+        encoding: null,
+    };
+
+    let outputData = await request(config, options);
+    let responses = await response(config, outputData);
+    return responses;
+}
 
 module.exports = {
     name: 'kerava-indoor',
-    request,
     onerror,
-    response,
     output,
+    parameters,
 };
