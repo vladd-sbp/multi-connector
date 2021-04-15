@@ -181,7 +181,6 @@ const request = async (config, options) => {
     }
     const cookie = Cookie.parse(grant.headers['set-cookie'][0]);
     var authToken = (cookie.cookieString().split("=")[1]);
-
     // Authorize request.
     options.headers = {
         "authToken": authToken,
@@ -189,7 +188,7 @@ const request = async (config, options) => {
         "Content-Type": "application/json"
     }
     options.body = {
-        "idOfLocation": options.body.ids,
+        "idOfLocation": options.body.idOfLocation,
         "start": options.body.start,
         "end": options.body.end
     }
@@ -244,7 +243,6 @@ const output = async (config, output) => {
     if (!Array.isArray(data)) dataArray.push(data);
     else dataArray = data;
     let items = [];
-
     items = await getData(config, dataArray);
     if (!items) items = [];
     const result = {
@@ -253,24 +251,28 @@ const output = async (config, output) => {
             [config.output.array]: [],
         },
     };
+
     let measurement = [];
     // Hand over data objects to transformer.
     for (let x = 0; x < items.length; x++) {
         const array = items[x];
+        var idOfLocation = array.location.idOfLocation;
+
         for (let i = 0; i < array.measurementUnitData.length; i++) {
             let measurements = [];
             for (let k = 0; k < array.measurementUnitData[i]['measurementPointData'].length; k++) {
-                let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData']
+                let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData'];
                 for (let j = 0; j < data.length; j++) {
                     let measurementType = array.measurementUnitData[i]['measurementPointData'][k]['measurementPoint'];
                     measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
                 }
             }
-            measurement.push({ 'id': array.measurementUnitData[i]['measurementUnit']['id'], 'measurements': measurements })
+            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'] }, 'measurements': measurements });
         }
-        for (let i = 0; i < measurement.length; i++) {
-            result[config.output.object][config.output.array].push(measurement[i]);
-        }
+
+    }
+    for (let i = 0; i < measurement.length; i++) {
+        result[config.output.object][config.output.array].push(measurement[i]);
     }
     return result;
 }
@@ -285,6 +287,13 @@ const getData = async (config, dataArray) => {
 };
 
 const requestData = async (config, path, index) => {
+    let idOfSensor = path.ids.idOfSensor;
+
+    var path = {
+        "idOfLocation": path.ids.idOfLocation,
+        "start": path.start,
+        "end": path.end
+    }
     // Initialize request options.
     let options = {
         method: config.authConfig.method || 'GET',
@@ -299,7 +308,19 @@ const requestData = async (config, path, index) => {
 
     let outputData = await request(config, options);
     let responses = await response(config, outputData);
-    return responses;
+    var location = responses.location;
+    var measurementUnitData = responses.measurementUnitData;
+    let measurementData = [];
+    for (let i = 0; i < measurementUnitData.length; i++) {
+        if (measurementUnitData[i].measurementUnit.id == idOfSensor) {
+            measurementData.push(measurementUnitData[i]);
+        }
+    }
+    var itemData = {
+        "location": location,
+        "measurementUnitData": measurementData
+    }
+    return itemData;
 }
 
 module.exports = {

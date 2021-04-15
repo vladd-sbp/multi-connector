@@ -1,22 +1,23 @@
 {
     "template": "kerava-indoor",
     "static": {
-        "url": "https://iisycloud.fi/rest/",
-        "email": "",
-        "password": ""
+      "url": "https://iisycloud.fi/rest/",
+      "email": "",
+      "password": ""
     },
     "dynamic": {
-        "authConfig.body": [
-            "ids",
-            "startTime",
-            "endTime"
-        ]
+      "authConfig.body": [
+        "ids",
+        "startTime",
+        "endTime"
+      ]
     },
     "request": {
-        "ids": [
-            {
-                "idOfLocation": "<idOfLocation>"
-            }
-        ]
+      "ids": [
+        {
+          "idOfLocation": "<idOfLocation>",
+          "idOfSensor": "<idOfSensor>"
+        }
+      ]
     }
-}
+  }

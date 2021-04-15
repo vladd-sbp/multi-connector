@@ -15,11 +15,11 @@ ${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-&{ID1}                       idOfLocation=5d779cb9541b0613acf44c25
-&{ID2}                       idOfLocation=5d779cb9541b0613acf44c25
-&{ID3}                       idOfLocation=5d779cb9541b0613acf44c25
+&{ID1}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee81ac541b0667cc783518
+&{ID2}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee8196541b0667cc7834a5
+&{ID3}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee81f6541b0667cc783691
 ${STARTTIME}               	 2021-03-03T22:00:00.000
-${ENDTIME}                 	 2021-03-03T22:05:00.000
+${ENDTIME}                 	 2021-03-03T22:25:00.000
 @{IDS}                       ${ID1}  ${ID2}  ${ID3}
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
@@ -75,6 +75,6 @@ fetch, 200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
     Array                 response body data sensors
-    String                response body data sensors 0 id
+    Object                response body data sensors 0 id
     Array                 response body data sensors 0 measurements
     String                response body data sensors 0 measurements 0 @type

@@ -17,11 +17,15 @@
     },
     "path": "v2/retrieve/data",
     "body": {
-      "ids": "${idOfLocation}",
+      "ids": {
+        "idOfLocation": "${idOfLocation}",
+        "idOfSensor": "${idOfSensor}"
+      },
       "start": "${startTime}",
       "end": "${endTime}"
     }
   },
+  "idOfSensor": "${idOfSensor}",
   "dataObjects": [
     ""
   ],

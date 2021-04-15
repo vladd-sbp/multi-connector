@@ -15,7 +15,8 @@
   "request": {
     "ids": [
       {
-        "idOfLocation": "<idOfLocation>"
+        "idOfLocation": "<idOfLocation>",
+        "idOfSensor": "<idOfSensor>"
       }
     ]
   }
