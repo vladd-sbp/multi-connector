@@ -20,7 +20,7 @@ ${ID2}                       9cc364b0-acce-494a-9343-06ddc7fe0601
 ${ID3}                       11a44990-99cd-4a28-ab91-e42cc54b3ee9
 @{IDS}                       ${ID1}  ${ID2}  ${ID3}
 ${DATA_TYPE_1}               MeasureAirTemperatureCelsiusDegree
-${DATA_TYPE_2}               MeasureAirHumidityRH
+${DATA_TYPE_2}               MeasureAirHumidityPercent
 
 @{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
 #...                          ${DATA_TYPE_2}

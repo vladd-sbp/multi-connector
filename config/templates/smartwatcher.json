@@ -19,7 +19,7 @@
   "dataPropertyMappings": {
     "type": "value",
     "MeasureAirTemperatureCelsiusDegree": "temperature",
-    "MeasureAirHumidityRH": "humidity"
+    "MeasureAirHumidityPercent": "humidity"
   },
   "generalConfig": {
     "query": {},
