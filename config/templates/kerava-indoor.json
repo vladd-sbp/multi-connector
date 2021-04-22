@@ -34,7 +34,7 @@
   },
   "measurementUnit": {
     "temperature": "MeasureAirTemperatureCelsiusDegree",
-    "humidity": "MeasureAirHumidityRH",
+    "humidity": "MeasureAirHumidityPercent",
     "co2": "MeasureAirCO2LevelPPM",
     "voc2": "MeasureAirVOC2PPB",
     "pressdiff": "MeasureAirPRESSDIFFPA"

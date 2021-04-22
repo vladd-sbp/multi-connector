@@ -3,7 +3,7 @@ Documentation     kerava-indoor - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
-Library           REST         ${API_URL}
+Library           REST         ${CONNECTOR_URL}
 
 *** Variables ***
 ${LOCAL_TZ}                  +02:00
@@ -18,11 +18,18 @@ ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
 &{ID1}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee81ac541b0667cc783518
 &{ID2}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee8196541b0667cc7834a5
 &{ID3}                       idOfLocation=5d779cb9541b0613acf44c25  idOfSensor=5cee81f6541b0667cc783691
-${STARTTIME}               	 2021-03-03T22:00:00.000
-${ENDTIME}                 	 2021-03-03T22:25:00.000
+${STARTTIME}               	 2021-03-04T10:00:00.001+02:00
+${ENDTIME}                 	 2021-03-04T10:35:00.001+02:00
 @{IDS}                       ${ID1}  ${ID2}  ${ID3}
+${DATA_TYPE_1}               MeasureAirTemperatureCelsiusDegree
+${DATA_TYPE_2}               MeasureAirHumidityPercent
 
+@{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
+#...                          ${DATA_TYPE_2}
+
+#@{DATA_TYPES}                &{DATA_TYPES_LIST}
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+...                          dataTypes=@{DATA_TYPES_LIST}
 ...                          startTime=${STARTTIME}
 ...                          endTime=${ENDTIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
@@ -33,7 +40,7 @@ Fetch Data Product
     [Arguments]     ${body}
     ${signature}    Calculate PoT Signature          ${body}    ${CLIENT_SECRET}
     Set Headers     {"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}
-    POST            ${API_PATH}                      ${body}
+    POST            ${CONNECTOR_PATH}                      ${body}
     Output schema   response body
 
 Get Body

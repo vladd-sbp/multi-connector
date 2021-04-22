@@ -9,7 +9,8 @@
     "authConfig.body": [
       "ids",
       "startTime",
-      "endTime"
+      "endTime",
+      "dataTypes"
     ]
   },
   "request": {

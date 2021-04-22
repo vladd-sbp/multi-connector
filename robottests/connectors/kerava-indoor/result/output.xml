@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.2 (Python 3.9.1 on win32)" generated="20210415 09:39:47.918" rpa="false">
-<suite id="s1" name="Connector Tests" source="D:\POT\POT-KERAVA\15-04-2021\multi-connector\robottests\connectors\kerava-indoor\connector_tests.robot">
+<robot generator="Robot 3.2.2 (Python 3.9.1 on win32)" generated="20210422 13:55:38.850" rpa="false">
+<suite id="s1" name="Connector Tests" source="D:\POT\POT-KERAVA\22-04-2021\multi-connector\robottests\connectors\kerava-indoor\connector_tests.robot">
 <test id="s1-t1" name="fetch, 200">
 <kw name="Get Body">
 <assign>
@@ -15,8 +15,8 @@
 <assign>
 <var>${body}</var>
 </assign>
-<msg timestamp="20210415 09:39:48.674" level="INFO">${body} = {'productCode': 'kerava-indoor', 'parameters': {'ids': [{'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor': '5cee81ac541b0667cc783518'}, {'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor...</msg>
-<status status="PASS" starttime="20210415 09:39:48.671" endtime="20210415 09:39:48.674"></status>
+<msg timestamp="20210422 13:55:39.406" level="INFO">${body} = {'productCode': 'kerava-indoor', 'parameters': {'ids': [{'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor': '5cee81ac541b0667cc783518'}, {'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor...</msg>
+<status status="PASS" starttime="20210422 13:55:39.406" endtime="20210422 13:55:39.406"></status>
 </kw>
 <kw name="Get Current Date" library="DateTime">
 <doc>Returns current local or UTC time with an optional increment.</doc>
@@ -27,8 +27,8 @@
 <assign>
 <var>${now}</var>
 </assign>
-<msg timestamp="20210415 09:39:48.675" level="INFO">${now} = 2021-04-15T04:09:48+00:00</msg>
-<status status="PASS" starttime="20210415 09:39:48.674" endtime="20210415 09:39:48.675"></status>
+<msg timestamp="20210422 13:55:39.408" level="INFO">${now} = 2021-04-22T08:25:39+00:00</msg>
+<status status="PASS" starttime="20210422 13:55:39.407" endtime="20210422 13:55:39.408"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -37,7 +37,7 @@
 <arg>timestamp</arg>
 <arg>${now}</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:39:48.675" endtime="20210415 09:39:48.675"></status>
+<status status="PASS" starttime="20210422 13:55:39.408" endtime="20210422 13:55:39.408"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -45,7 +45,7 @@
 <arg>${body}</arg>
 <arg>&amp;{kwargs}</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:39:48.675" endtime="20210415 09:39:48.675"></status>
+<status status="PASS" starttime="20210422 13:55:39.408" endtime="20210422 13:55:39.408"></status>
 </kw>
 <kw name="Evaluate" library="BuiltIn">
 <doc>Evaluates the given expression in Python and returns the result.</doc>
@@ -56,11 +56,11 @@
 <assign>
 <var>${json_string}</var>
 </assign>
-<msg timestamp="20210415 09:39:48.684" level="INFO">${json_string} = {"productCode": "kerava-indoor", "parameters": {"ids": [{"idOfLocation": "5d779cb9541b0613acf44c25", "idOfSensor": "5cee81ac541b0667cc783518"}, {"idOfLocation": "5d779cb9541b0613acf44c25", "idOfSensor...</msg>
-<status status="PASS" starttime="20210415 09:39:48.675" endtime="20210415 09:39:48.684"></status>
+<msg timestamp="20210422 13:55:39.409" level="INFO">${json_string} = {"productCode": "kerava-indoor", "parameters": {"ids": [{"idOfLocation": "5d779cb9541b0613acf44c25", "idOfSensor": "5cee81ac541b0667cc783518"}, {"idOfLocation": "5d779cb9541b0613acf44c25", "idOfSensor...</msg>
+<status status="PASS" starttime="20210422 13:55:39.408" endtime="20210422 13:55:39.409"></status>
 </kw>
-<msg timestamp="20210415 09:39:48.685" level="INFO">${body} = {'productCode': 'kerava-indoor', 'parameters': {'ids': [{'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor': '5cee81ac541b0667cc783518'}, {'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor...</msg>
-<status status="PASS" starttime="20210415 09:39:48.671" endtime="20210415 09:39:48.685"></status>
+<msg timestamp="20210422 13:55:39.409" level="INFO">${body} = {'productCode': 'kerava-indoor', 'parameters': {'ids': [{'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor': '5cee81ac541b0667cc783518'}, {'idOfLocation': '5d779cb9541b0613acf44c25', 'idOfSensor...</msg>
+<status status="PASS" starttime="20210422 13:55:39.406" endtime="20210422 13:55:39.409"></status>
 </kw>
 <kw name="Fetch Data Product">
 <arguments>
@@ -74,8 +74,8 @@
 <assign>
 <var>${signature}</var>
 </assign>
-<msg timestamp="20210415 09:39:48.689" level="INFO">${signature} = BphfH8TtgkjuYbGLcYV4rHx0IjErEvuXX2U8PdRIL1g=</msg>
-<status status="PASS" starttime="20210415 09:39:48.688" endtime="20210415 09:39:48.690"></status>
+<msg timestamp="20210422 13:55:39.411" level="INFO">${signature} = Awk2d/QJ1nHOkp7QPCy7hmzDNj34cXseuU3Bwgg0NEo=</msg>
+<status status="PASS" starttime="20210422 13:55:39.411" endtime="20210422 13:55:39.411"></status>
 </kw>
 <kw name="Set Headers" library="REST">
 <tags>
@@ -85,9 +85,9 @@
 <arguments>
 <arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:39:48.691" endtime="20210415 09:39:48.694"></status>
+<status status="PASS" starttime="20210422 13:55:39.412" endtime="20210422 13:55:39.412"></status>
 </kw>
-<kw name="Post" library="REST">
+<kw name="POST" library="REST">
 <tags>
 <tag>http</tag>
 </tags>
@@ -96,7 +96,7 @@
 <arg>${CONNECTOR_PATH}</arg>
 <arg>${body}</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:39:48.695" endtime="20210415 09:40:01.093"></status>
+<status status="PASS" starttime="20210422 13:55:39.413" endtime="20210422 13:55:49.273"></status>
 </kw>
 <kw name="Output Schema" library="REST">
 <tags>
@@ -106,7 +106,7 @@
 <arguments>
 <arg>response body</arg>
 </arguments>
-<msg timestamp="20210415 09:40:01.093" level="INFO">
+<msg timestamp="20210422 13:55:49.273" level="INFO">
 {
     "type": "object",
     "properties": {
@@ -174,23 +174,23 @@
                             "measurements": [
                                 {
                                     "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-03-03T16:34:37.000Z",
-                                    "value": 22.3
+                                    "timestamp": "2021-03-04T08:04:34.000Z",
+                                    "value": 22.5
                                 },
                                 {
-                                    "@type": "MeasureAirCO2LevelPPM",
-                                    "timestamp": "2021-03-03T16:34:37.000Z",
-                                    "value": 400
+                                    "@type": "MeasureAirTemperatureCelsiusDegree",
+                                    "timestamp": "2021-03-04T08:34:35.000Z",
+                                    "value": 22.5
                                 },
                                 {
-                                    "@type": "MeasureAirHumidityRH",
-                                    "timestamp": "2021-03-03T16:34:37.000Z",
-                                    "value": 22
+                                    "@type": "MeasureAirHumidityPercent",
+                                    "timestamp": "2021-03-04T08:04:34.000Z",
+                                    "value": 14
                                 },
                                 {
-                                    "@type": "MeasureAirVOC2PPB",
-                                    "timestamp": "2021-03-03T16:34:37.000Z",
-                                    "value": 95
+                                    "@type": "MeasureAirHumidityPercent",
+                                    "timestamp": "2021-03-04T08:34:35.000Z",
+                                    "value": 16
                                 }
                             ]
                         },
@@ -202,23 +202,23 @@
                             "measurements": [
                                 {
                                     "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-03-03T16:34:39.000Z",
-                                    "value": 21.5
+                                    "timestamp": "2021-03-04T08:04:38.000Z",
+                                    "value": 22.3
                                 },
                                 {
-                                    "@type": "MeasureAirCO2LevelPPM",
-                                    "timestamp": "2021-03-03T16:34:39.000Z",
-                                    "value": 400
+                                    "@type": "MeasureAirTemperatureCelsiusDegree",
+                                    "timestamp": "2021-03-04T08:34:38.000Z",
+                                    "value": 22.5
                                 },
                                 {
-                                    "@type": "MeasureAirHumidityRH",
-                                    "timestamp": "2021-03-03T16:34:39.000Z",
-                                    "value": 22
+                                    "@type": "MeasureAirHumidityPercent",
+                                    "timestamp": "2021-03-04T08:04:38.000Z",
+                                    "value": 16
                                 },
                                 {
-                                    "@type": "MeasureAirVOC2PPB",
-                                    "timestamp": "2021-03-03T16:34:39.000Z",
-                                    "value": 85
+                                    "@type": "MeasureAirHumidityPercent",
+                                    "timestamp": "2021-03-04T08:34:38.000Z",
+                                    "value": 14
                                 }
                             ]
                         },
@@ -230,23 +230,13 @@
                             "measurements": [
                                 {
                                     "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-03-03T16:52:42.000Z",
-                                    "value": 22.5
+                                    "timestamp": "2021-03-04T08:22:41.000Z",
+                                    "value": 22.8
                                 },
                                 {
-                                    "@type": "MeasureAirCO2LevelPPM",
-                                    "timestamp": "2021-03-03T16:52:42.000Z",
-                                    "value": 410
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityRH",
-                                    "timestamp": "2021-03-03T16:52:42.000Z",
-                                    "value": 22
-                                },
-                                {
-                                    "@type": "MeasureAirVOC2PPB",
-                                    "timestamp": "2021-03-03T16:52:42.000Z",
-                                    "value": 90
+                                    "@type": "MeasureAirHumidityPercent",
+                                    "timestamp": "2021-03-04T08:22:41.000Z",
+                                    "value": 14
                                 }
                             ]
                         }
@@ -266,7 +256,7 @@
                 },
                 "created": {
                     "type": "string",
-                    "default": "2021-04-15T09:39:54+05:30"
+                    "default": "2021-04-22T13:55:49+05:30"
                 },
                 "creator": {
                     "type": "string",
@@ -274,7 +264,7 @@
                 },
                 "signatureValue": {
                     "type": "string",
-                    "default": "WXm5JVfC72O4aMo1nrTXs+tM32YBlxfd5425qNor0SGlA7UZa5L6bV0u17trcR4aE+d8CHZK4lUD5yjCDzlZP/Pmy8sMZwhsf96awhmYd6wNRpw9bIEeGNIqi4rPyMG+R7nm+5qQSTMYV1MKsVjei2/meToQuwQQztb5dgYZt8YTrcQfSvQe53jQn9atS/CW3q96RpdRCqlRGOQZwFyAymNqP3dUJZIOt3sThoOhpRqPGWAK10edT+copA73RvwXtI/CxF5B32CzqfnX9oULaHen82OVUHZ1YldjIIBv4SQFQyDcL4ZrJECfHlkr5WyhNjr9bPJA7WMZ2+/oCGN5UvHOJ+/r4JR/ZmBof2v9DU2s5BofGGB/c7ggYTcCQW91Gx7eafxEjEPi9M4g3xTNU6V4EpsARWM3QG4YZEjCGbQWSvNzczhXe1AtITW5uVRyZyPyYKSNkGnaXMAtCNfVIi/gZPAUQ3N3YB4wXQ7yjUz9m05zLq8iEXqEAVzNNnorbR8jzb2q1sDRsY2MguPwj8KTutqoNvCebX42P/nYTNF2pI8Pp0JYtQoftcxLp5Lw/zdCd9BF+kCOC+8UDcfAfeMk/IMLGomVtslryCwEAvYSGQBix4eNP4nX6k/BNkKE4Mvb+DcvliC+RAGii95rFfMSneZgUbA+bXWQ6lKhmpQ="
+                    "default": "qB5q5iF2OnKQ1MoW0DLyPaQz9BfckwT8CxQjw2/sP3pRyLwVWofnIQo0MvmSjaGT/gFLmBeEZ6TYVUPMMovoDrCHyyZkf30i1EGwD3mPoIoROBUJRltdHvWSZf1uFUqhmkZi1Asr1/iWH1SbgobnrO3YanRGmDcYnd9NWxjGTxD+fwIyjrC8DdLAh3mZwvGkH3xzLDnifKiiuldhLdH6lDi6X541ar+mVHnQPbiWk0OYXqigznZziX1GmgIN2cyHUpaQigz+jWfAjF7hvqzp5CjOSogMPeVsdb9jvlwaWH3FDdTzfSXL2n77zaDVJ0lvO4l/RebMxlrpU3leB8y+Fdj77jyq7mKrW6l7ezsNRpKcyK1OBtew1+dX585Wdq9BHSQRTpx17dZytt+2H36UBLVMvGuntFqrYY5R9Iha1c/O/fGGDIDeaqBsltf8TbFhjg/d7H37L8kxZRlPUCPvbc4PaIUWrJFrNU6z4H9KtC0RMjxwQQUqZP8Yh75LC2dVaQ7RnPAlsUgZjJ6BBkoLan7+FUd4OHQzM1fXTa+ai/g7zTgTQrZE5KjrSELSTxZbN9yqrnvlCieR5CQyUXR4Z8kiAvhZkqxgZmo7rmLUQXFyIdN6G9Q047i87rQMEq9dudPVsBvkF4PN0vaoZfuOrNC2SfuS1ejzO2dSIsCjR+Y="
                 }
             },
             "required": [
@@ -291,9 +281,9 @@
         "signature"
     ]
 }</msg>
-<status status="PASS" starttime="20210415 09:40:01.093" endtime="20210415 09:40:01.230"></status>
+<status status="PASS" starttime="20210422 13:55:49.273" endtime="20210422 13:55:49.328"></status>
 </kw>
-<status status="PASS" starttime="20210415 09:39:48.687" endtime="20210415 09:40:01.231"></status>
+<status status="PASS" starttime="20210422 13:55:39.410" endtime="20210422 13:55:49.329"></status>
 </kw>
 <kw name="Integer" library="REST">
 <tags>
@@ -304,7 +294,7 @@
 <arg>response status</arg>
 <arg>200</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.233" endtime="20210415 09:40:01.234"></status>
+<status status="PASS" starttime="20210422 13:55:49.329" endtime="20210422 13:55:49.330"></status>
 </kw>
 <kw name="String" library="REST">
 <tags>
@@ -315,7 +305,7 @@
 <arg>response body @context</arg>
 <arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.235" endtime="20210415 09:40:01.236"></status>
+<status status="PASS" starttime="20210422 13:55:49.344" endtime="20210422 13:55:49.346"></status>
 </kw>
 <kw name="Object" library="REST">
 <tags>
@@ -325,7 +315,7 @@
 <arguments>
 <arg>response body data</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.238" endtime="20210415 09:40:01.245"></status>
+<status status="PASS" starttime="20210422 13:55:49.346" endtime="20210422 13:55:49.349"></status>
 </kw>
 <kw name="Array" library="REST">
 <tags>
@@ -335,7 +325,7 @@
 <arguments>
 <arg>response body data sensors</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.246" endtime="20210415 09:40:01.259"></status>
+<status status="PASS" starttime="20210422 13:55:49.349" endtime="20210422 13:55:49.351"></status>
 </kw>
 <kw name="Object" library="REST">
 <tags>
@@ -345,7 +335,7 @@
 <arguments>
 <arg>response body data sensors 0 id</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.281" endtime="20210415 09:40:01.282"></status>
+<status status="PASS" starttime="20210422 13:55:49.351" endtime="20210422 13:55:49.352"></status>
 </kw>
 <kw name="Array" library="REST">
 <tags>
@@ -355,7 +345,7 @@
 <arguments>
 <arg>response body data sensors 0 measurements</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.284" endtime="20210415 09:40:01.285"></status>
+<status status="PASS" starttime="20210422 13:55:49.353" endtime="20210422 13:55:49.354"></status>
 </kw>
 <kw name="String" library="REST">
 <tags>
@@ -365,12 +355,12 @@
 <arguments>
 <arg>response body data sensors 0 measurements 0 @type</arg>
 </arguments>
-<status status="PASS" starttime="20210415 09:40:01.285" endtime="20210415 09:40:01.285"></status>
+<status status="PASS" starttime="20210422 13:55:49.355" endtime="20210422 13:55:49.356"></status>
 </kw>
-<status status="PASS" starttime="20210415 09:39:48.666" endtime="20210415 09:40:01.287" critical="yes"></status>
+<status status="PASS" starttime="20210422 13:55:39.401" endtime="20210422 13:55:49.357" critical="yes"></status>
 </test>
 <doc>kerava-indoor - REST</doc>
-<status status="PASS" starttime="20210415 09:39:47.920" endtime="20210415 09:40:01.289"></status>
+<status status="PASS" starttime="20210422 13:55:38.850" endtime="20210422 13:55:49.360"></status>
 </suite>
 <statistics>
 <total>

@@ -238,13 +238,18 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
+    
     let dataArray = [];
     const data = config.authConfig.body;
     if (!Array.isArray(data)) dataArray.push(data);
     else dataArray = data;
+
+    var merged = [].concat.apply([], dataArray);
+
     let items = [];
-    items = await getData(config, dataArray);
+    items = await getData(config, merged);
     if (!items) items = [];
+
     const result = {
         [config.output.context]: config.output.contextValue,
         [config.output.object]: {
@@ -267,16 +272,44 @@ const output = async (config, output) => {
                     measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
                 }
             }
-            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'] }, 'measurements': measurements });
+
+            let measureType = [];
+            for (let i = 0; i < measurements.length; i++) {
+                for (let j = 0; j < config.parameters.dataTypes.length; j++) {
+                    if (measurements[i]['@type'] === config.parameters.dataTypes[j]) {
+                        measureType.push(measurements[i]);
+                    }
+                }
+            }
+
+            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'] }, 'measurements': measureType });
         }
 
     }
-    for (let i = 0; i < measurement.length; i++) {
-        result[config.output.object][config.output.array].push(measurement[i]);
+
+    const map = {};
+    const measurementFilter = [];
+    measurement.forEach(el => {
+        if (!map[JSON.stringify(el)]) {
+            map[JSON.stringify(el)] = true;
+            measurementFilter.push(el);
+        }
+    });
+
+    for (let i = 0; i < measurementFilter.length; i++) {
+        result[config.output.object][config.output.array].push(measurementFilter[i]);
     }
     return result;
 }
 
+/**
+ * Initiates data requests.
+ *
+ * @param {Object} config
+ * @param {String} pathArray
+ *   Resource path, which will be included to the resource url.
+ * @return {Array}
+ */
 const getData = async (config, dataArray) => {
     const itemse = [];
     for (let p = 0; p < dataArray.length; p++) {
@@ -286,7 +319,17 @@ const getData = async (config, dataArray) => {
     return itemse;
 };
 
+/**
+ * Structures required information for data request.
+ *
+ * @param {Object} config
+ * @param {String} path
+ *   Resource path, which will be included to the request.
+ * @param {Number} index
+ * @return {Promise}
+ */
 const requestData = async (config, path, index) => {
+
     let idOfSensor = path.ids.idOfSensor;
 
     var path = {
@@ -316,6 +359,7 @@ const requestData = async (config, path, index) => {
             measurementData.push(measurementUnitData[i]);
         }
     }
+
     var itemData = {
         "location": location,
         "measurementUnitData": measurementData
