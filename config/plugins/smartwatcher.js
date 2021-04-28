@@ -297,6 +297,21 @@ const output = async (config, output) => {
     }
 }
 
+/**
+ * Splits processes.
+ *
+ * @param {Object} config
+ * @param {Object} response
+ * @return {Object}
+ */
+const response = async (config, data) => {
+    for (var i = 0; i < data.length; i++) {
+        data[i].timestamp = data[i]['time'];
+        delete data[i].time;
+    }
+    return data;
+};
+
 module.exports = {
     name: 'smartwatcher',
     request,
@@ -304,4 +319,5 @@ module.exports = {
     data,
     parameters,
     output,
+    response,
 };
