@@ -238,7 +238,7 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-    
+
     let dataArray = [];
     const data = config.authConfig.body;
     if (!Array.isArray(data)) dataArray.push(data);
@@ -282,7 +282,7 @@ const output = async (config, output) => {
                 }
             }
 
-            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'] }, 'measurements': measureType });
+            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'], 'name': array.measurementUnitData[i]['measurementUnit']['name'] }, 'measurements': measureType });
         }
 
     }
