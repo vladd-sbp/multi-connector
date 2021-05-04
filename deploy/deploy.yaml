@@ -25,7 +25,7 @@ spec:
             mountPath: /usr/src/app/config/smartwatcher.json
             subPath: smartwatcher.json
           - name: kerava-indoor-config
-            mountPath:  /usr/src/app/config/kerava-indoor.json
+            mountPath:  /usr/src/app/config/eeneman-iisy-kerava-1.json
             subPath: kerava-indoor.json
       volumes:
         - name: smartwatcher-config
