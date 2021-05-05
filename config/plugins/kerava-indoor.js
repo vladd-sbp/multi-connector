@@ -181,6 +181,7 @@ const request = async (config, options) => {
     }
     const cookie = Cookie.parse(grant.headers['set-cookie'][0]);
     var authToken = (cookie.cookieString().split("=")[1]);
+
     // Authorize request.
     options.headers = {
         "authToken": authToken,
@@ -193,11 +194,35 @@ const request = async (config, options) => {
         "end": options.body.end
     }
     options.json = true;
-
     return rp(options).then(function (result) {
         return Promise.resolve(result);
     }).catch(function (err) {
-        return Promise.reject(err);
+        if (Object.hasOwnProperty.call(err, 'statusCode')) {
+            if (err.statusCode === 404 || err.statusCode === 400) {
+                return Promise.resolve([]);
+            }
+        }
+        return handleError(config, err).then(function () {
+            /** Second attempt */
+            // If error handler recovers from the error, another attempt is initiated.
+            return request(config, options);
+        }).then(function (result) {
+            // Handle received data.
+            if (result !== null) return Promise.resolve(result);
+            // Handle connection timed out.
+            return promiseRejectWithError(522, 'Connection timed out.');
+        }).then(function (result) {
+            // Return received data.
+            return Promise.resolve(result);
+        }).catch(function (err) {
+            if (Object.hasOwnProperty.call(err, 'statusCode')) {
+                if (err.statusCode === 404 || err.statusCode === 400) {
+                    return Promise.resolve([]);
+                }
+            }
+            return Promise.reject(err);
+        });
+
     });
 };
 /**
@@ -238,7 +263,6 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-
     let dataArray = [];
     const data = config.authConfig.body;
     if (!Array.isArray(data)) dataArray.push(data);
@@ -268,6 +292,8 @@ const output = async (config, output) => {
             for (let k = 0; k < array.measurementUnitData[i]['measurementPointData'].length; k++) {
                 let data = array.measurementUnitData[i]['measurementPointData'][k]['measurementData'];
                 for (let j = 0; j < data.length; j++) {
+                    let time = data[j]['time'];
+                    let time1 = time.valueOf();
                     let measurementType = array.measurementUnitData[i]['measurementPointData'][k]['measurementPoint'];
                     measurements.push({ '@type': config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, 'timestamp': new Date(data[j]['time']), 'value': data[j]['value'] });
                 }
@@ -282,7 +308,7 @@ const output = async (config, output) => {
                 }
             }
 
-            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'], 'name': array.measurementUnitData[i]['measurementUnit']['name'] }, 'measurements': measureType });
+            measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'],'name': array.measurementUnitData[i]['measurementUnit']['name'] }, 'measurements': measureType });
         }
 
     }
@@ -337,6 +363,7 @@ const requestData = async (config, path, index) => {
         "start": path.start,
         "end": path.end
     }
+
     // Initialize request options.
     let options = {
         method: config.authConfig.method || 'GET',
@@ -366,7 +393,29 @@ const requestData = async (config, path, index) => {
     }
     return itemData;
 }
+/**
+ * Handles erroneous response.
+ *
+ * @param {Object} config
+ * @param {Error} err
+ * @return {Promise}
+ */
+const handleError = async (config, err) => {
+    winston.log('info', config.authConfig.template + ': Response with status code ' + err.statusCode);
 
+    /** Connection error handling. */
+    if (err.statusCode === 500
+        || err.statusCode === 502
+        || err.statusCode === 503
+        || err.statusCode === 504
+        || err.statusCode === 522
+    ) {
+        return promiseRejectWithError(err.statusCode, err.message);
+    }
+
+    // Execute onerror plugin function.
+    return await onerror(config, err);
+};
 module.exports = {
     name: 'kerava-indoor',
     onerror,
