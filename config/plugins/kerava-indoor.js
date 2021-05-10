@@ -39,6 +39,7 @@ const promiseRejectWithError = function (code, msg, reference) {
  *    Returns promise resolve if grant was updated successfully.
  */
 const updateCookie = async (authConfig, refresh) => {
+
     // Create a property for attempt count, which will be used to limit the number of update attempts.
     if (!Object.hasOwnProperty.call(authConfig, 'attempt')) {
         authConfig.attempt = 0;
@@ -74,7 +75,6 @@ function getCookieWithPassword(authConfig) {
             'Content-Type': 'application/json'
         },
         body: {
-
             email: authConfig.email,
             password: authConfig.password,
 
@@ -85,6 +85,7 @@ function getCookieWithPassword(authConfig) {
     return rp(option).then(function (result) {
         return Promise.resolve(result);
     }).catch(function (err) {
+        console.log("err in getCookieWithPassword ", err.message);
         return Promise.reject(err);
     });
 }
@@ -100,23 +101,26 @@ function getCookieWithPassword(authConfig) {
  * @return {Promise} Grant
  */
 const requestCookie = async (authConfig, refresh) => {
-    // Get grant from cache (only for refresh purposes)
 
+    // Get grant from cache (only for refresh purposes)
     let grant;
     grant = cache.getDoc('grants', authConfig.productCode);
     if (!grant) grant = {};
     return (authConfig ? getCookieWithPassword(authConfig) : authConfig).then(function (result) {
 
         if (result) {
+            console.log("response in requestCookie");
             cache.setDoc('grants', authConfig.productCode, result);
             return Promise.resolve(result);
         }
         return Promise.resolve();
     }).catch(function (err) {
+        console.log("err in requestCookie", err.message);
         return onerror(authConfig, err).then(function (result) {
             /** Second attempt was successful. */
             return Promise.resolve(result);
         }).catch(function (err) {
+            console.log("err in requestCookie", err.message);
             /** Second attempt failed. */
             return Promise.reject(err);
         });
@@ -166,6 +170,7 @@ const onerror = async (authConfig, err) => {
  */
 
 const request = async (config, options) => {
+
     // Check for necessary information.
     if (!config.authConfig.authPath || !config.authConfig.url) {
         return promiseRejectWithError(500, 'Insufficient authentication configurations.');
@@ -177,8 +182,12 @@ const request = async (config, options) => {
     if (!Object.hasOwnProperty.call(grant, 'headers')) {
         // Request access token.
         grant = await requestCookie(config.authConfig);
-        if (!grant.headers) return promiseRejectWithError(500, 'Authentication failed.');
+        if (!grant.headers) {
+            console.log("error in request");
+            return promiseRejectWithError(500, 'Authentication failed.');
+        }
     }
+
     const cookie = Cookie.parse(grant.headers['set-cookie'][0]);
     var authToken = (cookie.cookieString().split("=")[1]);
 
@@ -195,9 +204,11 @@ const request = async (config, options) => {
     }
     options.json = true;
     return rp(options).then(function (result) {
+        console.log("response in request");
         return Promise.resolve(result);
     }).catch(function (err) {
         if (Object.hasOwnProperty.call(err, 'statusCode')) {
+            console.log("err in request", err.message);
             if (err.statusCode === 404 || err.statusCode === 400) {
                 return Promise.resolve([]);
             }
@@ -205,6 +216,7 @@ const request = async (config, options) => {
         return handleError(config, err).then(function () {
             /** Second attempt */
             // If error handler recovers from the error, another attempt is initiated.
+            console.log("err in request ", err.message);
             return request(config, options);
         }).then(function (result) {
             // Handle received data.
@@ -217,6 +229,7 @@ const request = async (config, options) => {
         }).catch(function (err) {
             if (Object.hasOwnProperty.call(err, 'statusCode')) {
                 if (err.statusCode === 404 || err.statusCode === 400) {
+                    console.log("err in request", err.message);
                     return Promise.resolve([]);
                 }
             }
@@ -264,7 +277,9 @@ const response = async (config, data) => {
  */
 const output = async (config, output) => {
     let dataArray = [];
-    const data = config.authConfig.body;
+
+    const data = config.authConfig.body[0];
+
     if (!Array.isArray(data)) dataArray.push(data);
     else dataArray = data;
 
@@ -338,6 +353,7 @@ const output = async (config, output) => {
  */
 const getData = async (config, dataArray) => {
     const itemse = [];
+
     for (let p = 0; p < dataArray.length; p++) {
         const item = await requestData(config, dataArray[p], p);
         if (item) itemse.push(item);
@@ -355,9 +371,7 @@ const getData = async (config, dataArray) => {
  * @return {Promise}
  */
 const requestData = async (config, path, index) => {
-
     let idOfSensor = path.ids.idOfSensor;
-
     var path = {
         "idOfLocation": path.ids.idOfLocation,
         "start": path.start,
@@ -391,6 +405,7 @@ const requestData = async (config, path, index) => {
         "location": location,
         "measurementUnitData": measurementData
     }
+
     return itemData;
 }
 /**
@@ -402,7 +417,6 @@ const requestData = async (config, path, index) => {
  */
 const handleError = async (config, err) => {
     winston.log('info', config.authConfig.template + ': Response with status code ' + err.statusCode);
-
     /** Connection error handling. */
     if (err.statusCode === 500
         || err.statusCode === 502
