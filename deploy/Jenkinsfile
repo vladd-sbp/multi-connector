@@ -4,7 +4,7 @@ node {
   stage ('Checkout') {
      commitFullHash = checkout(scm).GIT_COMMIT
      commitShortHash = commitFullHash.take(7)
-     buildArg = "--build-arg GIT_COMMIT=$commitShortHash -f ../Dockerfile ."
+     buildArg = "--build-arg GIT_COMMIT=$commitShortHash -f ./Dockerfile ."
      echo buildArg
   }
   stage ('Build multiconnector') {
