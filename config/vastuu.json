@@ -1,0 +1,19 @@
+{
+    "template": "vastuu",
+    "static": {
+      "url": "https://noutaja.tilaajavastuu.fi/",
+      "email": "raporttinoutaja-api-test@oftrust.net",
+      "password": "cRE3Bm7ttnvD7vB"
+    },
+    "dynamic": {
+      
+    },
+    "request": {
+      "ids": [
+        {
+          "businessId": "<businessId>",
+          "countryCode": "<countryCode>"
+        }
+      ]
+    }
+  }

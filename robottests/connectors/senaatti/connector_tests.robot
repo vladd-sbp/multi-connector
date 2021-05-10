@@ -83,7 +83,7 @@ fetch, 200
     Integer               response status                                         200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
-    Array                 response body data sensors
-    String                response body data sensors 0 id
+    Array                 response body data s
+    String                response body data s 0 id
     Array                 response body data sensors 0 measurements
     String                response body data sensors 0 measurements 0 @type
