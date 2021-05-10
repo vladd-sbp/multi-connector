@@ -11,7 +11,7 @@ node {
     docker.build('eeneman/multi-connector', buildArg)
   }
   stage ('DockerPublish') {
-    docker.withRegistry('https://hub.docker.com/_/registry', 'dockerhub-dev') {
+    docker.withRegistry('https://registry-1.docker.io/v2/', 'dockerhub-dev') {
       docker.image('eeneman/multi-connector').push("dev")
     }
   }
