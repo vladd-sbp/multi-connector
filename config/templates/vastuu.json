@@ -2,32 +2,24 @@
   "plugins": [
     "vastuu"
   ],
-  "protocol": "custom",
+  "protocol": "rest",
   "authConfig": {
-    "method": "POST",
     "url": "${url}",
-    "authPath": "login",
+    "authPath": "api/auth",
     "authContentType": "application/json",
-    "email": "${email}",
+    "username": "${username}",
     "password": "${password}",
     "headers": {
-      "Content-Type": "application/json"
+      "Authorization": ""
     },
-    "path": "3.0/cl/${countryCode}/pdf/${businessId}.cl.pdf",
-    "body": {
-      "ids": {
-        "businessId" : "${businessId}",
-        "countryCode" : "${countryCode}"
-      }
-    }
+    "path": "3.0/cl/${countryCode}/pdf/${businessId}.cl.pdf"
+  
   },
   "dataObjects": [
     ""
   ],
   "dataPropertyMappings": {
     "": ""
-  },
-  "measurementUnit": { "":""
   },
   "generalConfig": {
     "query": {},
@@ -46,17 +38,11 @@
   },
   "input": {
     "required": [
-      "parameters.businessId",
-      "parameters.countryCode"
+      "parameters.ids"
     ]
   },
   "output": {
     "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/File/",
-    "timestamp": "timestamp",
-    "array": "sensors",
-    "object": "data",
-    "value": "value",
-    "data": "measurements",
-    "id": "id"
+    "data": "<base64-encoded-binary-string>"
   }
 }

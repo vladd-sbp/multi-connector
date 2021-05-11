@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: multi-connector
-        image: eeneman/multi-connector:dev
+        image: eenemanoy/multi-connector:dev
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

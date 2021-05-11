@@ -40,6 +40,8 @@ const promiseRejectWithError = function (code, msg, reference) {
  * @return {Promise}
  */
 const getDataByOptions = async (config, options, path) => {
+    console.log("options",options);
+    console.log("path",path);
     if (!config.url && !path) {
         return promiseRejectWithError(500, 'No url or path found in authConfig.');
     } else {
