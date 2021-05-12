@@ -79,10 +79,17 @@ console.log("config ", config);
 //   }, function(error, response, body) {
 //       console.log('body : ', body);
 //   } );
+const output = async (config, output) => {
+    console.log("output1",JSON.stringify(output.data.sensors[0].data[0].value.body.type));
+    output.data = output.data.sensors[0].data[0].value.body.data;
+    console.log("output2",JSON.stringify(output));
+    return output;
+}
 
     
 module.exports = {
     name: 'vastuu',
     request,
     parameters,
+    output,
 };

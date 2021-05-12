@@ -72,6 +72,7 @@ const getDataByOptions = async (config, options, path) => {
         }
 
         return rp({...options, query: undefined}).then(function (result) {
+           
             return Promise.resolve(result);
         }).catch(function (err) {
             try {

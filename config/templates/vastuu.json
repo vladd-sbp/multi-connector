@@ -43,6 +43,6 @@
   },
   "output": {
     "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/File/",
-    "data": "<base64-encoded-binary-string>"
+    "data": "data"
   }
 }
