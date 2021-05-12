@@ -1,21 +1,5 @@
 'use strict';
 const rp = require('request-promise');
-/**
-* Manipulates request parameters.
-*
-* @param {Object} config
-* @param {Object} parameters
-* @return {Object}
-*/
-const parameters = async (config, parameters) => {
-    try {
-        console.log("config", config);
-        console.log("parameters", parameters);
-        return parameters;
-    } catch (err) {
-        return parameters;
-    }
-};
 
 /**
  * Composes authorization header and
@@ -26,31 +10,15 @@ const parameters = async (config, parameters) => {
  * @return {Object}
  */
 
-//  const options = {
-//     method: 'POST',
-//     url: url,
-//     headers: {
-//         'Content-Type': 'application/json'
-//     },
-//     body: {
-
-//         username: "",
-//         password: "",
-
-//     },
-// }
-
  const request = async (config, options) => {
     try {
         // Check for necessary information.
         if (!config.authConfig.authPath || !config.authConfig.url) {
             return promiseRejectWithError(500, 'Insufficient authentication configurations.');
         }
-console.log("options ",options);
-console.log("config ", config);
-
         var username = config.authConfig.username;
         var password = config.authConfig.password;
+        //creating authorization
         var auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
 
         options.headers = {
@@ -62,34 +30,37 @@ console.log("config ", config);
     catch (err) {
         return Promise.reject(err);
     }
-    }
-// };
+}
 
-// var username = "";
-// var password = "";
-// var auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
-// var request = require('request');
-// var url = "http://localhost:5647/contact/session/";
 
-// request.get( {
-//     url : url,
-//     headers : {
-//         "Authorization" : auth
-//     }
-//   }, function(error, response, body) {
-//       console.log('body : ', body);
-//   } );
-const output = async (config, output) => {
-    console.log("output1",JSON.stringify(output.data.sensors[0].data[0].value.body.type));
-    output.data = output.data.sensors[0].data[0].value.body.data;
-    console.log("output2",JSON.stringify(output));
+/**
+ * Splits processes.
+ *
+ * @param {Object} config
+ * @param {Object} response
+ * @return {Object}
+ */
+const response = async (config, data)=>{
+    return data.body;
+}
+
+
+/**
+ * Transforms output to Platform of Trust context schema.
+ *
+ * @param {Object} config
+ * @param {Object} output
+ * @return {Object}
+ */
+ const output = async (config, output) => {
+    output.data.file = output.data.sensors[0].data[0].value.toString('base64');
+    delete output.data.sensors;
     return output;
 }
 
-    
 module.exports = {
     name: 'vastuu',
     request,
-    parameters,
     output,
+    response,
 };
