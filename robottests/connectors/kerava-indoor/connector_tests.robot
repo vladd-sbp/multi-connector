@@ -3,7 +3,7 @@ Documentation     kerava-indoor - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
-Library           REST         ${API_URL}
+Library           REST         ${CONNECTOR_URL}
 
 *** Variables ***
 ${LOCAL_TZ}                  +02:00
@@ -40,7 +40,7 @@ Fetch Data Product
     [Arguments]     ${body}
     ${signature}    Calculate PoT Signature          ${body}    ${CLIENT_SECRET}
     Set Headers     {"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}
-    POST            ${API_PATH}                      ${body}
+    POST            ${CONNECTOR_PATH}                      ${body}
     Output schema   response body
 
 Get Body

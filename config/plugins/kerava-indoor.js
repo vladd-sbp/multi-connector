@@ -85,7 +85,6 @@ function getCookieWithPassword(authConfig) {
     return rp(option).then(function (result) {
         return Promise.resolve(result);
     }).catch(function (err) {
-        console.log("err in getCookieWithPassword ", err.message);
         return Promise.reject(err);
     });
 }
@@ -107,20 +106,16 @@ const requestCookie = async (authConfig, refresh) => {
     grant = cache.getDoc('grants', authConfig.productCode);
     if (!grant) grant = {};
     return (authConfig ? getCookieWithPassword(authConfig) : authConfig).then(function (result) {
-
         if (result) {
-            console.log("response in requestCookie");
             cache.setDoc('grants', authConfig.productCode, result);
             return Promise.resolve(result);
         }
         return Promise.resolve();
     }).catch(function (err) {
-        console.log("err in requestCookie", err.message);
         return onerror(authConfig, err).then(function (result) {
             /** Second attempt was successful. */
             return Promise.resolve(result);
         }).catch(function (err) {
-            console.log("err in requestCookie", err.message);
             /** Second attempt failed. */
             return Promise.reject(err);
         });
@@ -170,20 +165,32 @@ const onerror = async (authConfig, err) => {
  */
 
 const request = async (config, options) => {
-
+    let cookieExpired = true ;
+    
     // Check for necessary information.
     if (!config.authConfig.authPath || !config.authConfig.url) {
         return promiseRejectWithError(500, 'Insufficient authentication configurations.');
     }
     // Check for existing grant.
     let grant = cache.getDoc('grants', config.authConfig.productCode);
+
+    if (grant != undefined) {
+        let  ts = Date.parse(grant.body.lastLogin);
+        let cookieTime = new Date() - ts;
+        console.log(ts, new Date().getTime(), cookieTime);
+        cookieExpired = (cookieTime >  43200000 ? true : false);  // set cookie false after 12hr
+    }
+
+
     if (!grant && config.authConfig.headers.Cookie) grant = { Cookie: config.authConfig.headers.Cookie };
     if (!grant) grant = {};
-    if (!Object.hasOwnProperty.call(grant, 'headers')) {
+   // if (!Object.hasOwnProperty.call(grant, 'headers')) {
+   
+    if ( cookieExpired) {
         // Request access token.
+        console.log("reqeusting new access");
         grant = await requestCookie(config.authConfig);
         if (!grant.headers) {
-            console.log("error in request");
             return promiseRejectWithError(500, 'Authentication failed.');
         }
     }
@@ -204,11 +211,9 @@ const request = async (config, options) => {
     }
     options.json = true;
     return rp(options).then(function (result) {
-        console.log("response in request");
         return Promise.resolve(result);
     }).catch(function (err) {
         if (Object.hasOwnProperty.call(err, 'statusCode')) {
-            console.log("err in request", err.message);
             if (err.statusCode === 404 || err.statusCode === 400) {
                 return Promise.resolve([]);
             }
@@ -216,7 +221,6 @@ const request = async (config, options) => {
         return handleError(config, err).then(function () {
             /** Second attempt */
             // If error handler recovers from the error, another attempt is initiated.
-            console.log("err in request ", err.message);
             return request(config, options);
         }).then(function (result) {
             // Handle received data.
@@ -229,7 +233,6 @@ const request = async (config, options) => {
         }).catch(function (err) {
             if (Object.hasOwnProperty.call(err, 'statusCode')) {
                 if (err.statusCode === 404 || err.statusCode === 400) {
-                    console.log("err in request", err.message);
                     return Promise.resolve([]);
                 }
             }
