@@ -15,6 +15,6 @@ module.exports = function (passport) {
         : passport.authenticate(['signature'], {session: false});
 
     /** Platform of Trust fetch endpoint. */
-    router.post('',  ctrl.fetch);
+    router.post('', auth, ctrl.fetch);
     return router;
 };
