@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  vastuu.json: |-
+    {
+      "template": "vastuu",
+      "static": {
+        "url": "https://noutaja.tilaajavastuu.fi/",
+        "username": "",
+        "password": ""
+      },
+      "dynamic": {
+        "authConfig.path": "ids"
+      },
+      "request": {
+        "ids": [
+          {
+            "businessId": "<businessId>",
+            "countryCode": "<countryCode>"
+          }
+        ]
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: vastuu-config
