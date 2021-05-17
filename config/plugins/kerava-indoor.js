@@ -177,7 +177,6 @@ const request = async (config, options) => {
     if (grant != undefined) {
         let  ts = Date.parse(grant.body.lastLogin);
         let cookieTime = new Date() - ts;
-        console.log(ts, new Date().getTime(), cookieTime);
         cookieExpired = (cookieTime >  43200000 ? true : false);  // set cookie false after 12hr
     }
 
@@ -188,7 +187,6 @@ const request = async (config, options) => {
    
     if ( cookieExpired) {
         // Request access token.
-        console.log("reqeusting new access");
         grant = await requestCookie(config.authConfig);
         if (!grant.headers) {
             return promiseRejectWithError(500, 'Authentication failed.');
