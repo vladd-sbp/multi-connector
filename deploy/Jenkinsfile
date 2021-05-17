@@ -1,0 +1,18 @@
+def commitFullHash = ''
+def commitShortHash = ''
+node {
+  stage ('Checkout') {
+     commitFullHash = checkout(scm).GIT_COMMIT
+     commitShortHash = commitFullHash.take(7)
+     buildArg = "--build-arg GIT_COMMIT=$commitShortHash -f ./Dockerfile ."
+     echo buildArg
+  }
+  stage ('Build multiconnector') {
+    docker.build('eenemanoy/multi-connector', buildArg)
+  }
+  stage ('DockerPublish') {
+    docker.withRegistry('https://registry-1.docker.io/v2/', 'dockerhub-dev') {
+      docker.image('eenemanoy/multi-connector').push("dev")
+    }
+  }
+}

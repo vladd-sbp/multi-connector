@@ -11,13 +11,17 @@ data:
         "dynamic": {
             "authConfig.body": [
                 "ids",
-                "startDate",
-                "endDate"
+                "startTime",
+                "endTime",
+                "dataTypes"
             ]
         },
         "request": {
             "ids": [
-                "<id>"
+               {
+                 "idOfLocation": "<idOfLocation>",
+                 "idOfSensor": "<idOfSensor>"
+               }
             ]
         }
     }
