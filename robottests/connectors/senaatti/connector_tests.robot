@@ -23,9 +23,6 @@ ${DATA_TYPE_1}               MeasureAirTemperatureCelsiusDegree
 ${DATA_TYPE_2}               MeasureAirHumidityPercent
 
 @{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
-#...                          ${DATA_TYPE_2}
-
-#@{DATA_TYPES}                &{DATA_TYPES_LIST}
 
 ${START_TIME}               2021-02-24T10:20:02.000Z
 ${END_TIME}                 2021-02-24T10:25:02.000Z
@@ -83,7 +80,7 @@ fetch, 200
     Integer               response status                                         200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
-    Array                 response body data s
-    String                response body data s 0 id
+    Array                 response body data sensors
+    String                response body data sensors 0 id
     Array                 response body data sensors 0 measurements
     String                response body data sensors 0 measurements 0 @type

@@ -21,8 +21,8 @@ spec:
         ports:
         - containerPort: 8080
         volumeMounts:
-          - name: smartwatcher-config
-            mountPath: /usr/src/app/config/smartwatcher.json
+          - name: senaatti-config
+            mountPath: /usr/src/app/config/eeneman-senaatti.json
             subPath: smartwatcher.json
           - name: kerava-indoor-config
             mountPath:  /usr/src/app/config/eeneman-iisy-kerava-1.json
@@ -31,9 +31,9 @@ spec:
             mountPath:  /usr/src/app/config/vastuu.json
             subPath: vastuu.json
       volumes:
-        - name: smartwatcher-config
+        - name: senaatti-config
           configMap:
-            name: smartwatcher-config
+            name: senaatti-config
         - name: kerava-indoor-config
           configMap:
             name: kerava-indoor-config
