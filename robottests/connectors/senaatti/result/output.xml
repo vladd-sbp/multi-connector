@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.2 (Python 3.9.0 on darwin)" generated="20210518 16:05:26.302" rpa="false">
+<robot generator="Robot 3.2.2 (Python 3.9.0 on darwin)" generated="20210518 17:15:53.508" rpa="false">
 <suite id="s1" name="Connector Tests" source="/Volumes/ext_drive/smarthala/04_Eeneman/src/multi-connector/robottests/connectors/senaatti/connector_tests.robot">
 <test id="s1-t1" name="fetch, 200">
 <kw name="Get Body">
@@ -15,8 +15,8 @@
 <assign>
 <var>${body}</var>
 </assign>
-<msg timestamp="20210518 16:05:27.156" level="INFO">${body} = {'productCode': 'eeneman-senaatti', 'parameters': {'ids': ['30676c91-7d3f-46d9-81e3-0e91e9341ad3', '9cc364b0-acce-494a-9343-06ddc7fe0601', '11a44990-99cd-4a28-ab91-e42cc54b3ee9'], 'dataTypes': ['Measu...</msg>
-<status status="PASS" starttime="20210518 16:05:27.155" endtime="20210518 16:05:27.156"></status>
+<msg timestamp="20210518 17:15:54.394" level="INFO">${body} = {'productCode': 'eeneman-senaatti', 'parameters': {'ids': ['30676c91-7d3f-46d9-81e3-0e91e9341ad3', '9cc364b0-acce-494a-9343-06ddc7fe0601', '11a44990-99cd-4a28-ab91-e42cc54b3ee9'], 'dataTypes': ['Measu...</msg>
+<status status="PASS" starttime="20210518 17:15:54.393" endtime="20210518 17:15:54.394"></status>
 </kw>
 <kw name="Get Current Date" library="DateTime">
 <doc>Returns current local or UTC time with an optional increment.</doc>
@@ -27,8 +27,8 @@
 <assign>
 <var>${now}</var>
 </assign>
-<msg timestamp="20210518 16:05:27.157" level="INFO">${now} = 2021-05-18T13:05:27+00:00</msg>
-<status status="PASS" starttime="20210518 16:05:27.156" endtime="20210518 16:05:27.157"></status>
+<msg timestamp="20210518 17:15:54.396" level="INFO">${now} = 2021-05-18T14:15:54+00:00</msg>
+<status status="PASS" starttime="20210518 17:15:54.395" endtime="20210518 17:15:54.396"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -37,7 +37,7 @@
 <arg>timestamp</arg>
 <arg>${now}</arg>
 </arguments>
-<status status="PASS" starttime="20210518 16:05:27.157" endtime="20210518 16:05:27.157"></status>
+<status status="PASS" starttime="20210518 17:15:54.397" endtime="20210518 17:15:54.398"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -45,7 +45,7 @@
 <arg>${body}</arg>
 <arg>&amp;{kwargs}</arg>
 </arguments>
-<status status="PASS" starttime="20210518 16:05:27.158" endtime="20210518 16:05:27.158"></status>
+<status status="PASS" starttime="20210518 17:15:54.398" endtime="20210518 17:15:54.398"></status>
 </kw>
 <kw name="Evaluate" library="BuiltIn">
 <doc>Evaluates the given expression in Python and returns the result.</doc>
@@ -56,11 +56,11 @@
 <assign>
 <var>${json_string}</var>
 </assign>
-<msg timestamp="20210518 16:05:27.159" level="INFO">${json_string} = {"productCode": "eeneman-senaatti", "parameters": {"ids": ["30676c91-7d3f-46d9-81e3-0e91e9341ad3", "9cc364b0-acce-494a-9343-06ddc7fe0601", "11a44990-99cd-4a28-ab91-e42cc54b3ee9"], "dataTypes": ["Measu...</msg>
-<status status="PASS" starttime="20210518 16:05:27.159" endtime="20210518 16:05:27.159"></status>
+<msg timestamp="20210518 17:15:54.400" level="INFO">${json_string} = {"productCode": "eeneman-senaatti", "parameters": {"ids": ["30676c91-7d3f-46d9-81e3-0e91e9341ad3", "9cc364b0-acce-494a-9343-06ddc7fe0601", "11a44990-99cd-4a28-ab91-e42cc54b3ee9"], "dataTypes": ["Measu...</msg>
+<status status="PASS" starttime="20210518 17:15:54.399" endtime="20210518 17:15:54.400"></status>
 </kw>
-<msg timestamp="20210518 16:05:27.160" level="INFO">${body} = {'productCode': 'eeneman-senaatti', 'parameters': {'ids': ['30676c91-7d3f-46d9-81e3-0e91e9341ad3', '9cc364b0-acce-494a-9343-06ddc7fe0601', '11a44990-99cd-4a28-ab91-e42cc54b3ee9'], 'dataTypes': ['Measu...</msg>
-<status status="PASS" starttime="20210518 16:05:27.154" endtime="20210518 16:05:27.160"></status>
+<msg timestamp="20210518 17:15:54.401" level="INFO">${body} = {'productCode': 'eeneman-senaatti', 'parameters': {'ids': ['30676c91-7d3f-46d9-81e3-0e91e9341ad3', '9cc364b0-acce-494a-9343-06ddc7fe0601', '11a44990-99cd-4a28-ab91-e42cc54b3ee9'], 'dataTypes': ['Measu...</msg>
+<status status="PASS" starttime="20210518 17:15:54.392" endtime="20210518 17:15:54.401"></status>
 </kw>
 <kw name="Fetch Data Product">
 <arguments>
@@ -74,8 +74,8 @@
 <assign>
 <var>${signature}</var>
 </assign>
-<msg timestamp="20210518 16:05:27.161" level="INFO">${signature} = 5v5V9eIHthki3fG0nXy4TQ+lK4H/SpDvPz6ahHDoBMI=</msg>
-<status status="PASS" starttime="20210518 16:05:27.161" endtime="20210518 16:05:27.161"></status>
+<msg timestamp="20210518 17:15:54.403" level="INFO">${signature} = g3ola3oByfBYudGCmKijIuGkJGUXQWZVigRe6GZFl/M=</msg>
+<status status="PASS" starttime="20210518 17:15:54.402" endtime="20210518 17:15:54.403"></status>
 </kw>
 <kw name="Set Headers" library="REST">
 <tags>
@@ -85,7 +85,7 @@
 <arguments>
 <arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
 </arguments>
-<status status="PASS" starttime="20210518 16:05:27.161" endtime="20210518 16:05:27.162"></status>
+<status status="PASS" starttime="20210518 17:15:54.403" endtime="20210518 17:15:54.404"></status>
 </kw>
 <kw name="Post" library="REST">
 <tags>
@@ -93,10 +93,10 @@
 </tags>
 <doc>*Sends a POST request to the endpoint.*</doc>
 <arguments>
-<arg>${CONNECTOR_PATH}</arg>
+<arg>${API_PATH}</arg>
 <arg>${body}</arg>
 </arguments>
-<status status="PASS" starttime="20210518 16:05:27.162" endtime="20210518 16:05:28.596"></status>
+<status status="PASS" starttime="20210518 17:15:54.405" endtime="20210518 17:15:55.952"></status>
 </kw>
 <kw name="Output Schema" library="REST">
 <tags>
@@ -106,173 +106,74 @@
 <arguments>
 <arg>response body</arg>
 </arguments>
-<msg timestamp="20210518 16:05:28.597" level="INFO">
+<msg timestamp="20210518 17:15:55.952" level="INFO">
 {
     "type": "object",
     "properties": {
-        "@context": {
-            "type": "string",
-            "default": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/"
-        },
-        "data": {
+        "error": {
             "type": "object",
             "properties": {
-                "sensors": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "string"
-                            },
-                            "measurements": {
-                                "type": "array",
-                                "items": {
+                "message": {
+                    "type": "string",
+                    "default": "External translator returns an invalid response."
+                },
+                "status": {
+                    "type": "integer",
+                    "default": 502
+                },
+                "translator_response": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "integer",
+                            "default": 500
+                        },
+                        "data": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
                                     "type": "object",
                                     "properties": {
-                                        "@type": {
-                                            "type": "string"
+                                        "status": {
+                                            "type": "integer",
+                                            "default": 500
                                         },
-                                        "timestamp": {
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
+                                        "message": {
+                                            "type": "string",
+                                            "default": "Incorrect Parameters"
                                         }
                                     },
                                     "required": [
-                                        "@type",
-                                        "timestamp",
-                                        "value"
+                                        "message",
+                                        "status"
                                     ]
                                 }
-                            }
-                        },
-                        "required": [
-                            "id",
-                            "measurements"
-                        ]
-                    },
-                    "default": [
-                        {
-                            "id": "30676c91-7d3f-46d9-81e3-0e91e9341ad3",
-                            "measurements": [
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:20:29.000Z",
-                                    "value": 21.02
-                                },
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:21:12.000Z",
-                                    "value": 21.02
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:20:29.000Z",
-                                    "value": 29
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:21:12.000Z",
-                                    "value": 28.5
-                                }
-                            ]
-                        },
-                        {
-                            "id": "9cc364b0-acce-494a-9343-06ddc7fe0601",
-                            "measurements": [
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:20:29.000Z",
-                                    "value": 20.6
-                                },
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:21:12.000Z",
-                                    "value": 20.6
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:20:29.000Z",
-                                    "value": 25
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:21:12.000Z",
-                                    "value": 25
-                                }
-                            ]
-                        },
-                        {
-                            "id": "11a44990-99cd-4a28-ab91-e42cc54b3ee9",
-                            "measurements": [
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:20:28.000Z",
-                                    "value": 20.59
-                                },
-                                {
-                                    "@type": "MeasureAirTemperatureCelsiusDegree",
-                                    "timestamp": "2021-02-24T10:21:10.000Z",
-                                    "value": 20.59
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:20:28.000Z",
-                                    "value": 25.5
-                                },
-                                {
-                                    "@type": "MeasureAirHumidityPercent",
-                                    "timestamp": "2021-02-24T10:21:10.000Z",
-                                    "value": 25.5
-                                }
+                            },
+                            "required": [
+                                "error"
                             ]
                         }
+                    },
+                    "required": [
+                        "data",
+                        "status"
                     ]
                 }
             },
             "required": [
-                "sensors"
-            ]
-        },
-        "signature": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string",
-                    "default": "RsaSignature2018"
-                },
-                "created": {
-                    "type": "string",
-                    "default": "2021-05-18T16:05:28+03:00"
-                },
-                "creator": {
-                    "type": "string",
-                    "default": "http://localhost:8080/translator/v1/public.key"
-                },
-                "signatureValue": {
-                    "type": "string",
-                    "default": "d0VH/OjHV9OwbhJJU3lWbpSnk5CdtaPcI+MXLZeQaW/wAo50XBZMbJRlpKWL8EcPi78NhqD5ILy0CC6NrWOYYPc220maS6makyLdLqNv3sSvTHJEIHEIfCXxixe7AFKuKWWuexp0wmMZSHNSCNbJfgKBtJoyPSdKIXbxgKsThRDGqxLtR1FIA4lUESMeaXsThp73V8K69pmnLs/HBiNpSC9ADxXWoeV5whBIocxc9wZLEiSiQZVQSG+sJoqmJTY8iBt2dB1/ZJf6In1T/Bjb56AagZjGAW8ZCEOKa9BaAxBIgraGsw/DzzmKijp+RXCAlbdUFiT/HDbPEo9OCadQ6q+HZ+RbBuun735DBxlOaPHbs48l/kOxuVXehAwviyBhW001Ina0vuwVR8OTQZf4EvUnPx1MbGAYmhgcD+y1zqarkDCb82KDq6xn7cMjxzZ6yAryVwkzshtlhHquc/P4pzy69rHVM1cgrWpGbd1FFW7Es9sM8wr6bWmASslazhthy+z3O6GZngrWW1Nr6iZ3RRei+msGLS6rmUjR1YYb49uRpXev9o5E2qmunQUCQbCyBZI2CfBJj2IGH6tAsKPIt5FuBcJcydzBJKH1rFZDlg7Y6XA6F3zAHTFyeyO3V3Io/MuIoc/Ow+1P9mavCxdmNAeg0Ie/NovBHs0agGtDEhA="
-                }
-            },
-            "required": [
-                "created",
-                "creator",
-                "signatureValue",
-                "type"
+                "message",
+                "status",
+                "translator_response"
             ]
         }
     },
     "required": [
-        "@context",
-        "data",
-        "signature"
+        "error"
     ]
 }</msg>
-<status status="PASS" starttime="20210518 16:05:28.596" endtime="20210518 16:05:28.637"></status>
+<status status="PASS" starttime="20210518 17:15:55.952" endtime="20210518 17:15:55.977"></status>
 </kw>
-<status status="PASS" starttime="20210518 16:05:27.160" endtime="20210518 16:05:28.638"></status>
+<status status="PASS" starttime="20210518 17:15:54.401" endtime="20210518 17:15:55.978"></status>
 </kw>
 <kw name="Integer" library="REST">
 <tags>
@@ -283,83 +184,35 @@
 <arg>response status</arg>
 <arg>200</arg>
 </arguments>
-<status status="PASS" starttime="20210518 16:05:28.639" endtime="20210518 16:05:28.640"></status>
+<msg timestamp="20210518 17:15:55.985" level="FAIL">502 is not one of [200]
+
+Failed validating 'enum' in schema:
+    {'enum': [200], 'type': 'integer'}
+
+On instance:
+    502</msg>
+<status status="FAIL" starttime="20210518 17:15:55.979" endtime="20210518 17:15:55.986"></status>
 </kw>
-<kw name="String" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON string.*</doc>
-<arguments>
-<arg>response body @context</arg>
-<arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.640" endtime="20210518 16:05:28.641"></status>
-</kw>
-<kw name="Object" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON object.*</doc>
-<arguments>
-<arg>response body data</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.642" endtime="20210518 16:05:28.645"></status>
-</kw>
-<kw name="Array" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON array.*</doc>
-<arguments>
-<arg>response body data sensors</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.646" endtime="20210518 16:05:28.648"></status>
-</kw>
-<kw name="String" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON string.*</doc>
-<arguments>
-<arg>response body data sensors 0 id</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.648" endtime="20210518 16:05:28.649"></status>
-</kw>
-<kw name="Array" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON array.*</doc>
-<arguments>
-<arg>response body data sensors 0 measurements</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.650" endtime="20210518 16:05:28.651"></status>
-</kw>
-<kw name="String" library="REST">
-<tags>
-<tag>assertions</tag>
-</tags>
-<doc>*Asserts the field as JSON string.*</doc>
-<arguments>
-<arg>response body data sensors 0 measurements 0 @type</arg>
-</arguments>
-<status status="PASS" starttime="20210518 16:05:28.652" endtime="20210518 16:05:28.653"></status>
-</kw>
-<status status="PASS" starttime="20210518 16:05:27.153" endtime="20210518 16:05:28.653" critical="yes"></status>
+<status status="FAIL" starttime="20210518 17:15:54.390" endtime="20210518 17:15:55.986" critical="yes">502 is not one of [200]
+
+Failed validating 'enum' in schema:
+    {'enum': [200], 'type': 'integer'}
+
+On instance:
+    502</status>
 </test>
 <doc>Smartwatcher - REST</doc>
-<status status="PASS" starttime="20210518 16:05:26.309" endtime="20210518 16:05:28.654"></status>
+<status status="FAIL" starttime="20210518 17:15:53.514" endtime="20210518 17:15:55.987"></status>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0">Critical Tests</stat>
-<stat pass="1" fail="0">All Tests</stat>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="1" fail="0" id="s1" name="Connector Tests">Connector Tests</stat>
+<stat pass="0" fail="1" id="s1" name="Connector Tests">Connector Tests</stat>
 </suite>
 </statistics>
 <errors>

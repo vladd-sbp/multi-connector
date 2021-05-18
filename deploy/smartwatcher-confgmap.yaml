@@ -10,9 +10,10 @@ data:
         },
         "dynamic": {
             "authConfig.path": [
-                "ids",
-                "startDate",
-                "endDate"
+              "ids",
+              "startTime",
+              "endTime",
+              "dataTypes"
             ]
         },
         "request": {
