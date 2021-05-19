@@ -1,0 +1,55 @@
+{
+    "plugins": [
+      "vilpe"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${url}",
+      "UserPoolId": "${UserPoolId}",
+      "ClientId": "${ClientId}",
+      "username": "${authCredentials.username}",
+      "password": "${authCredentials.password}",
+      "headers": {
+        "Authorization": ""
+      },
+      "path": "/devices/${id}/measurements/latest"
+    },
+    "dataObjects": [],
+    "measurementUnit":{
+        "temperature": "MeasureAirTemperatureCelsiusDegree",
+        "relative_humidity": "MeasureAirHumidityRH",
+        "fan_rpm": "MeasureFanRPM",
+        "mold_index": "MeasureMoldIndex"
+      },
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+      "query": {},
+      "sourceName": {
+        "dataObjectProperty": "name"
+      },
+      "hardwareId": {
+        "pathIndex": 2
+      },
+      "measurement": {
+        "pathIndex": 5
+      },
+      "timestamp": {
+        "dataObjectProperty": "timestamp"
+      }
+    },
+    "input": {
+      "required": [
+      ]
+    },
+    "output": {
+      "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Process/Measure/IndoorAirQuality/",
+      "timestamp": "timestamp",
+      "array": "indoorAirQuality",
+      "object": "data",
+      "value": "value",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
