@@ -1,0 +1,19 @@
+{
+  "template": "luotettava-kumppani-report-pdf",
+  "static": {
+    "url": "https://noutaja.tilaajavastuu.fi/",
+    "username": "",
+    "password": ""
+  },
+  "dynamic": {
+    "authConfig.path": "ids"
+  },
+  "request": {
+    "ids": [
+      {
+        "businessId": "<businessId>",
+        "countryCode": "<countryCode>"
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "plugins": [
+    "luotettava-kumppani-report-pdf"
+  ],
+  "protocol": "rest",
+  "authConfig": {
+    "url": "${url}",
+    "authPath": "api/auth",
+    "authContentType": "application/json",
+    "username": "${username}",
+    "password": "${password}",
+    "headers": {
+      "Authorization": ""
+    },
+    "path": "3.0/cl/${countryCode}/pdf/${businessId}.cl.pdf"
+  
+  },
+  "dataObjects": [
+    ""
+  ],
+  "dataPropertyMappings": {
+    "": ""
+  },
+  "generalConfig": {
+    "query": {},
+    "sourceName": {
+      "dataObjectProperty": "name"
+    },
+    "hardwareId": {
+      "pathIndex": 4
+    },
+    "measurement": {
+      "pathIndex": 5
+    },
+    "timestamp": {
+      "dataObjectProperty": "timestamp"
+    }
+  },
+  "input": {
+    "required": [
+      "parameters.ids"
+    ]
+  },
+  "output": {
+    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/File/",
+    "data": "data"
+  }
+}
