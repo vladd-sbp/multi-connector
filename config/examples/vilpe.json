@@ -1,0 +1,23 @@
+{
+    "template": "vilpe",
+    "static": {
+        "url": "https://sense-api.vilpe.com",
+        "UserPoolId": "",
+        "ClientId": ""
+    },
+    "dynamic": {
+        "authConfig.path": [
+            "ids"
+        ],
+        "authConfig.username":"authCredentials.username",
+        "authConfig.password":"authCredentials.password"
+    },
+    "request": {
+        "ids": [
+            {
+                "id": "<id>"
+            }
+        ]
+
+    }
+}
