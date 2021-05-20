@@ -27,9 +27,9 @@ spec:
           - name: kerava-indoor-config
             mountPath:  /usr/src/app/config/eeneman-iisy-kerava-1.json
             subPath: kerava-indoor.json
-          - name: vastuu-config
-            mountPath:  /usr/src/app/config/vastuu.json
-            subPath: vastuu.json
+          - name: luotettava-kumppani-report-pdf-config
+            mountPath:  /usr/src/app/config/eeneman-luotettava-kumppani-report-pdf.json
+            subPath: luotettava-kumppani-report-pdf.json
           - name: vilpe-config
             mountPath:  /usr/src/app/config/eeneman-vilpe.json
             subPath: vilpe.json
@@ -40,9 +40,9 @@ spec:
         - name: kerava-indoor-config
           configMap:
             name: kerava-indoor-config
-        - name: vastuu-config
+        - name: luotettava-kumppani-report-pdf-config
           configMap:
-            name: vastuu-config
+            name: luotettava-kumppani-report-pdf-config
         - name: vilpe-config
           configMap:
             name: vilpe-config
