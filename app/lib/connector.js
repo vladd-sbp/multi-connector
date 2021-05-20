@@ -529,16 +529,17 @@ const composeOutput = async (template, input) => {
  */
 const getData = async (req) => {
     const reqBody = req.body;
+    
 
     /** Default request validation */
     let validation = validator.validate(reqBody, supportedParameters);
     if (Object.hasOwnProperty.call(validation, 'error')) {
         if (validation.error) return rest.promiseRejectWithError(422, validation.error);
     }
+   
 
     // Pick requested product code.
     const productCode = _.get(reqBody, PRODUCT_CODE) || 'default';
-
     // Get data product config.
     let config = cache.getDoc('configs', productCode);
     if (!config) config = cache.getDoc('configs', 'default');
@@ -546,11 +547,9 @@ const getData = async (req) => {
     if (!Object.hasOwnProperty.call(config, 'template')) {
         return rest.promiseRejectWithError(404, 'Data product config template not defined.');
     }
-
     // Get data product config template.
     let template = cache.getDoc('templates', config.template);
     if (!template) return rest.promiseRejectWithError(404, 'Data product config template not found.');
-
     /* Custom requirements */
     let requiredParameters;
 
@@ -623,7 +622,6 @@ const getData = async (req) => {
             }
         }
     }
-
     // Place values defined in config to template.
     template = replacePlaceholders(config, template, parameters);
 
@@ -651,6 +649,7 @@ const getData = async (req) => {
     // Compose output payload.
     return Promise.resolve(composeOutput(template));
 };
+
 
 /**
  * Expose library functions.

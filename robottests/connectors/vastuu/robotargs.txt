@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/vastuu/result
+connectors/vastuu/connector_tests.robot

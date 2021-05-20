@@ -8,6 +8,7 @@ Following data sources are supported out of the box. Example configs can be foun
 
 - Smartwatcher API
 - Kerava Indoor API
+- Vastuu API
 
 ## Getting Started
 

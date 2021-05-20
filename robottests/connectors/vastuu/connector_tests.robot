@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     Smartwatcher - REST
+Documentation     vastuu - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
@@ -15,22 +15,10 @@ ${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-${ID1}                       30676c91-7d3f-46d9-81e3-0e91e9341ad3
-${ID2}                       9cc364b0-acce-494a-9343-06ddc7fe0601
-${ID3}                       11a44990-99cd-4a28-ab91-e42cc54b3ee9
-@{IDS}                       ${ID1}  ${ID2}  ${ID3}
-${DATA_TYPE_1}               MeasureAirTemperatureCelsiusDegree
-${DATA_TYPE_2}               MeasureAirHumidityPercent
-
-@{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
-
-${START_TIME}               2021-02-24T10:20:02.000Z
-${END_TIME}                 2021-02-24T10:25:02.000Z
+&{ID1}                       businessId=2327327-1  countryCode=fi
+@{IDS}                       ${ID1}
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
-...                          dataTypes=@{DATA_TYPES_LIST}
-...                          startTime=${START_TIME}
-...                          endTime=${END_TIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -78,9 +66,6 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
+    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/File/
     Object                response body data
-    Array                 response body data sensors
-    String                response body data sensors 0 id
-    Array                 response body data sensors 0 measurements
-    String                response body data sensors 0 measurements 0 @type
+    String                 response body data file
