@@ -59,11 +59,7 @@ const response = async (config, data)=>{
 }
 
 module.exports = {
-<<<<<<< HEAD
     name: 'luotettava-kumppani-report-pdf',
-=======
-    name: 'vastuu',
->>>>>>> develop
     request,
     output,
     response,
