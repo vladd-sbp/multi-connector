@@ -5,8 +5,8 @@ data:
       "template": "luotettava-kumppani-report-pdf",
       "static": {
         "url": "https://noutaja.tilaajavastuu.fi/",
-        "username": "",
-        "password": ""
+        "username": "raporttinoutaja-api-test@oftrust.net",
+        "password": "cRE3Bm7ttnvD7vB"
       },
       "dynamic": {
         "authConfig.path": "ids"
