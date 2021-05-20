@@ -23,4 +23,8 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
+<<<<<<< HEAD
   name: luotettava-kumppani-report-pdf-config
+=======
+  name: vastuu-config
+>>>>>>> develop
