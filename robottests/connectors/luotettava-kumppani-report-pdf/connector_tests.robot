@@ -1,9 +1,9 @@
 *** Settings ***
-Documentation     vastuu - REST
+Documentation     luotettava-kumppani-report-pdf - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
-Library           REST         ${API_URL}
+Library           REST         ${CONNECTOR_URL}
 
 *** Variables ***
 ${LOCAL_TZ}                  +02:00
@@ -17,7 +17,7 @@ ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
 &{ID1}                       businessId=2327327-1  countryCode=fi
 @{IDS}                       ${ID1}
-
+  
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
@@ -27,7 +27,7 @@ Fetch Data Product
     [Arguments]     ${body}
     ${signature}    Calculate PoT Signature          ${body}    ${CLIENT_SECRET}
     Set Headers     {"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}
-    POST            ${API_PATH}                      ${body}
+    POST            ${CONNECTOR_PATH}                      ${body}
     Output schema   response body
 
 Get Body
@@ -68,4 +68,5 @@ fetch, 200
     Integer               response status                                         200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/File/
     Object                response body data
-    String                 response body data file
+    String                response body data file
+    

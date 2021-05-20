@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "vastuu"
+    "luotettava-kumppani-report-pdf"
   ],
   "protocol": "rest",
   "authConfig": {

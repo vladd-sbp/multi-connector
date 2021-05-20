@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/luotettava-kumppani-report-pdf/result
+connectors/luotettava-kumppani-report-pdf/connector_tests.robot
