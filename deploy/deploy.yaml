@@ -30,6 +30,9 @@ spec:
           - name: vastuu-config
             mountPath:  /usr/src/app/config/vastuu.json
             subPath: vastuu.json
+          - name: vilpe-config
+            mountPath:  /usr/src/app/config/eeneman-vilpe.json
+            subPath: vilpe.json
       volumes:
         - name: smartwatcher-config
           configMap:
@@ -40,6 +43,9 @@ spec:
         - name: vastuu-config
           configMap:
             name: vastuu-config
+        - name: vilpe-config
+          configMap:
+            name: vilpe-config
 ---
 apiVersion: v1
 kind: Service
