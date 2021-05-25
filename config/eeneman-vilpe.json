@@ -2,8 +2,8 @@
     "template": "vilpe",
     "static": {
         "url": "https://sense-api.vilpe.com",
-        "UserPoolId": "eu-west-1_AMDKmpN7v",
-        "ClientId": "52730l8cp18v6m06l7bdt5m881"
+        "UserPoolId": "",
+        "ClientId": ""
     },
     "dynamic": {
         "authConfig.path": [
