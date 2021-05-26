@@ -32,7 +32,7 @@ spec:
             subPath: luotettava-kumppani-report-pdf.json
           - name: vilpe-config
             mountPath:  /usr/src/app/config/eeneman-vilpe.json
-            subPath: vilpe.json
+            subPath: eeneman-vilpe.json
       volumes:
         - name: smartwatcher-config
           configMap:

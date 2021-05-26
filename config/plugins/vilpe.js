@@ -18,6 +18,7 @@ const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
  * @return {Promise}
  */
 const promiseRejectWithError = function (code, msg, reference) {
+
     const err = new Error(msg || 'Internal Server Error.');
     err.httpStatusCode = code || 500;
     err.reference = reference;
@@ -61,7 +62,6 @@ const updateToken = async (authConfig, refresh) => {
  * @return {Promise}
  */
 function getTokenWithPassword(authConfig) {
-
     var token;
     // function loginUser(authConfig){
     var authenticationdata={
@@ -170,7 +170,6 @@ const onerror = async (authConfig, err) => {
  * @return {Object}
  */
 const request = async (config, options) => {
-
     try {
         // Check for necessary information.
         if (!config.authConfig.UserPoolId || !config.authConfig.url) {
@@ -182,8 +181,14 @@ const request = async (config, options) => {
         if (!grant && config.authConfig.headers.Authorization) grant = { Token: config.authConfig.headers.Authorization };
         if (!grant) grant = {};
 
-
-        if (!Object.hasOwnProperty.call(grant, 'idToken')) {
+        if (Object.hasOwnProperty.call(grant, 'idToken')) {
+            const ts = Date.now()+10000;
+            const expiry = grant.idToken.payload.exp*1000;
+            if (ts > expiry) {
+                grant = await requestToken(config.authConfig);
+                if (!grant.idToken) return promiseRejectWithError(500, 'Authentication failed.');
+            }
+        } else {
            // Request access token.
             grant = await requestToken(config.authConfig);
             if (!grant.idToken) return promiseRejectWithError(500, 'Authentication failed.');
