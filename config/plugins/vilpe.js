@@ -184,9 +184,7 @@ const request = async (config, options) => {
         if (Object.hasOwnProperty.call(grant, 'idToken')) {
             const ts = Date.now()+10000;
             const expiry = grant.idToken.payload.exp*1000;
-            console.log("exp", expiry , "now" , ts, "diff" , (expiry - ts)) ;
             if (ts > expiry) {
-                console.log("requesting again");
                 grant = await requestToken(config.authConfig);
                 if (!grant.idToken) return promiseRejectWithError(500, 'Authentication failed.');
             }
