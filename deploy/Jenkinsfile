@@ -17,6 +17,7 @@ node {
     docker.withRegistry('https://registry-1.docker.io/v2/', 'dockerhub-dev') {
       docker.image('eenemanoy/multi-connector').push(currentTimeFormat)
       docker.image('eenemanoy/multi-connector').push(currentTimeFormat+'-test')
+      kubectl -n development get pods
     }
   }
 }
