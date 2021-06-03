@@ -1,5 +1,7 @@
 def commitFullHash = ''
 def commitShortHash = ''
+def currentDate = new Date()
+
 node {
   stage ('Checkout') {
      commitFullHash = checkout(scm).GIT_COMMIT
@@ -11,8 +13,9 @@ node {
     docker.build('eenemanoy/multi-connector', buildArg)
   }
   stage ('DockerPublish') {
+    String currentTimeFormat= currentDate.format("yyyy-MM-dd_HHMMSS")
     docker.withRegistry('https://registry-1.docker.io/v2/', 'dockerhub-dev') {
-      docker.image('eenemanoy/multi-connector').push("dev")
+      docker.image('eenemanoy/multi-connector').push(currentTimeFormat)
     }
   }
 }
