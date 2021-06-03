@@ -53,7 +53,28 @@ const response = async (config, data)=>{
  * @return {Object}
  */
  const output = async (config, output) => {
-    output.data.file = output.data.sensors[0].data[0].value.toString('base64');
+    var base64file = (output.data.sensors[0].data[0].value.toString('base64'));
+
+    //To calculate file size from base64 string in bytes
+    function fileSize(file){
+        if (file){
+            var count;
+            var strLen = file.length;
+            var stringsearch = "="
+            for(var i=count=0; i<file.length; count+=+(stringsearch===file[i++]));
+            return String((3*strLen/4)-count);
+        }
+    }
+
+    output.data['document'] = [{
+        "@type": "Document",
+        "name": "Luotettava Kumppani PDF Report",
+        "nameExtension":".pdf",
+        "content":output.data.sensors[0].data[0].value.toString('base64'),
+        "categorizationInternetMediaType": "application/pdf",
+        "categorizationEncoding": "base64",
+        "sizeByte": fileSize(base64file)
+    }]
     delete output.data.sensors;
     return output;
 }

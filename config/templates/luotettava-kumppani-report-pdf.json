@@ -13,7 +13,7 @@
       "Authorization": ""
     },
     "path": "3.0/cl/${countryCode}/pdf/${businessId}.cl.pdf"
-  
+
   },
   "dataObjects": [
     ""
@@ -42,7 +42,7 @@
     ]
   },
   "output": {
-    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/File/",
+    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Document/?v=3.0",
     "data": "data"
   }
 }
