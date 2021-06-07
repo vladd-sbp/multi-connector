@@ -227,26 +227,43 @@ const response = async (config, data) =>{
  * @return {Object}
  */
 const output = async (config, output) => {
+
     if (output.data.indoorAirQuality.length === 0) {
         return promiseRejectWithError(500, 'Incorrect Parameters');
     }
     else {
         var arr = [];
-        arr.push({"id": output.data.indoorAirQuality[0].id, "measurements": []});
+        var properties = {
+                "fan_rpm": "Speed",
+                "mold_index": "Mold",
+                "relative_humidity": "Humidity",
+                "temperature": "Temperature"
+        }
+
         output.data.indoorAirQuality[0].measurements[0].value.valueTypes.forEach(function (item){
             let measurementType = item.identifier;
-            arr[0].measurements.push({"@type": config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType, "timestamp": new Date(item.timestamp), "value": item.value});
+            arr.push({
+                "@type": "Measure",
+                "processValue": item.value.toString(),
+                "exactTime": new Date(item.timestamp),
+                "executor":{
+                    "@type":"Organization",
+                    "name": output.data.indoorAirQuality[0].measurements[0].value.name,
+                    "idLocal": output.data.indoorAirQuality[0].measurements[0].value.deviceId.toString()
+                    },
+                    "location":{},
+                    "processTarget": "Air",
+                    "physicalProperty": properties[item.identifier],
+                    "unitOfMeasure":config.measurementUnit[measurementType] != undefined ? config.measurementUnit[measurementType] : measurementType
+            });
         });
 
         const result = {
             [config.output.context]: config.output.contextValue,
             [config.output.object]: {
-                [config.output.array]: [],
+                [config.output.array]: arr,
             },
         };
-        for (let i = 0; i < arr.length; i++) {
-            result[config.output.object][config.output.array].push(arr[i]);
-        }
         return result;
     }
 }
