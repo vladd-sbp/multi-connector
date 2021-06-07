@@ -30,7 +30,13 @@
     ""
   ],
   "dataPropertyMappings": {
-    "": ""
+    "locationName":"name",
+    "description":"description",
+    "streetAddress":"streetAddressLine1",
+    "zipCode":"postalCode",
+    "city": "city",
+    "countryCode": "countryCode",
+    "coordinates":"locationPoint"
   },
   "measurementUnit": {
     "temperature": "MeasureAirTemperatureCelsiusDegree",
@@ -62,7 +68,7 @@
     ]
   },
   "output": {
-    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/",
+    "contextValue": "https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/Process/Measure/IndoorAirQuality/?v=2.0",
     "timestamp": "timestamp",
     "array": "sensors",
     "object": "data",

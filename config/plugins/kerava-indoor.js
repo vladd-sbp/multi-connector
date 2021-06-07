@@ -166,7 +166,7 @@ const onerror = async (authConfig, err) => {
 
 const request = async (config, options) => {
     let cookieExpired = true ;
-    
+
     // Check for necessary information.
     if (!config.authConfig.authPath || !config.authConfig.url) {
         return promiseRejectWithError(500, 'Insufficient authentication configurations.');
@@ -184,7 +184,7 @@ const request = async (config, options) => {
     if (!grant && config.authConfig.headers.Cookie) grant = { Cookie: config.authConfig.headers.Cookie };
     if (!grant) grant = {};
    // if (!Object.hasOwnProperty.call(grant, 'headers')) {
-   
+
     if ( cookieExpired) {
         // Request access token.
         grant = await requestCookie(config.authConfig);
@@ -278,14 +278,11 @@ const response = async (config, data) => {
  */
 const output = async (config, output) => {
     let dataArray = [];
-
-    const data = config.authConfig.body[0];
-
+    const data = config.authConfig.body;
     if (!Array.isArray(data)) dataArray.push(data);
     else dataArray = data;
 
     var merged = [].concat.apply([], dataArray);
-
     let items = [];
     items = await getData(config, merged);
     if (!items) items = [];
@@ -323,10 +320,8 @@ const output = async (config, output) => {
                     }
                 }
             }
-
             measurement.push({ 'id': { 'idOfLocation': idOfLocation, 'idOfSensor': array.measurementUnitData[i]['measurementUnit']['id'],'name': array.measurementUnitData[i]['measurementUnit']['name'] }, 'measurements': measureType });
         }
-
     }
 
     const map = {};
@@ -338,9 +333,31 @@ const output = async (config, output) => {
         }
     });
 
+//Create loation
+let props = config.dataPropertyMappings;
+let location = {"@type":"Location"};
+let locationDetails = items[0].location;
+
+    if(locationDetails){
+     for( const item in locationDetails){
+        if(props[item]){
+            if(item == 'coordinates'){
+                location[props[item]] = {};
+                location[props[item]]['@type'] = 'LocationPoint';
+                location[props[item]]['location'] =[];
+                location[props[item]]['location'].push({"@type": "Location", "longitude": locationDetails[item][0], "latitude": locationDetails[item][1]});
+            }
+            else if(locationDetails[item] != ''){
+                location[props[item]] = locationDetails[item];
+            }
+        }
+     }
+    }
+
     for (let i = 0; i < measurementFilter.length; i++) {
         result[config.output.object][config.output.array].push(measurementFilter[i]);
     }
+    result[config.output.object][config.output.array].push(location);
     return result;
 }
 
