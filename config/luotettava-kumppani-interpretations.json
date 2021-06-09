@@ -1,0 +1,10 @@
+{
+    "template": "luotettava-kumppani-interpretations",
+    "static": {
+      "url": "https://noutaja.tilaajavastuu.fi/",
+      "username": "raporttinoutaja-api-test@oftrust.net",
+      "password": "cRE3Bm7ttnvD7vB"
+    },
+    "dynamic": {},
+    "request": {}
+}

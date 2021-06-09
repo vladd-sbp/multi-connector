@@ -1,6 +1,6 @@
 {
     "plugins": [
-      "luotettava-kumppani-report-pdf"
+      "luotettava-kumppani-interpretations"
     ],
     "protocol": "rest",
     "authConfig": {
@@ -12,7 +12,7 @@
       "headers": {
         "Authorization": ""
       },
-      "path": "3.0/cl/${registrationCountry}/pdf/${idOfficial}.cl.pdf"
+      "path": "3.0/luotettavakumppani.cl.xml"
     },
     "dataObjects": [
       ""
@@ -36,13 +36,10 @@
       }
     },
     "input": {
-      "required": [
-        "parameters.idOfficial",
-        "parameters.registrationCountry"
-      ]
+        "required": []
     },
     "output": {
-      "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Document/?v=3.0",
+      "contextValue": "https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1",
       "data": "data"
     }
   }
