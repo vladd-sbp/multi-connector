@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.2 (Python 3.9.2 on win32)" generated="20210611 18:49:25.753" rpa="false">
+<suite id="s1" name="Connector Tests" source="D:\interpretations\multi-connector\robottests\connectors\luotettava-kumppani-interpretations\connector_tests.robot">
+<test id="s1-t1" name="fetch, 200">
+<kw name="Get Body">
+<assign>
+<var>${body}</var>
+</assign>
+<kw name="Copy Dictionary" library="Collections">
+<doc>Returns a copy of the given dictionary.</doc>
+<arguments>
+<arg>${BROKER_BODY}</arg>
+<arg>deepcopy=True</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20210611 18:49:29.836" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}}</msg>
+<status status="PASS" starttime="20210611 18:49:29.833" endtime="20210611 18:49:29.837"></status>
+</kw>
+<kw name="Get Current Date" library="DateTime">
+<doc>Returns current local or UTC time with an optional increment.</doc>
+<arguments>
+<arg>time_zone=UTC</arg>
+<arg>result_format=%Y-%m-%dT%H:%M:%S+00:00</arg>
+</arguments>
+<assign>
+<var>${now}</var>
+</assign>
+<msg timestamp="20210611 18:49:29.840" level="INFO">${now} = 2021-06-11T13:19:29+00:00</msg>
+<status status="PASS" starttime="20210611 18:49:29.837" endtime="20210611 18:49:29.840"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>timestamp</arg>
+<arg>${now}</arg>
+</arguments>
+<status status="PASS" starttime="20210611 18:49:29.841" endtime="20210611 18:49:29.842"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>&amp;{kwargs}</arg>
+</arguments>
+<status status="PASS" starttime="20210611 18:49:29.842" endtime="20210611 18:49:29.844"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>json.dumps(${body})</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${json_string}</var>
+</assign>
+<msg timestamp="20210611 18:49:29.847" level="INFO">${json_string} = {"productCode": "luotettava-kumppani-interpretations", "parameters": {"idOfficial": "0103460-8", "registrationCountry": "FI"}, "timestamp": "2021-06-11T13:19:29+00:00"}</msg>
+<status status="PASS" starttime="20210611 18:49:29.844" endtime="20210611 18:49:29.847"></status>
+</kw>
+<msg timestamp="20210611 18:49:29.849" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}, 'timestamp': '2021-06-11T13:19:29+00:00'}</msg>
+<status status="PASS" starttime="20210611 18:49:29.830" endtime="20210611 18:49:29.849"></status>
+</kw>
+<kw name="Fetch Data Product">
+<arguments>
+<arg>${body}</arg>
+</arguments>
+<kw name="Calculate Pot Signature" library="PoTLib">
+<arguments>
+<arg>${body}</arg>
+<arg>${CLIENT_SECRET}</arg>
+</arguments>
+<assign>
+<var>${signature}</var>
+</assign>
+<msg timestamp="20210611 18:49:29.854" level="INFO">${signature} = iZt+K4xzI9KpQUR+naNC3xap1/8+djUSNyiknyQLW6U=</msg>
+<status status="PASS" starttime="20210611 18:49:29.852" endtime="20210611 18:49:29.855"></status>
+</kw>
+<kw name="Set Headers" library="REST">
+<tags>
+<tag>settings</tag>
+</tags>
+<doc>*Sets new request headers or updates the existing.*</doc>
+<arguments>
+<arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
+</arguments>
+<status status="PASS" starttime="20210611 18:49:29.855" endtime="20210611 18:49:29.858"></status>
+</kw>
+<kw name="POST" library="REST">
+<tags>
+<tag>http</tag>
+</tags>
+<doc>*Sends a POST request to the endpoint.*</doc>
+<arguments>
+<arg>${CONNECTOR_PATH}</arg>
+<arg>${body}</arg>
+</arguments>
+<status status="PASS" starttime="20210611 18:49:29.859" endtime="20210611 18:50:20.116"></status>
+</kw>
+<kw name="Output Schema" library="REST">
+<tags>
+<tag>I/O</tag>
+</tags>
+<doc>*Outputs JSON Schema to terminal or a file.*</doc>
+<arguments>
+<arg>response body</arg>
+</arguments>
+<msg timestamp="20210611 18:50:20.117" level="INFO">
+{
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "string",
+            "default": "https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "OrganizationTrustCategory": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "@type": {
+                                "type": "string"
+                            },
+                            "idOfficial": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "registrationCountry": {
+                                "type": "string"
+                            },
+                            "categorizationTrust": {
+                                "type": "string"
+                            },
+                            "idSystemLocal": {
+                                "type": "string"
+                            },
+                            "created": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "@type",
+                            "categorizationTrust",
+                            "created",
+                            "idOfficial",
+                            "idSystemLocal",
+                            "name",
+                            "registrationCountry"
+                        ]
+                    },
+                    "default": [
+                        {
+                            "@type": "Report",
+                            "idOfficial": "0103460-8",
+                            "name": "Borenius Asianajotoimisto Oy",
+                            "registrationCountry": "FI",
+                            "categorizationTrust": "Ok",
+                            "idSystemLocal": "1623089882328",
+                            "created": "2021-06-07T21:18:02"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "OrganizationTrustCategory"
+            ]
+        },
+        "signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "RsaSignature2018"
+                },
+                "created": {
+                    "type": "string",
+                    "default": "2021-06-11T18:50:19+05:30"
+                },
+                "creator": {
+                    "type": "string",
+                    "default": "http://localhost:8080/translator/v1/public.key"
+                },
+                "signatureValue": {
+                    "type": "string",
+                    "default": "DftcI8QutXD79NwvQu/AjmF3bwkJ2jIDD0iscGii73C1whpkRROpADZ5yHe99kNH/is24wcOwbX5GLAN+q620Tn6wbscQT8W6/5fM7m2fhT2h623aQSJibTuQ2jtOibf3KO80o7qz3kbTrS75uts3QEIphQwohah81LdVc6xSGSvnU0LHcXnRwvTIRDzPtnIqwqSy9BGCaeGHKe2CJQ3iz+vd/XcAG8cZYNqoMslxpLLbtj8d98T2iW9Twv02rAaysg0aDQ5oyUmsoGI5lCUh2RPp7/NCj8VSEiHRHSLsihbjZYT5eHsOngoKV/yvuYQOe4HKnwtSI1sVopaO4JGH3zb0m55v7HF5fpq5F94PHzp7c5zY/Or0NmZwhwBeg5Uok4gG/jERFBNn2ZogzTkOEwu4frf01lBCIDvOJ14gTog1AofiaGSKGn1FzjhrqxmN9NNFG5TVHoJddnHq6PZ093ynu516G8Q1vreo9+aa0WY2qonTm7LH7J0C3djem+N9lVd/SwCZfrqq5APTocM7BQBNwjHXSaTKOvkn3vi6xLPT70QLdcS4vbadZi3hc8d2rVDYoH0jG5jLQB0ajh4YpDSLyOmSZlO6pGMN9RHbopOljYjjGVNVYM6p/EI345391FnjSgFKRj3Rtx2t2LQWoy4jVj0m+qgOJiBMolnV8s="
+                }
+            },
+            "required": [
+                "created",
+                "creator",
+                "signatureValue",
+                "type"
+            ]
+        }
+    },
+    "required": [
+        "@context",
+        "data",
+        "signature"
+    ]
+}</msg>
+<status status="PASS" starttime="20210611 18:50:20.117" endtime="20210611 18:50:20.353"></status>
+</kw>
+<status status="PASS" starttime="20210611 18:49:29.850" endtime="20210611 18:50:20.354"></status>
+</kw>
+<kw name="Integer" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON integer.*</doc>
+<arguments>
+<arg>response status</arg>
+<arg>200</arg>
+</arguments>
+<status status="PASS" starttime="20210611 18:50:20.358" endtime="20210611 18:50:20.361"></status>
+</kw>
+<kw name="String" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON string.*</doc>
+<arguments>
+<arg>response body @context</arg>
+<arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory</arg>
+</arguments>
+<msg timestamp="20210611 18:50:20.427" level="FAIL">'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory' is not one of ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory']
+
+Failed validating 'enum' in schema:
+    {'default': 'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory',
+     'enum': ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory'],
+     'type': 'string'}
+
+On instance:
+    'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory'</msg>
+<status status="FAIL" starttime="20210611 18:50:20.362" endtime="20210611 18:50:20.427"></status>
+</kw>
+<status status="FAIL" starttime="20210611 18:49:29.828" endtime="20210611 18:50:20.429" critical="yes">'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory' is not one of ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory']
+
+Failed validating 'enum' in schema:
+    {'default': 'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory',
+     'enum': ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory'],
+     'type': 'string'}
+
+On instance:
+    'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory'</status>
+</test>
+<doc>luotettava-kumppani-interpretations - REST</doc>
+<status status="FAIL" starttime="20210611 18:49:25.762" endtime="20210611 18:50:20.435"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1">Critical Tests</stat>
+<stat pass="0" fail="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" id="s1" name="Connector Tests">Connector Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

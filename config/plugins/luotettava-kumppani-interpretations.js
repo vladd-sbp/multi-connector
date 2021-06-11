@@ -1,6 +1,7 @@
 'use strict';
 const rp = require('request-promise');
-const converter = require('xml-js')
+const converter = require('xml-js');
+const cache = require('../../app/cache');
 
 /**
  * Composes authorization header and
@@ -58,18 +59,21 @@ const output = async (config, output) => {
     const data=output.data.sensors[0].data;
     let response = [];
 
-    for(let i=0; i<data.length; i++){
+    data.filter((company)=>{
+        return company.value.attributes.registration_number === config.parameters.idOfficial && company.value.attributes.country_code === config.parameters.registrationCountry;
+    }).map((companyDetails)=>{
             response.push({
                 "@type": "Report",
-                "idOfficial": data[i].value.attributes.registration_number,
-                "name": data[i].value.attributes.company_name,
-                "registrationCountry": data[i].value.attributes.country_code,
-                "categorizationTrust": data[i].value.attributes.interpretation,
-                "idSystemLocal": data[i].value.attributes.archive_code,
-                "created": data[i].value.attributes.created
+                "idOfficial": companyDetails.value.attributes.registration_number,
+                "name": companyDetails.value.attributes.company_name,
+                "registrationCountry": companyDetails.value.attributes.country_code,
+                "categorizationTrust": companyDetails.value.attributes.interpretation,
+                "idSystemLocal": companyDetails.value.attributes.archive_code,
+                "created": companyDetails.value.attributes.created
             })
-    }
-    output.data["organizationTrustCategory"] = response;
+    });
+
+    output.data["OrganizationTrustCategory"] = response;
     delete output.data.sensors;
     return output;
 }

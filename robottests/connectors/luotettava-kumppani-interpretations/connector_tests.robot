@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     luotettava-kumppani-report-pdf - REST
+Documentation     luotettava-kumppani-interpretations - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
@@ -15,10 +15,11 @@ ${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-&{ID1}                       businessId=2327327-1  countryCode=fi
-@{IDS}                       ${ID1}
+${idOfficial}                0103460-8
+${registrationCountry}       FI
   
-&{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+&{BROKER_BODY_PARAMETERS}    idOfficial=${idOfficial}  
+...                          registrationCountry=${registrationCountry}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -66,7 +67,7 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/File/
+    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1
     Object                response body data
-    String                response body data file
+    Array                 response body data organizationTrustCategory
     

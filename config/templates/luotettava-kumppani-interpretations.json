@@ -1,45 +1,48 @@
 {
-    "plugins": [
-      "luotettava-kumppani-interpretations"
-    ],
-    "protocol": "rest",
-    "authConfig": {
-      "url": "${url}",
-      "authPath": "api/auth",
-      "authContentType": "application/json",
-      "username": "${username}",
-      "password": "${password}",
-      "headers": {
-        "Authorization": ""
-      },
-      "path": "3.0/luotettavakumppani.cl.xml"
+  "plugins": [
+    "luotettava-kumppani-interpretations"
+  ],
+  "protocol": "rest",
+  "authConfig": {
+    "url": "${url}",
+    "authPath": "api/auth",
+    "authContentType": "application/json",
+    "username": "${username}",
+    "password": "${password}",
+    "headers": {
+      "Authorization": ""
     },
-    "dataObjects": [
-      ""
-    ],
-    "dataPropertyMappings": {
-      "": ""
+    "path": "3.0/luotettavakumppani.cl.xml"
+  },
+  "dataObjects": [
+    ""
+  ],
+  "dataPropertyMappings": {
+    "": ""
+  },
+  "generalConfig": {
+    "query": {},
+    "sourceName": {
+      "dataObjectProperty": "name"
     },
-    "generalConfig": {
-      "query": {},
-      "sourceName": {
-        "dataObjectProperty": "name"
-      },
-      "hardwareId": {
-        "pathIndex": 4
-      },
-      "measurement": {
-        "pathIndex": 5
-      },
-      "timestamp": {
-        "dataObjectProperty": "timestamp"
-      }
+    "hardwareId": {
+      "pathIndex": 4
     },
-    "input": {
-        "required": []
+    "measurement": {
+      "pathIndex": 5
     },
-    "output": {
-      "contextValue": "https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1",
-      "data": "data"
+    "timestamp": {
+      "dataObjectProperty": "timestamp"
     }
+  },
+  "input": {
+      "required": [
+          "parameters.registrationCountry",
+          "parameters.idOfficial"
+      ]
+  },
+  "output": {
+    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1",
+    "data": "data"
   }
+}
