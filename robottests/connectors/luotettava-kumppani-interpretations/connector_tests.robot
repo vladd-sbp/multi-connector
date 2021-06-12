@@ -15,11 +15,11 @@ ${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-${idOfficial}                0103460-8
-${registrationCountry}       FI
+${ID}                        0103460-8
+${COUNTRY}                   FI
   
-&{BROKER_BODY_PARAMETERS}    idOfficial=${idOfficial}  
-...                          registrationCountry=${registrationCountry}
+&{BROKER_BODY_PARAMETERS}    idOfficial=${ID}  
+...                          registrationCountry=${COUNTRY}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -67,7 +67,7 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1
+    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/\?v\=3.1
     Object                response body data
-    Array                 response body data organizationTrustCategory
+    Array                 response body data OrganizationTrustCategory
     

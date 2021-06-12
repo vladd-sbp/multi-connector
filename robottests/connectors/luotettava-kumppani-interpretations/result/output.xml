@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.2 (Python 3.9.2 on win32)" generated="20210611 18:49:25.753" rpa="false">
-<suite id="s1" name="Connector Tests" source="D:\interpretations\multi-connector\robottests\connectors\luotettava-kumppani-interpretations\connector_tests.robot">
+<robot generator="Robot 3.2.2 (Python 3.9.5 on darwin)" generated="20210611 17:08:31.937" rpa="false">
+<suite id="s1" name="Connector Tests" source="/Volumes/ext_drive/smarthala/04_Eeneman/src/multi-connector/robottests/connectors/luotettava-kumppani-interpretations/connector_tests.robot">
 <test id="s1-t1" name="fetch, 200">
 <kw name="Get Body">
 <assign>
@@ -15,8 +15,8 @@
 <assign>
 <var>${body}</var>
 </assign>
-<msg timestamp="20210611 18:49:29.836" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}}</msg>
-<status status="PASS" starttime="20210611 18:49:29.833" endtime="20210611 18:49:29.837"></status>
+<msg timestamp="20210611 17:08:32.820" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}}</msg>
+<status status="PASS" starttime="20210611 17:08:32.819" endtime="20210611 17:08:32.820"></status>
 </kw>
 <kw name="Get Current Date" library="DateTime">
 <doc>Returns current local or UTC time with an optional increment.</doc>
@@ -27,8 +27,8 @@
 <assign>
 <var>${now}</var>
 </assign>
-<msg timestamp="20210611 18:49:29.840" level="INFO">${now} = 2021-06-11T13:19:29+00:00</msg>
-<status status="PASS" starttime="20210611 18:49:29.837" endtime="20210611 18:49:29.840"></status>
+<msg timestamp="20210611 17:08:32.821" level="INFO">${now} = 2021-06-11T14:08:32+00:00</msg>
+<status status="PASS" starttime="20210611 17:08:32.820" endtime="20210611 17:08:32.821"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -37,7 +37,7 @@
 <arg>timestamp</arg>
 <arg>${now}</arg>
 </arguments>
-<status status="PASS" starttime="20210611 18:49:29.841" endtime="20210611 18:49:29.842"></status>
+<status status="PASS" starttime="20210611 17:08:32.822" endtime="20210611 17:08:32.822"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -45,7 +45,7 @@
 <arg>${body}</arg>
 <arg>&amp;{kwargs}</arg>
 </arguments>
-<status status="PASS" starttime="20210611 18:49:29.842" endtime="20210611 18:49:29.844"></status>
+<status status="PASS" starttime="20210611 17:08:32.822" endtime="20210611 17:08:32.823"></status>
 </kw>
 <kw name="Evaluate" library="BuiltIn">
 <doc>Evaluates the given expression in Python and returns the result.</doc>
@@ -56,11 +56,11 @@
 <assign>
 <var>${json_string}</var>
 </assign>
-<msg timestamp="20210611 18:49:29.847" level="INFO">${json_string} = {"productCode": "luotettava-kumppani-interpretations", "parameters": {"idOfficial": "0103460-8", "registrationCountry": "FI"}, "timestamp": "2021-06-11T13:19:29+00:00"}</msg>
-<status status="PASS" starttime="20210611 18:49:29.844" endtime="20210611 18:49:29.847"></status>
+<msg timestamp="20210611 17:08:32.824" level="INFO">${json_string} = {"productCode": "luotettava-kumppani-interpretations", "parameters": {"idOfficial": "0103460-8", "registrationCountry": "FI"}, "timestamp": "2021-06-11T14:08:32+00:00"}</msg>
+<status status="PASS" starttime="20210611 17:08:32.823" endtime="20210611 17:08:32.824"></status>
 </kw>
-<msg timestamp="20210611 18:49:29.849" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}, 'timestamp': '2021-06-11T13:19:29+00:00'}</msg>
-<status status="PASS" starttime="20210611 18:49:29.830" endtime="20210611 18:49:29.849"></status>
+<msg timestamp="20210611 17:08:32.824" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}, 'timestamp': '2021-06-11T14:08:32+00:00'}</msg>
+<status status="PASS" starttime="20210611 17:08:32.818" endtime="20210611 17:08:32.825"></status>
 </kw>
 <kw name="Fetch Data Product">
 <arguments>
@@ -74,8 +74,8 @@
 <assign>
 <var>${signature}</var>
 </assign>
-<msg timestamp="20210611 18:49:29.854" level="INFO">${signature} = iZt+K4xzI9KpQUR+naNC3xap1/8+djUSNyiknyQLW6U=</msg>
-<status status="PASS" starttime="20210611 18:49:29.852" endtime="20210611 18:49:29.855"></status>
+<msg timestamp="20210611 17:08:32.826" level="INFO">${signature} = RhAU7QihxTfYhWlrWJXgxdVRE4vueOdHXU9F98Yyqms=</msg>
+<status status="PASS" starttime="20210611 17:08:32.825" endtime="20210611 17:08:32.826"></status>
 </kw>
 <kw name="Set Headers" library="REST">
 <tags>
@@ -85,9 +85,9 @@
 <arguments>
 <arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
 </arguments>
-<status status="PASS" starttime="20210611 18:49:29.855" endtime="20210611 18:49:29.858"></status>
+<status status="PASS" starttime="20210611 17:08:32.826" endtime="20210611 17:08:32.827"></status>
 </kw>
-<kw name="POST" library="REST">
+<kw name="Post" library="REST">
 <tags>
 <tag>http</tag>
 </tags>
@@ -96,7 +96,7 @@
 <arg>${CONNECTOR_PATH}</arg>
 <arg>${body}</arg>
 </arguments>
-<status status="PASS" starttime="20210611 18:49:29.859" endtime="20210611 18:50:20.116"></status>
+<status status="PASS" starttime="20210611 17:08:32.827" endtime="20210611 17:09:57.610"></status>
 </kw>
 <kw name="Output Schema" library="REST">
 <tags>
@@ -106,13 +106,13 @@
 <arguments>
 <arg>response body</arg>
 </arguments>
-<msg timestamp="20210611 18:50:20.117" level="INFO">
+<msg timestamp="20210611 17:09:57.612" level="INFO">
 {
     "type": "object",
     "properties": {
         "@context": {
             "type": "string",
-            "default": "https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory"
+            "default": "https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/?v=3.1"
         },
         "data": {
             "type": "object",
@@ -180,7 +180,7 @@
                 },
                 "created": {
                     "type": "string",
-                    "default": "2021-06-11T18:50:19+05:30"
+                    "default": "2021-06-11T17:09:57+03:00"
                 },
                 "creator": {
                     "type": "string",
@@ -188,7 +188,7 @@
                 },
                 "signatureValue": {
                     "type": "string",
-                    "default": "DftcI8QutXD79NwvQu/AjmF3bwkJ2jIDD0iscGii73C1whpkRROpADZ5yHe99kNH/is24wcOwbX5GLAN+q620Tn6wbscQT8W6/5fM7m2fhT2h623aQSJibTuQ2jtOibf3KO80o7qz3kbTrS75uts3QEIphQwohah81LdVc6xSGSvnU0LHcXnRwvTIRDzPtnIqwqSy9BGCaeGHKe2CJQ3iz+vd/XcAG8cZYNqoMslxpLLbtj8d98T2iW9Twv02rAaysg0aDQ5oyUmsoGI5lCUh2RPp7/NCj8VSEiHRHSLsihbjZYT5eHsOngoKV/yvuYQOe4HKnwtSI1sVopaO4JGH3zb0m55v7HF5fpq5F94PHzp7c5zY/Or0NmZwhwBeg5Uok4gG/jERFBNn2ZogzTkOEwu4frf01lBCIDvOJ14gTog1AofiaGSKGn1FzjhrqxmN9NNFG5TVHoJddnHq6PZ093ynu516G8Q1vreo9+aa0WY2qonTm7LH7J0C3djem+N9lVd/SwCZfrqq5APTocM7BQBNwjHXSaTKOvkn3vi6xLPT70QLdcS4vbadZi3hc8d2rVDYoH0jG5jLQB0ajh4YpDSLyOmSZlO6pGMN9RHbopOljYjjGVNVYM6p/EI345391FnjSgFKRj3Rtx2t2LQWoy4jVj0m+qgOJiBMolnV8s="
+                    "default": "GhVGbd69iWjWV0ud+AFuAzwHgHmZ6ZwJb9Gb74Q5kRwlYk7gRJ64h66jI5eelhavj9mUDZnAzTs25ARwDFxYM5ZJWZrcRFF5yFbR0HXVpUPtWpfLAC7E6lEbcblBUg6642V3OJMJLHmpBG6ryH+3qCK/uYWqtrGY7/ZEKBl85ZD3NyJs2HFiZgkV/PdqLD0EeAu1Jj3s0CMtKWUKdJQp0pvqpLTu89bv0pTFMIFwvDpLvQ9plgmikVGNHaLSes+fZId2+JE7n0pGvOIARQvwtlq9sLzGj24p9RNXGTIoVqL6QRzE7F+61IJSk9kySijMfqeol8DYzAVNIy8IDxcXGk+dZFAcvl3LtnRU7EA3JAltd4GPpLqxxDAJgqbpSSh9Ky/ktM8huidE7jkIHc9c1jbNjpDD7HuQJI6UoLKto4H5Gq+IT4sG9JK8pGR7PtKtBqmyCsXI5YA0BwPpoJAgqYfhGpH3QsbAgxP1mVb+eeLt3sQDmycxVDJYdgwaghhj+sDHbD9M7Mt/itJiTTNc3haJRj91uc79b3jIjchkaRzxUnCzijXhIItfysQpfP9/JWI4+cYA5Ltz/foUBKC7UZzXQ4R56UQ5iI+K97/BbGbQKIvQlDTLwSnjit+n1ppXQd2N38kB66YcdgjLgPpAIiJqJanymQWSkSqfWk4XRas="
                 }
             },
             "required": [
@@ -205,9 +205,9 @@
         "signature"
     ]
 }</msg>
-<status status="PASS" starttime="20210611 18:50:20.117" endtime="20210611 18:50:20.353"></status>
+<status status="PASS" starttime="20210611 17:09:57.611" endtime="20210611 17:09:57.653"></status>
 </kw>
-<status status="PASS" starttime="20210611 18:49:29.850" endtime="20210611 18:50:20.354"></status>
+<status status="PASS" starttime="20210611 17:08:32.825" endtime="20210611 17:09:57.654"></status>
 </kw>
 <kw name="Integer" library="REST">
 <tags>
@@ -218,7 +218,7 @@
 <arg>response status</arg>
 <arg>200</arg>
 </arguments>
-<status status="PASS" starttime="20210611 18:50:20.358" endtime="20210611 18:50:20.361"></status>
+<status status="PASS" starttime="20210611 17:09:57.655" endtime="20210611 17:09:57.658"></status>
 </kw>
 <kw name="String" library="REST">
 <tags>
@@ -227,41 +227,44 @@
 <doc>*Asserts the field as JSON string.*</doc>
 <arguments>
 <arg>response body @context</arg>
-<arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory</arg>
+<arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/\?v\=3.1</arg>
 </arguments>
-<msg timestamp="20210611 18:50:20.427" level="FAIL">'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory' is not one of ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory']
-
-Failed validating 'enum' in schema:
-    {'default': 'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory',
-     'enum': ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory'],
-     'type': 'string'}
-
-On instance:
-    'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory'</msg>
-<status status="FAIL" starttime="20210611 18:50:20.362" endtime="20210611 18:50:20.427"></status>
+<status status="PASS" starttime="20210611 17:09:57.658" endtime="20210611 17:09:57.659"></status>
 </kw>
-<status status="FAIL" starttime="20210611 18:49:29.828" endtime="20210611 18:50:20.429" critical="yes">'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory' is not one of ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory']
-
-Failed validating 'enum' in schema:
-    {'default': 'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory',
-     'enum': ['https://standards.oftrust.net/v2/Context/DataProductOutput/Report/organizationTrustCategory'],
-     'type': 'string'}
-
-On instance:
-    'https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory'</status>
+<kw name="Object" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON object.*</doc>
+<arguments>
+<arg>response body data</arg>
+</arguments>
+<status status="PASS" starttime="20210611 17:09:57.660" endtime="20210611 17:09:57.667"></status>
+</kw>
+<kw name="Array" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON array.*</doc>
+<arguments>
+<arg>response body data OrganizationTrustCategory</arg>
+</arguments>
+<status status="PASS" starttime="20210611 17:09:57.667" endtime="20210611 17:09:57.669"></status>
+</kw>
+<status status="PASS" starttime="20210611 17:08:32.817" endtime="20210611 17:09:57.669" critical="yes"></status>
 </test>
 <doc>luotettava-kumppani-interpretations - REST</doc>
-<status status="FAIL" starttime="20210611 18:49:25.762" endtime="20210611 18:50:20.435"></status>
+<status status="PASS" starttime="20210611 17:08:31.944" endtime="20210611 17:09:57.671"></status>
 </suite>
 <statistics>
 <total>
-<stat pass="0" fail="1">Critical Tests</stat>
-<stat pass="0" fail="1">All Tests</stat>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="1" id="s1" name="Connector Tests">Connector Tests</stat>
+<stat pass="1" fail="0" id="s1" name="Connector Tests">Connector Tests</stat>
 </suite>
 </statistics>
 <errors>
