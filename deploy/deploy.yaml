@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: multi-connector
-        image: eenemanoy/multi-connector:dev
+        image: eenemanoy/multi-connector:2021-06-12_0606248-test
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -30,9 +30,12 @@ spec:
           - name: luotettava-kumppani-report-pdf-config
             mountPath:  /usr/src/app/config/eeneman-luotettava-kumppani-report-pdf.json
             subPath: luotettava-kumppani-report-pdf.json
+          - name: luotettava-kumppani-interpretations-config
+            mountPath:  /usr/src/app/config/eeneman-luotettava-kumppani-interpretations.json
+            subPath: luotettava-kumppani-interpretations.json
           - name: vilpe-config
             mountPath:  /usr/src/app/config/eeneman-vilpe.json
-            subPath: eeneman-vilpe.json
+            subPath: vilpe.json
       volumes:
         - name: smartwatcher-config
           configMap:
@@ -42,7 +45,10 @@ spec:
             name: kerava-indoor-config
         - name: luotettava-kumppani-report-pdf-config
           configMap:
-            name: luotettava-kumppani-report-pdf-config
+            name: luotettava-kumppani-report-pdf
+        - name: luotettava-kumppani-interpretations-config
+          configMap:
+            name: luotettava-kumppani-interpretations
         - name: vilpe-config
           configMap:
             name: vilpe-config

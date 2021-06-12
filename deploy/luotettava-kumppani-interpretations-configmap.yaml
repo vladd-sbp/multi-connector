@@ -1,0 +1,22 @@
+apiVersion: v1
+data:
+  luotettava-kumppani-interpretations.json: |-
+    {
+      "template": "luotettava-kumppani-interpretations",
+      "static": {
+        "url": "https://noutaja.tilaajavastuu.fi/",
+        "username": "",
+        "password": ""
+      },
+      "dynamic": {
+        "authConfig.body":[
+          "registrationCountry",
+          "idOfficial"
+        ]
+      },
+      "request": {}
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: luotettava-kumppani-interpretations

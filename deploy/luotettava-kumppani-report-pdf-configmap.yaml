@@ -1,26 +1,23 @@
 apiVersion: v1
 data:
-  luotettava-kumppani-report-pdf.json: |-
+  luotettava-kumppani-report-pdf.json: |
     {
-      "template": "luotettava-kumppani-report-pdf",
-      "static": {
-        "url": "https://noutaja.tilaajavastuu.fi/",
-        "username": "raporttinoutaja-api-test@oftrust.net",
-        "password": "cRE3Bm7ttnvD7vB"
-      },
-      "dynamic": {
-        "authConfig.path": "ids"
-      },
-      "request": {
-        "ids": [
-          {
-            "businessId": "<businessId>",
-            "countryCode": "<countryCode>"
-          }
-        ]
-      }
+        "template": "luotettava-kumppani-report-pdf",
+        "static": {
+          "url": "https://noutaja.tilaajavastuu.fi/",
+          "username": "",
+          "password": ""
+        },
+        "dynamic": {
+          "authConfig.path": ["registrationCountry", "idOfficial"]
+        },
+
+        "request": {
+            "registrationCountry":"<parameters.registrationCountry>",
+            "idOfficial":"<parameters.idOfficial>"
+        }
     }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: luotettava-kumppani-report-pdf-config
+  name: luotettava-kumppani-report-pdf
