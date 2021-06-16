@@ -47,25 +47,20 @@ const response = async (config, data)=>{
     console.log("response" , Date.now());
     var options = {ignoreComment: true};
     let jsObject = converter.xml2js(data.body, options);
-
-    let elements = jsObject.elements[0].elements.filter( data => data.attributes.registration_number == config.parameters.idOfficial && data.attributes.country_code ==  config.parameters.registrationCountry)
-    console.log("--x->", JSON.stringify(elements));
     let response = [];
-
-    elements.forEach(function(item) {
-        console.log("-->" , item);
-        response.push({
-            "@type": "Report",
-            "idOfficial": item.attributes.registration_number,
-            "name": item.attributes.company_name,
-            "registrationCountry": item.attributes.country_code,
-            "categorizationTrust": item.attributes.interpretation,
-            "idSystemLocal": item.attributes.archive_code,
-            "created": item.attributes.created
-        })
-    })
-
-
+    jsObject.elements[0].elements.filter((company)=>{
+        return company.attributes.registration_number === config.parameters.idOfficial && company.attributes.country_code === config.parameters.registrationCountry;
+    }).map((companyDetails)=>{
+            response.push({
+                "@type": "Report",
+                "idOfficial": companyDetails.attributes.registration_number,
+                "name": companyDetails.attributes.company_name,
+                "registrationCountry": companyDetails.attributes.country_code,
+                "categorizationTrust": companyDetails.attributes.interpretation,
+                "idSystemLocal": companyDetails.attributes.archive_code,
+                "created": companyDetails.attributes.created
+            })
+    });
     console.log("response" , Date.now());
     return response;
 }
@@ -79,43 +74,8 @@ const response = async (config, data)=>{
  * @return {Object}
  */
 const output = async (config, output) => {
-    console.log("--22->", JSON.stringify(output));
-    console.log("output" , Date.now());
-    //const data=output.data.sensors[0].data;
-    /*
-    let response = [];
-
-    data.forEach(function(item) {
-        console.log("-->" , item);
-        response.push({
-            "@type": "Report",
-            "idOfficial": item.value.attributes.registration_number,
-            "name": item.value.attributes.company_name,
-            "registrationCountry": item.value.attributes.country_code,
-            "categorizationTrust": item.value.attributes.interpretation,
-            "idSystemLocal": item.value.attributes.archive_code,
-            "created": item.value.attributes.created
-        })
-    })
-
-    
-    data.filter((company)=>{
-        return company.value.attributes.registration_number === config.parameters.idOfficial && company.value.attributes.country_code === config.parameters.registrationCountry;
-    }).map((companyDetails)=>{
-            response.push({
-                "@type": "Report",
-                "idOfficial": companyDetails.value.attributes.registration_number,
-                "name": companyDetails.value.attributes.company_name,
-                "registrationCountry": companyDetails.value.attributes.country_code,
-                "categorizationTrust": companyDetails.value.attributes.interpretation,
-                "idSystemLocal": companyDetails.value.attributes.archive_code,
-                "created": companyDetails.value.attributes.created
-            })
-    });
-    */
-    output.data["OrganizationTrustCategory"] = output.data.sensors[0].data[0].value;
+    output.data["OrganizationTrustCategory"] = [ output.data.sensors[0].data[0].value ];
     delete output.data.sensors;
-    console.log("output--->" , JSON.stringify(output));
     return output;
 }
 
