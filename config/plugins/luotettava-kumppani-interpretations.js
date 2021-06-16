@@ -13,7 +13,6 @@ const cache = require('../../app/cache');
  * @return {Object}
  */
  const request = async (config, options) => {
-     console.log("request" , Date.now());
     try {
         // Check for necessary information.
         if (!config.authConfig.authPath || !config.authConfig.url) {
@@ -27,7 +26,6 @@ const cache = require('../../app/cache');
         options.headers = {
             "Authorization" : auth,
         }
-        console.log("request" , Date.now());
         return options;
     }
     catch (err) {
@@ -44,12 +42,15 @@ const cache = require('../../app/cache');
  * @return {Object}
  */
 const response = async (config, data)=>{
-    console.log("response" , Date.now());
     var options = {ignoreComment: true};
     let jsObject = converter.xml2js(data.body, options);
     let response = [];
+    let itemdata = {};  
     jsObject.elements[0].elements.filter((company)=>{
-        return company.attributes.registration_number === config.parameters.idOfficial && company.attributes.country_code === config.parameters.registrationCountry;
+        if ('idOfficial' in config.parameters ) {
+            return company.attributes.registration_number === config.parameters.idOfficial && company.attributes.country_code === config.parameters.registrationCountry;
+        }
+        return company
     }).map((companyDetails)=>{
             response.push({
                 "@type": "Report",
@@ -61,8 +62,8 @@ const response = async (config, data)=>{
                 "created": companyDetails.attributes.created
             })
     });
-    console.log("response" , Date.now());
-    return response;
+    itemdata["OrganizationTrustCategory"] = response;
+    return itemdata;
 }
 
 
@@ -74,7 +75,7 @@ const response = async (config, data)=>{
  * @return {Object}
  */
 const output = async (config, output) => {
-    output.data["OrganizationTrustCategory"] = [ output.data.sensors[0].data[0].value ];
+    output.data["OrganizationTrustCategory"] = output.data.sensors[0].data[0].value.OrganizationTrustCategory;
     delete output.data.sensors;
     return output;
 }

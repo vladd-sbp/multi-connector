@@ -37,8 +37,7 @@
   },
   "input": {
       "required": [
-          "parameters.registrationCountry",
-          "parameters.idOfficial"
+          "parameters"
       ]
   },
   "output": {
