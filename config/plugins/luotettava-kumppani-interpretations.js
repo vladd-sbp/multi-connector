@@ -12,6 +12,7 @@ const cache = require('../../app/cache');
  * @return {Object}
  */
  const request = async (config, options) => {
+     console.log("15",Date.now());
     try {
         // Check for necessary information.
         if (!config.authConfig.authPath || !config.authConfig.url) {
@@ -41,8 +42,10 @@ const cache = require('../../app/cache');
  * @return {Object}
  */
 const response = async (config, data)=>{
+    console.log("45",Date.now());
     var options = {ignoreComment: true};
     let jsObject = converter.xml2js(data.body, options);
+    console.log("48",Date.now());
     return jsObject.elements[0].elements;
 }
 
@@ -55,6 +58,7 @@ const response = async (config, data)=>{
  * @return {Object}
  */
 const output = async (config, output) => {
+    console.log("61",Date.now());
 
     const data=output.data.sensors[0].data;
     let response = [];
@@ -75,6 +79,7 @@ const output = async (config, output) => {
 
     output.data["OrganizationTrustCategory"] = response;
     delete output.data.sensors;
+    console.log("82",Date.now());
     return output;
 }
 
