@@ -3,7 +3,7 @@ Documentation     luotettava-kumppani-interpretations - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
-Library           REST         ${CONNECTOR_URL}
+Library           REST         ${API_URL}
 
 *** Variables ***
 ${LOCAL_TZ}                  +02:00
@@ -28,7 +28,7 @@ Fetch Data Product
     [Arguments]     ${body}
     ${signature}    Calculate PoT Signature          ${body}    ${CLIENT_SECRET}
     Set Headers     {"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}
-    POST            ${CONNECTOR_PATH}                      ${body}
+    POST            ${API_PATH}                      ${body}
     Output schema   response body
 
 Get Body
