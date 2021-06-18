@@ -1,7 +1,27 @@
 'use strict';
+const { forEach } = require('lodash');
 const rp = require('request-promise');
 const converter = require('xml-js');
 const cache = require('../../app/cache');
+
+
+/**
+ * Changing protocol based on condition.
+ *
+ * @param {Object} config
+ * @param {Object} template
+ * @return {Object}
+ */
+const template = (config, template) =>{
+    let dataObject = cache.getDoc('resources',template.productCode);
+    let reqtime = cache.getDoc('resources','requesttime');
+    if(dataObject!==undefined && (Date.now()-reqtime)<86400000){
+        template.protocol= 'custom';
+        return template;
+    }
+    return template;
+}
+
 
 /**
  * Composes authorization header and
@@ -38,15 +58,42 @@ const cache = require('../../app/cache');
  * Splits processes.
  *
  * @param {Object} config
- * @param {Object} response
+ * @param {Object} data
  * @return {Object}
  */
 const response = async (config, data)=>{
-    console.log("45",Date.now());
-    var options = {ignoreComment: true};
-    let jsObject = converter.xml2js(data.body, options);
-    console.log("48",Date.now());
-    return jsObject.elements[0].elements;
+    let response = cache.getDoc('resources',config.productCode);
+    if(!response) {
+        response = [];
+    }
+    if(response.length===0){
+        var options = {ignoreComment: true};
+        let dataObject = converter.xml2js(data.body, options);
+        dataObject.elements[0].elements.map((companyDetails)=>{
+            response.push({
+                "@type": "Report",
+                "idOfficial": companyDetails.attributes.registration_number,
+                "name": companyDetails.attributes.company_name,
+                "registrationCountry": companyDetails.attributes.country_code,
+                "categorizationTrust": companyDetails.attributes.interpretation,
+                "idSystemLocal": companyDetails.attributes.archive_code,
+                "created": companyDetails.attributes.created
+            })
+    });
+        cache.setDoc('resources',config.productCode,response);
+        cache.setDoc('resources','requesttime',Date.now());
+    }
+
+    let arr = [];
+    let itemdata = {};  
+    arr=response.filter((company)=>{
+        if ('idOfficial' in config.parameters ) {
+            return company.idOfficial === config.parameters.idOfficial && company.registrationCountry === config.parameters.registrationCountry;
+        }
+    });
+    
+    itemdata["OrganizationTrustCategory"] = (arr.length) === 0 ? response : arr;
+    return itemdata;
 }
 
 
@@ -58,26 +105,7 @@ const response = async (config, data)=>{
  * @return {Object}
  */
 const output = async (config, output) => {
-    console.log("61",Date.now());
-
-    const data=output.data.sensors[0].data;
-    let response = [];
-
-    data.filter((company)=>{
-        return company.value.attributes.registration_number === config.parameters.idOfficial && company.value.attributes.country_code === config.parameters.registrationCountry;
-    }).map((companyDetails)=>{
-            response.push({
-                "@type": "Report",
-                "idOfficial": companyDetails.value.attributes.registration_number,
-                "name": companyDetails.value.attributes.company_name,
-                "registrationCountry": companyDetails.value.attributes.country_code,
-                "categorizationTrust": companyDetails.value.attributes.interpretation,
-                "idSystemLocal": companyDetails.value.attributes.archive_code,
-                "created": companyDetails.value.attributes.created
-            })
-    });
-
-    output.data["OrganizationTrustCategory"] = response;
+    output.data["OrganizationTrustCategory"] = output.data.sensors[0].data[0].value.OrganizationTrustCategory;
     delete output.data.sensors;
     console.log("82",Date.now());
     return output;
@@ -89,4 +117,5 @@ module.exports = {
     request,
     output,
     response,
+    template,
 };

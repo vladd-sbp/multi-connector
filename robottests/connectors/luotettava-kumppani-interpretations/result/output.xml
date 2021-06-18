@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.2 (Python 3.9.5 on darwin)" generated="20210612 10:27:51.481" rpa="false">
+<robot generator="Robot 3.2.2 (Python 3.9.5 on darwin)" generated="20210616 23:42:08.292" rpa="false">
 <suite id="s1" name="Connector Tests" source="/Volumes/ext_drive/smarthala/04_Eeneman/src/multi-connector/robottests/connectors/luotettava-kumppani-interpretations/connector_tests.robot">
 <test id="s1-t1" name="fetch, 200">
 <kw name="Get Body">
@@ -15,8 +15,8 @@
 <assign>
 <var>${body}</var>
 </assign>
-<msg timestamp="20210612 10:27:52.165" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}}</msg>
-<status status="PASS" starttime="20210612 10:27:52.165" endtime="20210612 10:27:52.165"></status>
+<msg timestamp="20210616 23:42:09.065" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}}</msg>
+<status status="PASS" starttime="20210616 23:42:09.064" endtime="20210616 23:42:09.065"></status>
 </kw>
 <kw name="Get Current Date" library="DateTime">
 <doc>Returns current local or UTC time with an optional increment.</doc>
@@ -27,8 +27,8 @@
 <assign>
 <var>${now}</var>
 </assign>
-<msg timestamp="20210612 10:27:52.166" level="INFO">${now} = 2021-06-12T07:27:52+00:00</msg>
-<status status="PASS" starttime="20210612 10:27:52.165" endtime="20210612 10:27:52.166"></status>
+<msg timestamp="20210616 23:42:09.066" level="INFO">${now} = 2021-06-16T20:42:09+00:00</msg>
+<status status="PASS" starttime="20210616 23:42:09.065" endtime="20210616 23:42:09.066"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -37,7 +37,7 @@
 <arg>timestamp</arg>
 <arg>${now}</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:27:52.166" endtime="20210612 10:27:52.167"></status>
+<status status="PASS" starttime="20210616 23:42:09.066" endtime="20210616 23:42:09.066"></status>
 </kw>
 <kw name="Set To Dictionary" library="Collections">
 <doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
@@ -45,7 +45,7 @@
 <arg>${body}</arg>
 <arg>&amp;{kwargs}</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:27:52.167" endtime="20210612 10:27:52.167"></status>
+<status status="PASS" starttime="20210616 23:42:09.067" endtime="20210616 23:42:09.067"></status>
 </kw>
 <kw name="Evaluate" library="BuiltIn">
 <doc>Evaluates the given expression in Python and returns the result.</doc>
@@ -56,11 +56,11 @@
 <assign>
 <var>${json_string}</var>
 </assign>
-<msg timestamp="20210612 10:27:52.168" level="INFO">${json_string} = {"productCode": "luotettava-kumppani-interpretations", "parameters": {"idOfficial": "0103460-8", "registrationCountry": "FI"}, "timestamp": "2021-06-12T07:27:52+00:00"}</msg>
-<status status="PASS" starttime="20210612 10:27:52.167" endtime="20210612 10:27:52.168"></status>
+<msg timestamp="20210616 23:42:09.068" level="INFO">${json_string} = {"productCode": "luotettava-kumppani-interpretations", "parameters": {"idOfficial": "0103460-8", "registrationCountry": "FI"}, "timestamp": "2021-06-16T20:42:09+00:00"}</msg>
+<status status="PASS" starttime="20210616 23:42:09.067" endtime="20210616 23:42:09.068"></status>
 </kw>
-<msg timestamp="20210612 10:27:52.168" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}, 'timestamp': '2021-06-12T07:27:52+00:00'}</msg>
-<status status="PASS" starttime="20210612 10:27:52.164" endtime="20210612 10:27:52.168"></status>
+<msg timestamp="20210616 23:42:09.068" level="INFO">${body} = {'productCode': 'luotettava-kumppani-interpretations', 'parameters': {'idOfficial': '0103460-8', 'registrationCountry': 'FI'}, 'timestamp': '2021-06-16T20:42:09+00:00'}</msg>
+<status status="PASS" starttime="20210616 23:42:09.063" endtime="20210616 23:42:09.069"></status>
 </kw>
 <kw name="Fetch Data Product">
 <arguments>
@@ -74,8 +74,8 @@
 <assign>
 <var>${signature}</var>
 </assign>
-<msg timestamp="20210612 10:27:52.170" level="INFO">${signature} = B0hDqUFAr8jM5os6rMrPvVAlogdXtpqpwwErML8iENc=</msg>
-<status status="PASS" starttime="20210612 10:27:52.170" endtime="20210612 10:27:52.170"></status>
+<msg timestamp="20210616 23:42:09.070" level="INFO">${signature} = aycYCWHkW8Y33Gl1g3rpBO5T21Co/F6KHFm9qdT6DLY=</msg>
+<status status="PASS" starttime="20210616 23:42:09.069" endtime="20210616 23:42:09.070"></status>
 </kw>
 <kw name="Set Headers" library="REST">
 <tags>
@@ -85,7 +85,7 @@
 <arguments>
 <arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:27:52.171" endtime="20210612 10:27:52.171"></status>
+<status status="PASS" starttime="20210616 23:42:09.070" endtime="20210616 23:42:09.070"></status>
 </kw>
 <kw name="Post" library="REST">
 <tags>
@@ -96,7 +96,7 @@
 <arg>${CONNECTOR_PATH}</arg>
 <arg>${body}</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:27:52.171" endtime="20210612 10:29:07.943"></status>
+<status status="PASS" starttime="20210616 23:42:09.071" endtime="20210616 23:42:14.077"></status>
 </kw>
 <kw name="Output Schema" library="REST">
 <tags>
@@ -106,7 +106,7 @@
 <arguments>
 <arg>response body</arg>
 </arguments>
-<msg timestamp="20210612 10:29:07.948" level="INFO">
+<msg timestamp="20210616 23:42:14.078" level="INFO">
 {
     "type": "object",
     "properties": {
@@ -161,8 +161,8 @@
                             "name": "Borenius Asianajotoimisto Oy",
                             "registrationCountry": "FI",
                             "categorizationTrust": "Ok",
-                            "idSystemLocal": "1623089882328",
-                            "created": "2021-06-07T21:18:02"
+                            "idSystemLocal": "1623694525689",
+                            "created": "2021-06-14T21:15:25"
                         }
                     ]
                 }
@@ -180,7 +180,7 @@
                 },
                 "created": {
                     "type": "string",
-                    "default": "2021-06-12T10:29:07+03:00"
+                    "default": "2021-06-16T23:42:13+03:00"
                 },
                 "creator": {
                     "type": "string",
@@ -188,7 +188,7 @@
                 },
                 "signatureValue": {
                     "type": "string",
-                    "default": "E5VR6oIRjjgivPsMhUbG9Z/VNW4C6oFEiYAvQlGdn5uFOmDfRvt29hd+Vf4mTD12+7lA+WlEcMPyzCGgNrsRE6/cgNrNXFdu/aystv14fNWQC0K4wO6pPRH4O88tUXO4dWvN+Avo/4qnJ4uiFfX0Rx4QbCjGy6bxKjRmTES172Z2VmzFF51oD7m8NUiIlkNNlcNoZhNXw4J4HUQb3uNpjG5J87rTE5pPHouxPvSnZao5ZOYKDkuOwBbh2HPew1t67nczY6lhN1fmuVCXeNZsLPxibY4aUfJpONByirA3NUUYMTDI5qmIBodffrRfPvpM4MNnyMnGMakBGq+YfsLdeaWozTxh6zctwFEBishhKqE7LU6Hy0M5jU8rKxfUiMgAztP3GWdmp4d3M41bQAhQem97EoZLFzBDWVgKSPltJexGrcVraVGgnTWQahBFEbJjvIxkfW+1pqeLf/E7eVSVI/vpasrbawIwPdnYMXEgV/f2CpuFler1XaBy28yETQyD7f0LiKKXwJ/piiqd/BeTnp87DnVnQpdMT57/e8DGjyQcigHKB9w/OCyPul9O0x7uH3Prok5slSaq5/SuBjAh9ygATkrqQ1FKjSFWCiZHVnzxSlRbXpXJrlhVfwVAUhCeTsk5T258x0bVTsKo7tHvF69Wuksu8o+sXMjFK/PdQ+k="
+                    "default": "DRG4TxYWCfx4orZgHqgiCR9+xXdgZyrbHB5boRxUw1np9z5oK8i0oL2znvWkD7tyFrSTovbyMrPFZajORa2AnnljYRq0BqX3HpjZ6G5USplS+lZytruVxTqoWd7LpNHr8he/bsvoC9eRaKFngSxz3eVG+yH5CyKRRmDa2jE0Y4/zlHjPsJtfg1+Z4zomsovSv8IrRWjsuKpKj40uWRHyzwGxOOoJXaA2YNStIo1UD9r4JyxBUgT95JG+3dimTEnbAkvTCREaEhLMBa2NJmzFEoScvch3hfCsi+cW8e8lCVs/3bgZToPyEtjIFow3Eqrahd7ui2DL8TH3KgEedQkEYmyIab4kUxIPnejFt96w/6Y1bgMP5KVa+ImQoVrsvwQ4M6VFhCJYgMZqUrc2xuWTxkACoWrfWWPxS+Gqi5WS8sJHgT/CyOcLapjEihcTogErCYUhndO4OwT6bc/5wXlG14eqxh8ectt4iY/kpnBPdU9Qa/GbU70GdjFG2kpSbk0WStV216ig+U4YX0DgrENMAI3LBW1DACKc2gW+PcutcK/fBf7gi2Pw8bidQT4jHWisIJNhyTm7b0pWv1Q8480Po0rNzIWXZvoUvFt03W1tMENPKJ7If+JQlAWeJkovljw77lGb+XjqqofGT2cwvTFLoBqjmqePzsmDe2q+9/Gjjis="
                 }
             },
             "required": [
@@ -205,9 +205,9 @@
         "signature"
     ]
 }</msg>
-<status status="PASS" starttime="20210612 10:29:07.945" endtime="20210612 10:29:07.992"></status>
+<status status="PASS" starttime="20210616 23:42:14.077" endtime="20210616 23:42:14.116"></status>
 </kw>
-<status status="PASS" starttime="20210612 10:27:52.169" endtime="20210612 10:29:07.993"></status>
+<status status="PASS" starttime="20210616 23:42:09.069" endtime="20210616 23:42:14.116"></status>
 </kw>
 <kw name="Integer" library="REST">
 <tags>
@@ -218,7 +218,7 @@
 <arg>response status</arg>
 <arg>200</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:29:07.994" endtime="20210612 10:29:07.998"></status>
+<status status="PASS" starttime="20210616 23:42:14.117" endtime="20210616 23:42:14.119"></status>
 </kw>
 <kw name="String" library="REST">
 <tags>
@@ -229,7 +229,7 @@
 <arg>response body @context</arg>
 <arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Report/OrganizationTrustCategory/\?v\=3.1</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:29:07.999" endtime="20210612 10:29:08.000"></status>
+<status status="PASS" starttime="20210616 23:42:14.119" endtime="20210616 23:42:14.120"></status>
 </kw>
 <kw name="Object" library="REST">
 <tags>
@@ -239,7 +239,7 @@
 <arguments>
 <arg>response body data</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:29:08.000" endtime="20210612 10:29:08.007"></status>
+<status status="PASS" starttime="20210616 23:42:14.120" endtime="20210616 23:42:14.124"></status>
 </kw>
 <kw name="Array" library="REST">
 <tags>
@@ -249,12 +249,12 @@
 <arguments>
 <arg>response body data OrganizationTrustCategory</arg>
 </arguments>
-<status status="PASS" starttime="20210612 10:29:08.008" endtime="20210612 10:29:08.010"></status>
+<status status="PASS" starttime="20210616 23:42:14.124" endtime="20210616 23:42:14.126"></status>
 </kw>
-<status status="PASS" starttime="20210612 10:27:52.162" endtime="20210612 10:29:08.010" critical="yes"></status>
+<status status="PASS" starttime="20210616 23:42:09.062" endtime="20210616 23:42:14.126" critical="yes"></status>
 </test>
 <doc>luotettava-kumppani-interpretations - REST</doc>
-<status status="PASS" starttime="20210612 10:27:51.485" endtime="20210612 10:29:08.012"></status>
+<status status="PASS" starttime="20210616 23:42:08.295" endtime="20210616 23:42:14.128"></status>
 </suite>
 <statistics>
 <total>
