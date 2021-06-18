@@ -4,6 +4,25 @@ const rp = require('request-promise');
 const converter = require('xml-js');
 const cache = require('../../app/cache');
 
+
+/**
+ * Changing protocol based on condition.
+ *
+ * @param {Object} config
+ * @param {Object} template
+ * @return {Object}
+ */
+const template = (config, template) =>{
+    let dataObject = cache.getDoc('resources',template.productCode);
+    let reqtime = cache.getDoc('resources','requesttime');
+    if(dataObject!==undefined && (Date.now()-reqtime)<86400000){
+        template.protocol= 'custom';
+        return template;
+    }
+    return template;
+}
+
+
 /**
  * Composes authorization header and
  * includes it to the http request options.
@@ -38,20 +57,18 @@ const cache = require('../../app/cache');
  * Splits processes.
  *
  * @param {Object} config
- * @param {Object} response
+ * @param {Object} data
  * @return {Object}
  */
 const response = async (config, data)=>{
-    var options = {ignoreComment: true};
-    let jsObject = converter.xml2js(data.body, options);
-    let response = [];
-    let itemdata = {};  
-    jsObject.elements[0].elements.filter((company)=>{
-        if ('idOfficial' in config.parameters ) {
-            return company.attributes.registration_number === config.parameters.idOfficial && company.attributes.country_code === config.parameters.registrationCountry;
-        }
-        return company
-    }).map((companyDetails)=>{
+    let response = cache.getDoc('resources',config.productCode);
+    if(!response) {
+        response = [];
+    }
+    if(response.length===0){
+        var options = {ignoreComment: true};
+        let dataObject = converter.xml2js(data.body, options);
+        dataObject.elements[0].elements.map((companyDetails)=>{
             response.push({
                 "@type": "Report",
                 "idOfficial": companyDetails.attributes.registration_number,
@@ -62,7 +79,19 @@ const response = async (config, data)=>{
                 "created": companyDetails.attributes.created
             })
     });
-    itemdata["OrganizationTrustCategory"] = response;
+        cache.setDoc('resources',config.productCode,response);
+        cache.setDoc('resources','requesttime',Date.now());
+    }
+
+    let arr = [];
+    let itemdata = {};  
+    arr=response.filter((company)=>{
+        if ('idOfficial' in config.parameters ) {
+            return company.idOfficial === config.parameters.idOfficial && company.registrationCountry === config.parameters.registrationCountry;
+        }
+    });
+    
+    itemdata["OrganizationTrustCategory"] = (arr.length) === 0 ? response : arr;
     return itemdata;
 }
 
@@ -86,4 +115,5 @@ module.exports = {
     request,
     output,
     response,
+    template,
 };
