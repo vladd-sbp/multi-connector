@@ -266,7 +266,7 @@ const data = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-    if (output.data.sensors.length === 0) {
+    if (output.data.sensors.length < 0) {   // === 0
         return promiseRejectWithError(500, 'Incorrect Parameters');
     }
     else {
