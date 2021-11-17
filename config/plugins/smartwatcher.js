@@ -266,35 +266,32 @@ const data = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-    if (output.data.sensors.length < 0) {   // === 0
-        return promiseRejectWithError(500, 'Incorrect Parameters');
-    }
-    else {
-        var arr = [];
-        output.data.sensors.forEach(function (item) {
-            var existing = arr.filter(function (v, i) {
-                return v.id == item.id;
-            });
-            if (existing.length) {
-                var existingIndex = arr.indexOf(existing[0]);
-                arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
-            } else {
-                arr.push(item);
-            }
+   
+    var arr = [];
+    output.data.sensors.forEach(function (item) {
+        var existing = arr.filter(function (v, i) {
+            return v.id == item.id;
         });
-
-        const result = {
-            [config.output.context]: config.output.contextValue,
-            [config.output.object]: {
-                [config.output.array]: [],
-            },
-        };
-        for (let i = 0; i < arr.length; i++) {
-            result[config.output.object][config.output.array].push(arr[i]);
+        if (existing.length) {
+            var existingIndex = arr.indexOf(existing[0]);
+            arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
+        } else {
+            arr.push(item);
         }
+    });
 
-        return result;
+    const result = {
+        [config.output.context]: config.output.contextValue,
+        [config.output.object]: {
+            [config.output.array]: [],
+        },
+    };
+    for (let i = 0; i < arr.length; i++) {
+        result[config.output.object][config.output.array].push(arr[i]);
     }
+
+    return result;
+    
 }
 
 /**

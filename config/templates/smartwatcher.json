@@ -39,7 +39,9 @@
   "input": {
     "required": [
       "parameters.startTime",
-      "parameters.endTime"
+      "parameters.endTime",
+      "parameters.ids"
+
     ]
   },
   "output": {
