@@ -7,7 +7,7 @@ const cache = require('../../app/cache');
 const rp = require('request-promise');
 const crypto = require('crypto');
 const winston = require('../../logger');
-const axios = require('axios');
+const mrequest = require('request');
 
 /**
  * OAuth2 authentication plugin.
@@ -90,10 +90,11 @@ async function getTokenWithPassword(authConfig) {
     };
 
     try {
-        let result = await axios.get(`https://nuukacustomerwebapi.azurewebsites.net/api/v2.0/ClientToken?userName=tapio.toivanen@eeneman.com&password=Tue0110_Cit5&grantType=password&format=json`);
-        return Promise.resolve({ token: result.data });
+        
+        const token = await makeRequest(`https://nuukacustomerwebapi.azurewebsites.net/api/v2.0/ClientToken?userName=tapio.toivanen@eeneman.com&password=Tue0110_Cit5&grantType=password&format=json`);
+        return Promise.resolve({ token });
     } catch (err) {
-        console.log("axios failed:", err);
+        console.error(err);
         return Promise.reject(err);
     }
     // return rp(option).then(function (result) {
@@ -378,16 +379,34 @@ const output = async (config, output) => {
 const response = async (config, data) => {
     try {
         // nuuka api call
-        const sensorData = await axios.get(`${config.authConfig.url}${data}
-            &$token=${config.authConfig.headers.Authorization}`);
+        const res = await makeRequest(`${config.authConfig.url}${data}
+        &$token=${config.authConfig.headers.Authorization}`);
 
-        console.log(JSON.stringify(sensorData.data));
-        return sensorData.data;
+        return res;
     } catch (err) {
         winston.log('error', err);
         return promiseRejectWithError(err.statusCode, err.message);
     }
 };
+
+const makeRequest = (url) => {
+    return new Promise((resolve, reject) => {
+        mrequest(url, (error, response, body) => {
+            if (error) {
+                console.error('error:', error); // Print the error if one occurred
+                return reject(error);
+            }
+            if (!response || response.statusCode !=200) {
+                if (response) {
+                    return reject (response);
+                }
+            }
+            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+            console.log('body:', body); // Print the HTML for the Google homepage.
+            return resolve(JSON.parse(body));
+        });
+    });
+}
 
 module.exports = {
     name: 'sensor',
