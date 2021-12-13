@@ -2,8 +2,8 @@
     "template": "sensor",
     "static": {
         "url": "https://nuukacustomerwebapi.azurewebsites.net/",
-        "email": "",
-        "password": "",
+        "email": "tapio.toivanen@eeneman.com",
+        "password": "Tue0110_Cit5",
         "grantType": "password",
         "format": "json",
         "MeasurementSystem": "SI",

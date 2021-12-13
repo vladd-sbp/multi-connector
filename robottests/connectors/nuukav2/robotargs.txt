@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/nuukav2/result
+connectors/nuukav2/connector_tests.robot

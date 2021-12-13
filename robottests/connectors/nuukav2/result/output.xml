@@ -1,0 +1,2177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.2 (Python 3.9.9 on darwin)" generated="20211213 22:01:28.241" rpa="false">
+<suite id="s1" name="Connector Tests" source="/Users/marthala/mydata/04_Eeneman/src/multi-connector/robottests/connectors/nuukav2/connector_tests.robot">
+<test id="s1-t1" name="fetch, 200">
+<kw name="Get Body">
+<assign>
+<var>${body}</var>
+</assign>
+<kw name="Copy Dictionary" library="Collections">
+<doc>Returns a copy of the given dictionary.</doc>
+<arguments>
+<arg>${BROKER_BODY}</arg>
+<arg>deepcopy=True</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20211213 22:01:28.419" level="INFO">${body} = {'productCode': 'sensor', 'parameters': {'ids': ['2410', '2209'], 'dataTypes': ['MeasureElectricityConsumptionKilowattHour', 'MeasureHeatingElectricityConsumptionKilowattHour'], 'startTime': '2021-11-...</msg>
+<status status="PASS" starttime="20211213 22:01:28.419" endtime="20211213 22:01:28.419"></status>
+</kw>
+<kw name="Get Current Date" library="DateTime">
+<doc>Returns current local or UTC time with an optional increment.</doc>
+<arguments>
+<arg>time_zone=UTC</arg>
+<arg>result_format=%Y-%m-%dT%H:%M:%S+00:00</arg>
+</arguments>
+<assign>
+<var>${now}</var>
+</assign>
+<msg timestamp="20211213 22:01:28.419" level="INFO">${now} = 2021-12-13T20:01:28+00:00</msg>
+<status status="PASS" starttime="20211213 22:01:28.419" endtime="20211213 22:01:28.419"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>timestamp</arg>
+<arg>${now}</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:28.420" endtime="20211213 22:01:28.420"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>&amp;{kwargs}</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:28.420" endtime="20211213 22:01:28.420"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>json.dumps(${body})</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${json_string}</var>
+</assign>
+<msg timestamp="20211213 22:01:28.420" level="INFO">${json_string} = {"productCode": "sensor", "parameters": {"ids": ["2410", "2209"], "dataTypes": ["MeasureElectricityConsumptionKilowattHour", "MeasureHeatingElectricityConsumptionKilowattHour"], "startTime": "2021-11-...</msg>
+<status status="PASS" starttime="20211213 22:01:28.420" endtime="20211213 22:01:28.420"></status>
+</kw>
+<msg timestamp="20211213 22:01:28.421" level="INFO">${body} = {'productCode': 'sensor', 'parameters': {'ids': ['2410', '2209'], 'dataTypes': ['MeasureElectricityConsumptionKilowattHour', 'MeasureHeatingElectricityConsumptionKilowattHour'], 'startTime': '2021-11-...</msg>
+<status status="PASS" starttime="20211213 22:01:28.418" endtime="20211213 22:01:28.421"></status>
+</kw>
+<kw name="Fetch Data Product">
+<arguments>
+<arg>${body}</arg>
+</arguments>
+<kw name="Calculate Pot Signature" library="PoTLib">
+<arguments>
+<arg>${body}</arg>
+<arg>${CLIENT_SECRET}</arg>
+</arguments>
+<assign>
+<var>${signature}</var>
+</assign>
+<msg timestamp="20211213 22:01:28.421" level="INFO">${signature} = h06Od0IlHtcXa52n+mJmfvcGNJV0+EJPAbIw/N9RQJk=</msg>
+<status status="PASS" starttime="20211213 22:01:28.421" endtime="20211213 22:01:28.421"></status>
+</kw>
+<kw name="Set Headers" library="REST">
+<tags>
+<tag>settings</tag>
+</tags>
+<doc>*Sets new request headers or updates the existing.*</doc>
+<arguments>
+<arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:28.421" endtime="20211213 22:01:28.422"></status>
+</kw>
+<kw name="Post" library="REST">
+<tags>
+<tag>http</tag>
+</tags>
+<doc>*Sends a POST request to the endpoint.*</doc>
+<arguments>
+<arg>${CONNECTOR_PATH}</arg>
+<arg>${body}</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:28.422" endtime="20211213 22:01:34.813"></status>
+</kw>
+<kw name="Output Schema" library="REST">
+<tags>
+<tag>I/O</tag>
+</tags>
+<doc>*Outputs JSON Schema to terminal or a file.*</doc>
+<arguments>
+<arg>response body</arg>
+</arguments>
+<msg timestamp="20211213 22:01:34.816" level="INFO">
+{
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "string",
+            "default": "https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "sensors": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "measurements": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "@type": {
+                                            "type": "string"
+                                        },
+                                        "timestamp": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "@type",
+                                        "timestamp",
+                                        "value"
+                                    ]
+                                }
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "measurements"
+                        ]
+                    },
+                    "default": [
+                        {
+                            "id": 2410,
+                            "measurements": [
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T00:00:00+02:00",
+                                    "value": 85
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:00:00+02:00",
+                                    "value": 10.48
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T00:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T00:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T01:00:00+02:00",
+                                    "value": 87
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:00:00+02:00",
+                                    "value": 10.15
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T01:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T01:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T02:00:00+02:00",
+                                    "value": 84
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:00:00+02:00",
+                                    "value": 9.82
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T02:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T02:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T03:00:00+02:00",
+                                    "value": 88
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:00:00+02:00",
+                                    "value": 8.97
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T03:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T03:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T04:00:00+02:00",
+                                    "value": 87
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:00:00+02:00",
+                                    "value": 8.49
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T04:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T04:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T05:00:00+02:00",
+                                    "value": 88
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:00:00+02:00",
+                                    "value": 8.41
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T05:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T05:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T06:00:00+02:00",
+                                    "value": 89
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:00:00+02:00",
+                                    "value": 8.44
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T06:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T06:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T07:00:00+02:00",
+                                    "value": 91
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:00:00+02:00",
+                                    "value": 8.4
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T07:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T07:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T08:00:00+02:00",
+                                    "value": 90
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:00:00+02:00",
+                                    "value": 8.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T08:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T08:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T09:00:00+02:00",
+                                    "value": 91
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:00:00+02:00",
+                                    "value": 7.58
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T09:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T09:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T10:00:00+02:00",
+                                    "value": 90
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:00:00+02:00",
+                                    "value": 24.71
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T10:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T10:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T11:00:00+02:00",
+                                    "value": 149
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:00:00+02:00",
+                                    "value": 15.27
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T11:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T11:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T12:00:00+02:00",
+                                    "value": 119
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:00:00+02:00",
+                                    "value": 7.58
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T12:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T12:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T13:00:00+02:00",
+                                    "value": 91
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:00:00+02:00",
+                                    "value": 10.14
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T13:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T13:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T14:00:00+02:00",
+                                    "value": 86
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:00:00+02:00",
+                                    "value": 10.28
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T14:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T14:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T15:00:00+02:00",
+                                    "value": 103
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:00:00+02:00",
+                                    "value": 9.67
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T15:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T15:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T16:00:00+02:00",
+                                    "value": 94
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:00:00+02:00",
+                                    "value": 8.28
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T16:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T16:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T17:00:00+02:00",
+                                    "value": 91
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:00:00+02:00",
+                                    "value": 8.18
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T17:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T17:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T18:00:00+02:00",
+                                    "value": 92
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:00:00+02:00",
+                                    "value": 8.28
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T18:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T18:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T19:00:00+02:00",
+                                    "value": 92
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:00:00+02:00",
+                                    "value": 8.21
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T19:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T19:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T20:00:00+02:00",
+                                    "value": 92
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:00:00+02:00",
+                                    "value": 8.29
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:50:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T20:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T20:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T21:00:00+02:00",
+                                    "value": 93
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:00:00+02:00",
+                                    "value": 8.24
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T21:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T21:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T22:00:00+02:00",
+                                    "value": 92
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:00:00+02:00",
+                                    "value": 8.29
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T22:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T22:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T23:00:00+02:00",
+                                    "value": 93
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:00:00+02:00",
+                                    "value": 8.15
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:50:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T23:50:00+02:00",
+                                    "value": 0
+                                },
+                                {
+                                    "@type": "OtherConsumption",
+                                    "timestamp": "2021-11-27T23:50:00+02:00",
+                                    "value": 0
+                                }
+                            ]
+                        },
+                        {
+                            "id": 2209,
+                            "measurements": [
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 13
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 1.391
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 0.29600000000000004
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T00:53:00+02:00",
+                                    "value": 19.813000000000002
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T00:57:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T00:57:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T01:46:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T01:46:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 13
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 1.2029999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 2.001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 0.305
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T01:53:00+02:00",
+                                    "value": 19.186999999999998
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T02:23:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T02:23:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 7.188
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 1.2029999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 2.3000000000000003
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 0.297
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T02:53:00+02:00",
+                                    "value": 14
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 9.812
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 1.4060000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 1.899
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 0.29700000000000004
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T03:53:00+02:00",
+                                    "value": 16.5
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T03:56:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T03:56:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T04:35:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T04:35:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 9.188
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 1.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 2
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 2.301
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 0.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T04:53:00+02:00",
+                                    "value": 16
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T05:30:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T05:46:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T05:46:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T05:46:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 13.718
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 1.297
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 1.7999999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 0.101
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T05:53:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:23:00+02:00",
+                                    "value": 0.399
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 13
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 1.2029999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 2.201
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T06:53:00+02:00",
+                                    "value": 19.75
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T06:58:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T06:58:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T06:58:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T07:52:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T07:52:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 10.282
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 1.0939999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 2.099
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 0.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T07:53:00+02:00",
+                                    "value": 16.75
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T08:27:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T08:27:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 6.718
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 1.2970000000000002
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 2.2
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 0.305
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T08:53:00+02:00",
+                                    "value": 13.437000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 9.687999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 1.406
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 0.203
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 0.7
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 0.29600000000000004
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T09:53:00+02:00",
+                                    "value": 15
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T09:57:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T09:57:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T10:35:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T10:35:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 8.094
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 1.0939999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 0.599
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 0.399
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T10:53:00+02:00",
+                                    "value": 12.062999999999999
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T11:44:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 16.812
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 1.4060000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 2.203
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 0.7989999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 0.305
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T11:53:00+02:00",
+                                    "value": 19.937
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T11:59:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T11:59:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T11:59:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T12:39:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T12:39:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 10.782
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 1.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 1.695
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 0.506
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 0.29600000000000004
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T12:53:00+02:00",
+                                    "value": 14.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T13:34:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T13:34:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T13:34:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 7
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 1.2029999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 0.7949999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 0.305
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T13:53:00+02:00",
+                                    "value": 11.562999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 14.312
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 1.391
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 0.399
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 0.505
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 1.7970000000000002
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T14:53:00+02:00",
+                                    "value": 23.813000000000002
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T14:58:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T14:58:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:23:00+02:00",
+                                    "value": 0.101
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T15:48:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T15:48:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 12.687999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 0.906
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 6
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 1.9949999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 2.898
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T15:53:00+02:00",
+                                    "value": 24.687
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 12.123999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 1.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 2.2070000000000003
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 0.39899999999999997
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T16:53:00+02:00",
+                                    "value": 19.25
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T16:55:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T16:55:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T17:50:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T17:52:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T17:52:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T17:52:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 18.782
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 1.2029999999999998
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 2.399
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 0.305
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T17:53:00+02:00",
+                                    "value": 25.563
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T18:43:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T18:43:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 15.218
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 1.0939999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 2.394
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 0.398
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T18:53:00+02:00",
+                                    "value": 22.124
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:23:00+02:00",
+                                    "value": 0.102
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 12.094000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 1.4060000000000001
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 2.5
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T19:53:00+02:00",
+                                    "value": 19.063000000000002
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T20:45:00+02:00",
+                                    "value": 30
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T20:45:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T20:45:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 13.094
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 1.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 2.301
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 0.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T20:53:00+02:00",
+                                    "value": 20.313
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:23:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:23:00+02:00",
+                                    "value": 0.101
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T21:52:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T21:52:00+02:00",
+                                    "value": 40
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:53:00+02:00",
+                                    "value": 14.094000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:53:00+02:00",
+                                    "value": 1.297
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:53:00+02:00",
+                                    "value": 2.5010000000000003
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T21:53:00+02:00",
+                                    "value": 20.936999999999998
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T22:43:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T22:43:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 8.812000000000001
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 1.297
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 2.399
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 0.5
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T22:53:00+02:00",
+                                    "value": 15.875
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T23:38:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 0.1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 15.405999999999999
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 1
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 3
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 2.301
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 0.297
+                                },
+                                {
+                                    "@type": "ElectricityConsumption",
+                                    "timestamp": "2021-11-27T23:53:00+02:00",
+                                    "value": 22.125
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T23:55:00+02:00",
+                                    "value": 20
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T23:55:00+02:00",
+                                    "value": 10
+                                },
+                                {
+                                    "@type": "HeatConsumption",
+                                    "timestamp": "2021-11-27T23:55:00+02:00",
+                                    "value": 30
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "sensors"
+            ]
+        },
+        "signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "RsaSignature2018"
+                },
+                "created": {
+                    "type": "string",
+                    "default": "2021-12-13T22:01:34+02:00"
+                },
+                "creator": {
+                    "type": "string",
+                    "default": "http://localhost:8080/translator/v1/public.key"
+                },
+                "signatureValue": {
+                    "type": "string",
+                    "default": "hAKRXnvFtWzO0i8wT/U+DXeyZ/cxrUv1sWvoPyVwKt1w4Pj/LUhjo5K5t/VYluyIoCSsn87ohitch1YC4Low2FK1GeCWMzyLCv4Bn2KCGbDwPG/iw+Ue3GSmG77EzDoIrn9+hmENAKxT5np92WRmBSe98aVcClnAeOxshTNc3WE8xRkdj/K9HD6PQMcwIucN16w1MCHVKPE4SNsU1m8198ya/OnOJZ6MqHhG85deRiSYGo6aUcOfrLtvA18GU0w+/1vQ8G8YlRqPHpATZjhNr6BnDl3bdL3SV6FBe5SYB3gSo1HtNLFzBUMxRZsgWKOBeDkSDfbObqp+OndG7bsO7b9ZX4xnOjKY5cTuF6QBjqxUw4axesFC5rhS1NicU6i5bZMNAPfAqQSBccjHeyYeTqFCt5cbV0uB4yv/b6OAcIFcb27I4BsWnCJcIOAsLZzimJicBZmYF5wD183zo3SPvMZSHl5/EN2eZ0LoFFwc03OG1OTKJdAMq0uCjgsbp6mLPQ/B0gl7u98DIMl+P/UPiBV8yolZMD//qaVUKBl1Cmc9aHDB4AZPEwBXJOo/e4HCowIUUFxEbDPcHImuBuSSWgwYrw69LxVBBi6D4rTeXhVUBaWg+UGWlKsZzWiK4ET0Cbu2ZZqTww5lAPOchK1VVTbIVEA7JcnxcAURbsF907U="
+                }
+            },
+            "required": [
+                "created",
+                "creator",
+                "signatureValue",
+                "type"
+            ]
+        }
+    },
+    "required": [
+        "@context",
+        "data",
+        "signature"
+    ]
+}</msg>
+<status status="PASS" starttime="20211213 22:01:34.814" endtime="20211213 22:01:34.924"></status>
+</kw>
+<status status="PASS" starttime="20211213 22:01:28.421" endtime="20211213 22:01:34.924"></status>
+</kw>
+<kw name="Integer" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON integer.*</doc>
+<arguments>
+<arg>response status</arg>
+<arg>200</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.924" endtime="20211213 22:01:34.925"></status>
+</kw>
+<kw name="String" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON string.*</doc>
+<arguments>
+<arg>response body @context</arg>
+<arg>https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.925" endtime="20211213 22:01:34.925"></status>
+</kw>
+<kw name="Object" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON object.*</doc>
+<arguments>
+<arg>response body data</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.925" endtime="20211213 22:01:34.932"></status>
+</kw>
+<kw name="Array" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON array.*</doc>
+<arguments>
+<arg>response body data sensors</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.933" endtime="20211213 22:01:34.939"></status>
+</kw>
+<kw name="Integer" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON integer.*</doc>
+<arguments>
+<arg>response body data sensors 0 id</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.939" endtime="20211213 22:01:34.941"></status>
+</kw>
+<kw name="Array" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON array.*</doc>
+<arguments>
+<arg>response body data sensors 0 measurements</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.941" endtime="20211213 22:01:34.954"></status>
+</kw>
+<kw name="String" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON string.*</doc>
+<arguments>
+<arg>response body data sensors 0 measurements 0 @type</arg>
+</arguments>
+<status status="PASS" starttime="20211213 22:01:34.955" endtime="20211213 22:01:34.956"></status>
+</kw>
+<status status="PASS" starttime="20211213 22:01:28.418" endtime="20211213 22:01:34.957" critical="yes"></status>
+</test>
+<doc>Nuuka-v2 - REST</doc>
+<status status="PASS" starttime="20211213 22:01:28.242" endtime="20211213 22:01:34.957"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="Connector Tests">Connector Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
