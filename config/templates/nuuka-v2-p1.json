@@ -14,13 +14,13 @@
         },
         "grantType": "${grantType}",
         "format": "${format}",
-        "path": "api/v2.0/GetConsumptionsByCategory?Building=${id}&startTime=${startTime}&endTime=${endTime}&EnergyTypeIDs=${dataTypes}&TimeGrouping=${TimeGrouping}&ShowMetaData=${ShowMetaData}&MeasurementSystem=${MeasurementSystem}&format=${format}"
+        "path": "api/v2.0/GetConsumptionsByCategory?Building=${id}&startTime=${startTime}&endTime=${endTime}&EnergyTypeIDs=${dataTypes}&TimeGrouping=hour&ShowMetaData=true&MeasurementSystem=SI&format=json"
     },
     "dataObjects": [""],
     "measurementType": {
         "1": "MeasureElectricityConsumptionKilowattHour",
         "2": "MeasureHeatingElectricityConsumptionKilowattHour",
-        "3": "OtherConsumption"
+        "3": "MeasureOtherConsumption"
     },
     "dataPropertyMappings": {
         "type": "EnergyTypeID",

@@ -24,8 +24,8 @@ ${DATA_TYPE_1}               MeasureElectricityConsumptionKilowattHour
 ${DATA_TYPE_2}               MeasureHeatingElectricityConsumptionKilowattHour
 
 @{DATA_TYPES_LIST}           
-#...                          ${DATA_TYPE_1}
-#...                          ${DATA_TYPE_2}
+...                          ${DATA_TYPE_1}
+...                          ${DATA_TYPE_2}
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
 ...                          dataTypes=@{DATA_TYPES_LIST}

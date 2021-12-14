@@ -2,13 +2,10 @@
 /**
  * Module dependencies.
  */
-const router = require('express').Router();
 const cache = require('../../app/cache');
-const rp = require('request-promise');
-const crypto = require('crypto');
 const winston = require('../../logger');
 const mrequest = require('request');
-
+const moment = require('moment')
 /**
  * OAuth2 authentication plugin.
  */
@@ -71,41 +68,15 @@ const updateToken = async (authConfig, refresh) => {
  */
 async function getTokenWithPassword(authConfig) {
 
-    var token;
-
-    const option = {
-        method: 'GET',
-        url: authConfig.url + authConfig.authPath,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        qs: {
-            userName: authConfig.email,
-            password: authConfig.password,
-            grantType: authConfig.grantType,
-            format: authConfig.format,
-        },
-        json: true,
-
-    };
-
     try {
-        
-        const token = await makeRequest(`https://nuukacustomerwebapi.azurewebsites.net/api/v2.0/ClientToken?userName=tapio.toivanen@eeneman.com&password=Tue0110_Cit5&grantType=password&format=json`);
+        const authurl = `${authConfig.url}/api/v2.0/ClientToken?userName=${authConfig.email}&password=${authConfig.password}&grantType=password&format=json`;
+        const token = await makeRequest(authurl);
         return Promise.resolve({ token });
     } catch (err) {
         console.error(err);
         return Promise.reject(err);
     }
-    // return rp(option).then(function (result) {
-    //     console.log("my token auth:", result);
-    //     return Promise.resolve({token: result});
-    // }).catch(function (err) {
-    //     console.log("my token error:", err);
-    //     return Promise.reject(err);
-    // });
 }
-
 
 
 /**
@@ -117,6 +88,7 @@ async function getTokenWithPassword(authConfig) {
  * @return {Promise} Grant
  */
 const requestToken = async (authConfig, refresh) => {
+
     // Get grant from cache (only for refresh purposes)
     let grant;
     grant = cache.getDoc('grants', authConfig.productCode);
@@ -156,12 +128,8 @@ const onerror = async (authConfig, err) => {
     switch (err.statusCode) {
         /** 401 - Unauthorized. */
         case 401:
-            /** SmartWatcher Senaatti specific response handling. */
-            if (authConfig.url === 'https://smartwatcher.northeurope.cloudapp.azure.com:4443/') {
-                return updateToken(authConfig, true);
-            } else {
-                return updateToken(authConfig, false);
-            }
+            return updateToken(authConfig, false);
+
         /** 403 - Token expired. */
         case 403:
             return updateToken(authConfig, true);
@@ -197,12 +165,6 @@ const request = async (config, options) => {
             if (!grant.token) return promiseRejectWithError(500, 'Authentication failed.');
         }
 
-        // const pathType = (options.url.split("?")[0]).split("/")[8];
-        // const newpathType = config.dataPropertyMappings[pathType] != undefined ? config.dataPropertyMappings[pathType] : pathType
-        // options.url = options.url.replace(pathType, newpathType);
-        // config.measurementType = pathType;
-        // Authorize request.
-        // options.headers.Authorization = grant.token;
         config.authConfig.headers.Authorization = grant.token;
         return options;
     }
@@ -220,42 +182,13 @@ const request = async (config, options) => {
  * @return {Object}
  */
 const parameters = async (config, parameters) => {
-
     try {
-        // const combine = ([head, ...[headTail, ...tailTail]]) => {
-        //     if (!headTail) return head;
-
-        //     const combined = headTail.reduce((acc, x) => {
-        //         return acc.concat(head.map(h => `{"id" : "${h}", "dataType": "${x}"}`))
-        //     }, []);
-
-        //     return combine([combined, ...tailTail]);
-        // }
-        // var combination = combine([parameters.ids, parameters.dataTypes]);
-        // parameters.ids = combination.map(JSON.parse);
         parameters.dataTypes = parameters.dataTypes.map((dataType) => {
             return config.static.dataTypes[dataType];
         }).join(",");
-        let startDate = parameters.start;
-        let endDate = parameters.end;
-        parameters.startTime = parameters.start;//startDate.valueOf();
-        parameters.endTime = parameters.end;//endDate.valueOf();
+        parameters.startTime = parameters.start;
+        parameters.endTime = parameters.end;
         return parameters;
-        // if (parameters.startTime && parameters.endTime) {
-        //     // Sort timestamps to correct order.
-        //     if (parameters.endTime < parameters.startTime) {
-        //         const start = parameters.endTime;
-        //         parameters.endTime = parameters.startTime;
-        //         parameters.startTime = start;
-        //     }
-        //     let time = parameters.endTime - parameters.startTime;
-        //     // if (time <= 86400000) {
-
-        //         return parameters;
-        //     // }
-        //     // else
-        //         // return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
-        // }
     } catch (err) {
         return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
     }
@@ -271,60 +204,9 @@ const parameters = async (config, parameters) => {
  */
 const data = async (config, data) => {
     const tmp = {};
-    // console.log("dat:", data);
     tmp[config.measurementType[`${data.type}`]] = data.value;
-    // tmp[config.dataPropertyMappings.GroupDescription] = data.GroupDescription;
-    // tmp[config.dataPropertyMappings.InformationID] = data.InformationID;
-    // tmp[config.dataPropertyMappings.Unit] = data.Unit;
     return tmp;
 };
-
-const getTimeDiff = (date) => {
-    let timezone_offset_min = date.getTimezoneOffset(),
-        offset_hrs = parseInt(Math.abs(timezone_offset_min / 60)),
-        offset_min = Math.abs(timezone_offset_min % 60),
-        timezone_standard;
-
-    if (offset_hrs < 10)
-        offset_hrs = '0' + offset_hrs;
-
-    if (offset_min < 10)
-        offset_min = '0' + offset_min;
-
-    // Add an opposite sign to the offset
-    // If offset is 0, it means timezone is UTC
-    if (timezone_offset_min <= 0)
-        timezone_standard = '+' + offset_hrs + ':' + offset_min;
-    else if (timezone_offset_min > 0)
-        timezone_standard = '-' + offset_hrs + ':' + offset_min;
-    else if (timezone_offset_min == 0)
-        timezone_standard = 'Z';
-
-    let dt = date,
-        current_date = dt.getDate(),
-        current_month = dt.getMonth() + 1,
-        current_year = dt.getFullYear(),
-        current_hrs = dt.getHours(),
-        current_mins = dt.getMinutes(),
-        current_secs = dt.getSeconds(),
-        current_datetime;
-
-    // Add 0 before date, month, hrs, mins or secs if they are less than 0
-    current_date = current_date < 10 ? '0' + current_date : current_date;
-    current_month = current_month < 10 ? '0' + current_month : current_month;
-    current_hrs = current_hrs < 10 ? '0' + current_hrs : current_hrs;
-    current_mins = current_mins < 10 ? '0' + current_mins : current_mins;
-    current_secs = current_secs < 10 ? '0' + current_secs : current_secs;
-
-    // Current datetime
-    // String such as 2016-07-16T19:20:30
-    current_datetime = current_year + '-' + current_month + '-' + current_date + 'T' + current_hrs + ':' + current_mins + ':' + current_secs;
-
-    // Timezone difference in hours and minutes
-    // String such as +5:30 or -6:00 or Z
-    return current_datetime + timezone_standard;
-}
-
 
 /**
  * Transforms output to Platform of Trust context schema.
@@ -334,6 +216,7 @@ const getTimeDiff = (date) => {
  * @return {Object}
  */
 const output = async (config, output) => {
+
     if (output.data.sensors.length === 0) {
         return promiseRejectWithError(500, 'Incorrect Parameters');
     }
@@ -342,10 +225,8 @@ const output = async (config, output) => {
         output.data.sensors.forEach(function (item) {
 
             item.measurements.forEach((date) => {
-                date.timestamp = getTimeDiff(date.timestamp);
+                date.timestamp = moment(date.timestamp).local().format();               
             });
-
-            // console.log(getTimeDiff(item.measurements[1].timestamp));
 
             var existing = arr.filter(function (v, i) {
                 return v.id == item.id;
@@ -379,6 +260,7 @@ const output = async (config, output) => {
  * @return {Object}
  */
 const response = async (config, data) => {
+
     try {
         // nuuka api call
         const res = await makeRequest(`${config.authConfig.url}${data}
@@ -403,8 +285,6 @@ const makeRequest = (url) => {
                     return reject (response);
                 }
             }
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-            console.log('body:', body); // Print the HTML for the Google homepage.
             return resolve(JSON.parse(body));
         });
     });
