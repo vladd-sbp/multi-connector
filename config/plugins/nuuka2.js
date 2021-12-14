@@ -33,9 +33,9 @@ const _ = require('lodash');
         config.authConfig.token = grant.token;
         options.url=options.url+`&$token=${grant.token}`
         for(var i=0;i<config.authConfig.measurementInfoPath.length;i++){
+            if(!config.authConfig.measurementInfoPath[i].includes('&$token'))
             config.authConfig.measurementInfoPath[i]=config.authConfig.measurementInfoPath[i]+`&$token=${grant.token}`
         }
-       
         return options;
     }
     catch (err) {
