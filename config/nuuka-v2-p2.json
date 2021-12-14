@@ -3,19 +3,14 @@
     "static": {
         "baseurl": "https://nuukacustomerwebapi.azurewebsites.net/api/v2.0", 
         "email": "",
-        "password": "",
-        "grantType": "password",
-        "format": "json",
-        "MeasurementSystem": "SI"
+        "password": ""
     },
     "dynamic": {
        "authConfig.path": [
             "ids",
             "start",
-            "end",
-            "MeasurementSystem",
-            "format",
-            "token"
+            "end"
+           
         ],
         "authConfig.measurementInfoPath": [
             "ids"

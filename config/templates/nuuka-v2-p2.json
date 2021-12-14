@@ -10,10 +10,10 @@
       "email": "${email}",
       "password": "${password}",
       "token":"",
-      "grantType": "${grantType}",
+      "grantType": "password",
       "format": "${format}",
-      "measurementInfoPath": "/GetMeasurementInfo/?BuildingID=${buildingId}&MeasurementSystem=${MeasurementSystem}&$format=${format}",
-      "path": "/GetMeasurementDataByIDs/?Building=${buildingId}&StartTime=${start}&EndTime=${end}&MeasurementSystem=${MeasurementSystem}&$format=${format}&TimestampTimeZone=UTCOffset&DataPointIDs=${dataPointId}"
+      "measurementInfoPath": "/GetMeasurementInfo/?BuildingID=${buildingId}&MeasurementSystem=SI&$format=json",
+      "path": "/GetMeasurementDataByIDs/?Building=${buildingId}&StartTime=${start}&EndTime=${end}&MeasurementSystem=SI&$format=json&TimestampTimeZone=UTCOffset&DataPointIDs=${dataPointId}"
     },
     "dataObjects": [],
     "dataPropertyMappings": {
