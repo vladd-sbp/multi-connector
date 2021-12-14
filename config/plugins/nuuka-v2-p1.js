@@ -233,7 +233,9 @@ const parameters = async (config, parameters) => {
         // }
         // var combination = combine([parameters.ids, parameters.dataTypes]);
         // parameters.ids = combination.map(JSON.parse);
-        parameters.dataTypes = null;
+        parameters.dataTypes = parameters.dataTypes.map((dataType) => {
+            return config.static.dataTypes[dataType];
+        }).join(",");
         let startDate = parameters.start;
         let endDate = parameters.end;
         parameters.startTime = parameters.start;//startDate.valueOf();

@@ -15,18 +15,18 @@ ${CONNECTOR_PATH}            /translator/v1/fetch
 ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
-${ID1}                         2410
-${ID2}                         2209
+${ID1}                       2410
+${ID2}                       2209
 ${STARTTIME}               	 2021-11-26T09:26:00+00:00
 ${ENDTIME}                 	 2021-11-27T09:26:00+00:00
 @{IDS}                       ${ID1}  ${ID2}
 ${DATA_TYPE_1}               MeasureElectricityConsumptionKilowattHour
 ${DATA_TYPE_2}               MeasureHeatingElectricityConsumptionKilowattHour
 
-@{DATA_TYPES_LIST}           ${DATA_TYPE_1}   ${DATA_TYPE_2}
+@{DATA_TYPES_LIST}           
+#...                          ${DATA_TYPE_1}
 #...                          ${DATA_TYPE_2}
 
-#@{DATA_TYPES}                &{DATA_TYPES_LIST}
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
 ...                          dataTypes=@{DATA_TYPES_LIST}
 ...                          startTime=${STARTTIME}
@@ -81,6 +81,6 @@ fetch, 200
     String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductOutput/Sensor/
     Object                response body data
     Array                 response body data sensors
-    Integer                response body data sensors 0 id
+    Integer               response body data sensors 0 id
     Array                 response body data sensors 0 measurements
     String                response body data sensors 0 measurements 0 @type
