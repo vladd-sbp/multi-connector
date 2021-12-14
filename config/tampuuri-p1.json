@@ -1,14 +1,14 @@
 {
-    "template": "tampu-uri",
+    "template": "tampuuri-p1",
     "static": {
        
         "baseurl": "https://api.tampuuri.fi/v10/api",
-        "TampuuriAvain": "",
-        "AsiakasNimi": "",
-        "Ohjelmistoversio": "",
-        "TiliNimi": "",
-        "Kayttajatunnus": "",
-        "Salasana": "",
+        "TampuuriAvain": "DFB95278-8E12-422D",
+        "AsiakasNimi": "Platform of trust",
+        "Ohjelmistoversio": "Pot-api-test",
+        "TiliNimi": "Vuokratalo-demo",
+        "Kayttajatunnus": "pot_api",
+        "Salasana": "$limBrain26",
         "Content-Type": "application/json"
         
        
