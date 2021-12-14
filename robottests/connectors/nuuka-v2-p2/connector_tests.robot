@@ -31,7 +31,7 @@ ${DATA_TYPE_4}               MeasureAirCO2LevelPPM
 @{DATA_TYPES_LIST}           
 ...                          ${DATA_TYPE_1}
 ...                          ${DATA_TYPE_2}
-#...                          ${DATA_TYPE_3}
+...                          ${DATA_TYPE_3}
 ...                          ${DATA_TYPE_4}
 
 &{BROKER_BODY_PARAMETERS}    ids=@{IDS}
