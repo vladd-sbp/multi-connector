@@ -1,15 +1,19 @@
 {
-    "template": "sensor",
+    "template": "nuuka-v2-p1",
     "static": {
         "url": "https://nuukacustomerwebapi.azurewebsites.net/",
-        "email": "",
-        "password": "",
+        "email": "tapio.toivanen%40eeneman.com",
+        "password": "Tue0110_Cit5",
         "grantType": "password",
         "format": "json",
         "MeasurementSystem": "SI",
         "ShowMetaData": "true",
         "TimeGrouping": "hour",
-        "EnergyTypeIDs": "1,2,3,4"
+        "dataTypes": {
+            "MeasureElectricityConsumptionKilowattHour": 1,
+            "MeasureHeatingElectricityConsumptionKilowattHour": 2,
+            "OtherConsumption": 3
+        }
     },
     "dynamic": {
         "dataPropertyMappings": "type",
@@ -17,7 +21,7 @@
             "ids",
             "startTime",
             "endTime",
-            "EnergyTypeIDs",
+            "dataTypes",
             "TimeGrouping",
             "ShowMetaData",
             "MeasurementSystem",
