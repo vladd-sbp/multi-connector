@@ -2,8 +2,8 @@
     "template": "nuuka-v2-p1",
     "static": {
         "url": "https://nuukacustomerwebapi.azurewebsites.net/",
-        "email": "tapio.toivanen@eeneman.com",
-        "password": "Tue0110_Cit5",
+        "email": "",
+        "password": "",
         "dataTypes": {
             "MeasureElectricityConsumptionKilowattHour": 1,
             "MeasureHeatingElectricityConsumptionKilowattHour": 2,
