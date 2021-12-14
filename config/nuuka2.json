@@ -1,0 +1,32 @@
+{
+    "template": "nuuka2",
+    "static": {
+        "baseurl": "https://nuukacustomerwebapi.azurewebsites.net/api/v2.0", 
+        "email": "",
+        "password": "",
+        "grantType": "password",
+        "format": "json",
+        "MeasurementSystem": "SI"
+    },
+    "dynamic": {
+       "authConfig.path": [
+            "ids",
+            "start",
+            "end",
+            "MeasurementSystem",
+            "format",
+            "token"
+        ],
+        "authConfig.measurementInfoPath": [
+            "ids"
+        ]
+    },
+    "request": {
+        "ids": [
+            {
+              "buildingId": "<buildingId>",
+              "dataPointId": "<dataPointId>"
+            }
+          ]
+    }  
+}
