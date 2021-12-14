@@ -11,3 +11,4 @@ npm-debug.log
 .greenlockrc
 yarn.lock
 .env
+**/result
