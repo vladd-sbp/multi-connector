@@ -1,0 +1,35 @@
+{
+    "template": "nuuka-v2-p1",
+    "static": {
+        "url": "https://nuukacustomerwebapi.azurewebsites.net/",
+        "email": "tapio.toivanen@eeneman.com",
+        "password": "Tue0110_Cit5",
+        "grantType": "password",
+        "format": "json",
+        "MeasurementSystem": "SI",
+        "ShowMetaData": "true",
+        "TimeGrouping": "hour",
+        "dataTypes": {
+            "MeasureElectricityConsumptionKilowattHour": 1,
+            "MeasureHeatingElectricityConsumptionKilowattHour": 2,
+            "OtherConsumption": 3
+        }
+    },
+    "dynamic": {
+        "dataPropertyMappings": "type",
+        "authConfig.path": [
+            "ids",
+            "startTime",
+            "endTime",
+            "dataTypes",
+            "TimeGrouping",
+            "ShowMetaData",
+            "MeasurementSystem",
+            "format",
+            "token"
+        ]
+    },
+    "request": {
+        "ids": "<configId>"
+    }
+}

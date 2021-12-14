@@ -1,6 +1,6 @@
 {
     "plugins": [
-      "nuuka2"
+      "nuuka-v2-p2"
     ],
     "protocol": "rest",
     "authConfig": {
