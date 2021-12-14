@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/tampu-uri/result
+connectors/tampu-uri/connector_tests.robot

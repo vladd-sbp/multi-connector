@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 3.2.2 (Python 3.6.8 on win32)" generated="20211214 21:38:37.030" rpa="false">
+<suite id="s1" name="Connector Tests" source="C:\apps\multi-connector-old\robottests\connectors\tampu-uri\connector_tests.robot">
+<test id="s1-t1" name="fetch, 200">
+<kw name="Get Body">
+<assign>
+<var>${body}</var>
+</assign>
+<kw name="Copy Dictionary" library="Collections">
+<doc>Returns a copy of the given dictionary.</doc>
+<arguments>
+<arg>${BROKER_BODY}</arg>
+<arg>deepcopy=True</arg>
+</arguments>
+<assign>
+<var>${body}</var>
+</assign>
+<msg timestamp="20211214 21:38:37.382" level="INFO">${body} = {'productCode': 'tampu-uri', 'parameters': {'ids': ['31070', '31071'], 'startTime': '2021-11-26T09:26:00+00:00', 'endTime': '2021-11-27T09:26:00+00:00'}}</msg>
+<status status="PASS" starttime="20211214 21:38:37.382" endtime="20211214 21:38:37.382"></status>
+</kw>
+<kw name="Get Current Date" library="DateTime">
+<doc>Returns current local or UTC time with an optional increment.</doc>
+<arguments>
+<arg>time_zone=UTC</arg>
+<arg>result_format=%Y-%m-%dT%H:%M:%S+00:00</arg>
+</arguments>
+<assign>
+<var>${now}</var>
+</assign>
+<msg timestamp="20211214 21:38:37.382" level="INFO">${now} = 2021-12-14T16:08:37+00:00</msg>
+<status status="PASS" starttime="20211214 21:38:37.382" endtime="20211214 21:38:37.382"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>timestamp</arg>
+<arg>${now}</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:37.383" endtime="20211214 21:38:37.383"></status>
+</kw>
+<kw name="Set To Dictionary" library="Collections">
+<doc>Adds the given ``key_value_pairs`` and ``items`` to the ``dictionary``.</doc>
+<arguments>
+<arg>${body}</arg>
+<arg>&amp;{kwargs}</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:37.383" endtime="20211214 21:38:37.383"></status>
+</kw>
+<kw name="Evaluate" library="BuiltIn">
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<arguments>
+<arg>json.dumps(${body})</arg>
+<arg>json</arg>
+</arguments>
+<assign>
+<var>${json_string}</var>
+</assign>
+<msg timestamp="20211214 21:38:37.384" level="INFO">${json_string} = {"productCode": "tampu-uri", "parameters": {"ids": ["31070", "31071"], "startTime": "2021-11-26T09:26:00+00:00", "endTime": "2021-11-27T09:26:00+00:00"}, "timestamp": "2021-12-14T16:08:37+00:00"}</msg>
+<status status="PASS" starttime="20211214 21:38:37.383" endtime="20211214 21:38:37.384"></status>
+</kw>
+<msg timestamp="20211214 21:38:37.384" level="INFO">${body} = {'productCode': 'tampu-uri', 'parameters': {'ids': ['31070', '31071'], 'startTime': '2021-11-26T09:26:00+00:00', 'endTime': '2021-11-27T09:26:00+00:00'}, 'timestamp': '2021-12-14T16:08:37+00:00'}</msg>
+<status status="PASS" starttime="20211214 21:38:37.381" endtime="20211214 21:38:37.384"></status>
+</kw>
+<kw name="Fetch Data Product">
+<arguments>
+<arg>${body}</arg>
+</arguments>
+<kw name="Calculate Pot Signature" library="PoTLib">
+<arguments>
+<arg>${body}</arg>
+<arg>${CLIENT_SECRET}</arg>
+</arguments>
+<assign>
+<var>${signature}</var>
+</assign>
+<msg timestamp="20211214 21:38:37.386" level="INFO">${signature} = 4NYx+7gkwMns0tQqD1jDsdPFJhe36MqdKXpCJgtyHnQ=</msg>
+<status status="PASS" starttime="20211214 21:38:37.385" endtime="20211214 21:38:37.386"></status>
+</kw>
+<kw name="Set Headers" library="REST">
+<tags>
+<tag>settings</tag>
+</tags>
+<doc>*Sets new request headers or updates the existing.*</doc>
+<arguments>
+<arg>{"x-pot-signature": "${signature}", "x-app-token": "${APP_TOKEN}"}</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:37.386" endtime="20211214 21:38:37.386"></status>
+</kw>
+<kw name="POST" library="REST">
+<tags>
+<tag>http</tag>
+</tags>
+<doc>*Sends a POST request to the endpoint.*</doc>
+<arguments>
+<arg>${CONNECTOR_PATH}</arg>
+<arg>${body}</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:37.386" endtime="20211214 21:38:43.203"></status>
+</kw>
+<kw name="Output Schema" library="REST">
+<tags>
+<tag>I/O</tag>
+</tags>
+<doc>*Outputs JSON Schema to terminal or a file.*</doc>
+<arguments>
+<arg>response body</arg>
+</arguments>
+<msg timestamp="20211214 21:38:43.203" level="INFO">
+{
+    "type": "object",
+    "properties": {
+        "@context": {
+            "type": "string",
+            "default": "https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "serviceRequest": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "@type": {
+                                "type": "string"
+                            },
+                            "idLocal": {
+                                "type": "integer"
+                            },
+                            "descriptionGeneral": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "array"
+                            },
+                            "statusCode": {
+                                "type": "array"
+                            },
+                            "categorizationLocal": {
+                                "type": "string"
+                            },
+                            "categorizationLocalCode": {
+                                "type": "string"
+                            },
+                            "categorizationLocalPriorityCode": {
+                                "type": "string"
+                            },
+                            "categorizationLocalPriority": {
+                                "type": "string"
+                            },
+                            "categorizationLocalPriorityOrder": {
+                                "type": "string"
+                            },
+                            "canStart": {
+                                "type": "null"
+                            },
+                            "canEnd": {
+                                "type": "null"
+                            },
+                            "created": {
+                                "type": "string"
+                            },
+                            "duration": {
+                                "type": "string"
+                            },
+                            "costLocation": {
+                                "type": "string"
+                            },
+                            "parentObject": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "null"
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "idLocal"
+                                ]
+                            },
+                            "location": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "streetAddressLine1": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "string"
+                                    },
+                                    "space": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "idLocal": {
+                                                "type": [
+                                                    "integer",
+                                                    "null"
+                                                ]
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "idLocal",
+                                            "name"
+                                        ]
+                                    },
+                                    "organization": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "idLocal": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "idLocal",
+                                            "name"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "idLocal",
+                                    "organization",
+                                    "space",
+                                    "streetAddressLine1"
+                                ]
+                            },
+                            "creator": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "idLocal",
+                                    "name"
+                                ]
+                            },
+                            "requestor": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "organization": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "name"
+                                        ]
+                                    },
+                                    "contact": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "streetAddressLine1": {
+                                                "type": "string"
+                                            },
+                                            "postalCode": {
+                                                "type": "string"
+                                            },
+                                            "postalArea": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber2": {
+                                                "type": "string"
+                                            },
+                                            "addressEmail": {
+                                                "type": "string"
+                                            },
+                                            "security": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "addressEmail",
+                                            "phoneNumber",
+                                            "phoneNumber2",
+                                            "postalArea",
+                                            "postalCode",
+                                            "security",
+                                            "streetAddressLine1"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "contact",
+                                    "idLocal",
+                                    "name",
+                                    "organization"
+                                ]
+                            },
+                            "requestHandler": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "idLocal",
+                                    "name"
+                                ]
+                            },
+                            "orderer": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "contact": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "streetAddressLine1": {
+                                                "type": "string"
+                                            },
+                                            "postalCode": {
+                                                "type": "string"
+                                            },
+                                            "postalArea": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber2": {
+                                                "type": "string"
+                                            },
+                                            "addressEmail": {
+                                                "type": "string"
+                                            },
+                                            "security": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "addressEmail",
+                                            "phoneNumber",
+                                            "phoneNumber2",
+                                            "postalArea",
+                                            "postalCode",
+                                            "security",
+                                            "streetAddressLine1"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "contact",
+                                    "idLocal",
+                                    "name"
+                                ]
+                            },
+                            "payer": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "idLocal": {
+                                        "type": "string"
+                                    },
+                                    "contact": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "streetAddressLine1": {
+                                                "type": "string"
+                                            },
+                                            "postalCode": {
+                                                "type": "string"
+                                            },
+                                            "postalArea": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber2": {
+                                                "type": "string"
+                                            },
+                                            "addressEmail": {
+                                                "type": "string"
+                                            },
+                                            "security": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "addressEmail",
+                                            "phoneNumber",
+                                            "phoneNumber2",
+                                            "postalArea",
+                                            "postalCode",
+                                            "security",
+                                            "streetAddressLine1"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "contact",
+                                    "idLocal",
+                                    "name"
+                                ]
+                            },
+                            "process": {
+                                "type": "object",
+                                "properties": {
+                                    "@type": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "descriptionGeneral": {
+                                        "type": "string"
+                                    },
+                                    "additionalInformation": {
+                                        "type": "string"
+                                    },
+                                    "travelKilometers": {
+                                        "type": "string"
+                                    },
+                                    "costEstimation": {
+                                        "type": "string"
+                                    },
+                                    "refundAmount": {
+                                        "type": "string"
+                                    },
+                                    "mustDone": {
+                                        "type": "string"
+                                    },
+                                    "contact": {
+                                        "type": "object",
+                                        "properties": {
+                                            "@type": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "phoneNumber": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "@type",
+                                            "name",
+                                            "phoneNumber"
+                                        ]
+                                    },
+                                    "executor": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "@type": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "idLocal": {
+                                                    "type": [
+                                                        "integer",
+                                                        "null"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "@type",
+                                                "idLocal",
+                                                "name"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "@type",
+                                    "additionalInformation",
+                                    "contact",
+                                    "costEstimation",
+                                    "descriptionGeneral",
+                                    "executor",
+                                    "mustDone",
+                                    "name",
+                                    "refundAmount",
+                                    "travelKilometers"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "@type",
+                            "canEnd",
+                            "canStart",
+                            "categorizationLocal",
+                            "categorizationLocalCode",
+                            "categorizationLocalPriority",
+                            "categorizationLocalPriorityCode",
+                            "categorizationLocalPriorityOrder",
+                            "costLocation",
+                            "created",
+                            "creator",
+                            "descriptionGeneral",
+                            "duration",
+                            "idLocal",
+                            "location",
+                            "orderer",
+                            "parentObject",
+                            "payer",
+                            "process",
+                            "requestHandler",
+                            "requestor",
+                            "status",
+                            "statusCode"
+                        ]
+                    },
+                    "default": [
+                        {
+                            "@type": "Case",
+                            "idLocal": 31070,
+                            "descriptionGeneral": "",
+                            "status": [],
+                            "statusCode": [],
+                            "categorizationLocal": "pienkorjaus (yleiset tilat)",
+                            "categorizationLocalCode": "",
+                            "categorizationLocalPriorityCode": "",
+                            "categorizationLocalPriority": "Sopimuksen mukaan",
+                            "categorizationLocalPriorityOrder": "",
+                            "canStart": null,
+                            "canEnd": null,
+                            "created": "2017-11-06T09:38:00",
+                            "duration": "",
+                            "costLocation": "",
+                            "parentObject": {
+                                "@type": "Object",
+                                "idLocal": null
+                            },
+                            "location": {
+                                "@type": "Location",
+                                "streetAddressLine1": "",
+                                "idLocal": "",
+                                "space": {
+                                    "@type": "Space",
+                                    "idLocal": null,
+                                    "name": ""
+                                },
+                                "organization": {
+                                    "@type": "Organization",
+                                    "name": "1 As Oy Mukavat",
+                                    "idLocal": 114638
+                                }
+                            },
+                            "creator": {
+                                "@type": "Organization",
+                                "idLocal": 1,
+                                "name": "Tampuuri Demokäyttäjä / Demoyritys 18759"
+                            },
+                            "requestor": {
+                                "@type": "Person",
+                                "idLocal": 1,
+                                "name": "Tampuuri Demokäyttäjä",
+                                "organization": {
+                                    "@type": "Organization",
+                                    "name": ""
+                                },
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "Rantapolku 21 A 5",
+                                    "postalCode": "00320",
+                                    "postalArea": "Pälkäne",
+                                    "phoneNumber": "0438253226",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "testi@visma.com",
+                                    "security": false
+                                }
+                            },
+                            "requestHandler": {
+                                "@type": "Organization",
+                                "idLocal": "",
+                                "name": ""
+                            },
+                            "orderer": {
+                                "@type": "Organization",
+                                "idLocal": 18759,
+                                "name": "123 Visma &amp; Tampuuri Oy",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "Vismakatu 1 ",
+                                    "postalCode": "99999",
+                                    "postalArea": "Testilä",
+                                    "phoneNumber": "0501234565555",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "noreply@talokeskus.fi",
+                                    "security": false
+                                }
+                            },
+                            "payer": {
+                                "@type": "Organization",
+                                "name": " As Oy Mukavat",
+                                "idLocal": "",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "",
+                                    "postalCode": "",
+                                    "postalArea": "Turun seutu",
+                                    "phoneNumber": "",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "",
+                                    "security": false
+                                }
+                            },
+                            "process": {
+                                "@type": "Process",
+                                "name": "asas",
+                                "descriptionGeneral": "asas",
+                                "additionalInformation": "Lisätietoja tähän. Ja tähän.",
+                                "travelKilometers": "",
+                                "costEstimation": "",
+                                "refundAmount": "",
+                                "mustDone": "",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "name": "",
+                                    "phoneNumber": ""
+                                },
+                                "executor": [
+                                    {
+                                        "@type": "Organization",
+                                        "name": "Demoyritys 18759",
+                                        "idLocal": 18759
+                                    },
+                                    {
+                                        "@type": "Person",
+                                        "name": "",
+                                        "idLocal": null
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "@type": "Case",
+                            "idLocal": 31071,
+                            "descriptionGeneral": "",
+                            "status": [],
+                            "statusCode": [],
+                            "categorizationLocal": "asuntokorjaus",
+                            "categorizationLocalCode": "",
+                            "categorizationLocalPriorityCode": "",
+                            "categorizationLocalPriority": "Heti",
+                            "categorizationLocalPriorityOrder": "",
+                            "canStart": null,
+                            "canEnd": null,
+                            "created": "2017-11-06T09:42:23.363",
+                            "duration": "",
+                            "costLocation": "",
+                            "parentObject": {
+                                "@type": "Object",
+                                "idLocal": null
+                            },
+                            "location": {
+                                "@type": "Location",
+                                "streetAddressLine1": "",
+                                "idLocal": "",
+                                "space": {
+                                    "@type": "Space",
+                                    "idLocal": 116531,
+                                    "name": "Roboasunto 2"
+                                },
+                                "organization": {
+                                    "@type": "Organization",
+                                    "name": "22062017 xRobottiKP",
+                                    "idLocal": 114757
+                                }
+                            },
+                            "creator": {
+                                "@type": "Organization",
+                                "idLocal": 1,
+                                "name": "Tampuuri Demokäyttäjä / Demoyritys 18759"
+                            },
+                            "requestor": {
+                                "@type": "Person",
+                                "idLocal": 1,
+                                "name": "Tampuuri Demokäyttäjä",
+                                "organization": {
+                                    "@type": "Organization",
+                                    "name": ""
+                                },
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "Rantapolku 21 A 5",
+                                    "postalCode": "00320",
+                                    "postalArea": "Pälkäne",
+                                    "phoneNumber": "0438253226",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "testi@visma.com",
+                                    "security": false
+                                }
+                            },
+                            "requestHandler": {
+                                "@type": "Organization",
+                                "idLocal": "",
+                                "name": ""
+                            },
+                            "orderer": {
+                                "@type": "Organization",
+                                "idLocal": null,
+                                "name": "",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "",
+                                    "postalCode": "",
+                                    "postalArea": "",
+                                    "phoneNumber": "",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "",
+                                    "security": false
+                                }
+                            },
+                            "payer": {
+                                "@type": "Organization",
+                                "name": "",
+                                "idLocal": "",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "streetAddressLine1": "",
+                                    "postalCode": "",
+                                    "postalArea": "",
+                                    "phoneNumber": "",
+                                    "phoneNumber2": "",
+                                    "addressEmail": "",
+                                    "security": false
+                                }
+                            },
+                            "process": {
+                                "@type": "Process",
+                                "name": "test ap",
+                                "descriptionGeneral": "test antti p",
+                                "additionalInformation": "",
+                                "travelKilometers": "",
+                                "costEstimation": "",
+                                "refundAmount": "",
+                                "mustDone": "",
+                                "contact": {
+                                    "@type": "ContactInformation",
+                                    "name": "",
+                                    "phoneNumber": ""
+                                },
+                                "executor": [
+                                    {
+                                        "@type": "Organization",
+                                        "name": "xRobocompany",
+                                        "idLocal": 100065
+                                    },
+                                    {
+                                        "@type": "Person",
+                                        "name": "",
+                                        "idLocal": null
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "serviceRequest"
+            ]
+        },
+        "signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "RsaSignature2018"
+                },
+                "created": {
+                    "type": "string",
+                    "default": "2021-12-14T21:38:43+05:30"
+                },
+                "creator": {
+                    "type": "string",
+                    "default": "http://localhost:8080/translator/v1/public.key"
+                },
+                "signatureValue": {
+                    "type": "string",
+                    "default": "XGJpurW0eJNEenu3cLeZo+757jcSCv57wpZKBxO4ld+gFZP8jIrueVQ46JXtjDDOxBchJJ7ZKcfXJhiUMpjpoZqwDjkIc7y8V7g5zzUV4CK/OGuwdbS/RgvVz6By+6u0N6VOKM8dlMXSka/9+aP0EpNBfyr0xTOrv3pgEHSJ7zUVDvdD2Ulc0r+33bR5iG3MZynwxMPlQOyBzWV/81EQ1DmN1KngVPktcjfDPBfIzlAZmcVCcPq5x7MhZjfq1Y2mBgF9VYLztKA5bmH6S8pA73NOD2LdLnS64UPivjz1m1khrLM9jZL9jkx5S/E3s/lhi+UPghkTdJ3rJumxmVtvmr+Pm2dqVZCNAktf5Yhq3u7aMkA5FnMSz4JMCRCisjHZUmEpILbMQhXaCfjUzR2r7zLr5Zkc7yowRidhKoiWGpd8nVhLkBarc5HD8E91dhw/LZJ3SkeC9ScIQznP5u062hOwDLa393L0Stwuf+lgxUmaxNhJOcv3/xyX/a/h4kMTOAH4CMwxChMim/a8LHHdM1EM7uoHMbD7tYjLi3xGmD/RVT3m3J01bioY7SmgXyAYvkhL3sgNj6iCgU9Xz8Us3BiZgOtMCTpLcZad29Dp8y9gobZ8SaOuR0+pj57qkYnoMQjRBGRp45rR0IgH7kjQp1FADVCIf6xFEoqO7x4Itz0="
+                }
+            },
+            "required": [
+                "created",
+                "creator",
+                "signatureValue",
+                "type"
+            ]
+        }
+    },
+    "required": [
+        "@context",
+        "data",
+        "signature"
+    ]
+}</msg>
+<status status="PASS" starttime="20211214 21:38:43.203" endtime="20211214 21:38:43.338"></status>
+</kw>
+<status status="PASS" starttime="20211214 21:38:37.385" endtime="20211214 21:38:43.338"></status>
+</kw>
+<kw name="Integer" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON integer.*</doc>
+<arguments>
+<arg>response status</arg>
+<arg>200</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:43.338" endtime="20211214 21:38:43.341"></status>
+</kw>
+<kw name="String" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON string.*</doc>
+<arguments>
+<arg>response body @context</arg>
+<arg>https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:43.341" endtime="20211214 21:38:43.344"></status>
+</kw>
+<kw name="Object" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON object.*</doc>
+<arguments>
+<arg>response body data</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:43.344" endtime="20211214 21:38:43.388"></status>
+</kw>
+<kw name="Array" library="REST">
+<tags>
+<tag>assertions</tag>
+</tags>
+<doc>*Asserts the field as JSON array.*</doc>
+<arguments>
+<arg>response body data serviceRequest</arg>
+</arguments>
+<status status="PASS" starttime="20211214 21:38:43.388" endtime="20211214 21:38:43.423"></status>
+</kw>
+<status status="PASS" starttime="20211214 21:38:37.381" endtime="20211214 21:38:43.423" critical="yes"></status>
+</test>
+<doc>tampu-uri - REST</doc>
+<status status="PASS" starttime="20211214 21:38:37.036" endtime="20211214 21:38:43.424"></status>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0">Critical Tests</stat>
+<stat pass="1" fail="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" id="s1" name="Connector Tests">Connector Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
