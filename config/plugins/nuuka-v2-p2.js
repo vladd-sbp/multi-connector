@@ -273,7 +273,7 @@ const output = async (config, output) => {
 }
 
 module.exports = {
-    name: 'nuuka2',
+    name: 'nuuka-v2-p2',
     request,
     onerror,
     output,

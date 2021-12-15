@@ -291,7 +291,7 @@ const makeRequest = (url) => {
 }
 
 module.exports = {
-    name: 'sensor',
+    name: 'nuuka-v2-p1',
     request,
     onerror,
     data,
