@@ -1,0 +1,26 @@
+{
+    "template": "nuuka-v2-p1",
+    "static": {
+        "url": "https://nuukacustomerwebapi.azurewebsites.net/",
+        "email": "",
+        "password": "",
+        "dataTypes": {
+            "MeasureElectricityConsumptionKilowattHour": 1,
+            "MeasureHeatingElectricityConsumptionKilowattHour": 2,
+            "OtherConsumption": 3
+        }
+    },
+    "dynamic": {
+        "dataPropertyMappings": "type",
+        "authConfig.path": [
+            "ids",
+            "startTime",
+            "endTime",
+            "dataTypes",
+            "token"
+        ]
+    },
+    "request": {
+        "ids": "<configId>"
+    }
+}

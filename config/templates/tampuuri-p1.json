@@ -1,0 +1,44 @@
+{
+    "plugins": [
+      "tampuuri-p1"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${baseurl}",
+     
+      "method":"GET",
+      "headers": {
+        "X-TampuuriAvain": "${TampuuriAvain}",
+        "X-AsiakasNimi": "${AsiakasNimi}",
+        "X-Ohjelmistoversio": "${Ohjelmistoversio}",
+        "X-TiliNimi": "${TiliNimi}",
+        "X-Kayttajatunnus": "${Kayttajatunnus}",
+        "X-Salasana": "${Salasana}",
+        "Content-Type": "${Content-Type}"
+      },
+        "path": "/ilmoitukset/${id}"
+    },
+    "dataObjects": [],
+   
+    
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+      
+    },
+    "input": {
+      "required": [
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/",
+      "object": "data",
+    
+      "array": "serviceRequest",
+   
+      "value": "value",
+      "data": "measurements",
+      "id": "id"
+    }
+  }

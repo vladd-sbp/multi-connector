@@ -1,0 +1,52 @@
+{
+    "plugins": [
+      "nuuka-v2-p2"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${baseurl}",
+      "method":"GET",
+      "authPath": "/ClientToken",
+      "email": "${email}",
+      "password": "${password}",
+      "token":"",
+      "grantType": "password",
+      "format": "${format}",
+      "measurementInfoPath": "/GetMeasurementInfo/?BuildingID=${buildingId}&MeasurementSystem=SI&$format=json",
+      "path": "/GetMeasurementDataByIDs/?Building=${buildingId}&StartTime=${start}&EndTime=${end}&MeasurementSystem=SI&$format=json&TimestampTimeZone=UTCOffset&DataPointIDs=${dataPointId}"
+    },
+    "dataObjects": [],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "defaultDataTypes":[
+      "MeasureAirTemperatureCelsiusDegree",
+      "MeasureAirCO2LevelPPM",
+      "MeasureHeatingElectricityConsumptionKilowattHour",
+      "MeasureElectricityConsumptionKilowattHour"
+    ],
+    "measurementUnit": {
+      "indoor conditions: temperature": "MeasureAirTemperatureCelsiusDegree",
+      "indoor conditions: co2": "MeasureAirCO2LevelPPM",
+      "heating": "MeasureHeatingElectricityConsumptionKilowattHour",
+      "electricity":"MeasureElectricityConsumptionKilowattHour"
+    },
+    "generalConfig": {
+        "query": {}
+    },
+    "input": {
+      "required": [
+        "parameters.startTime",
+        "parameters.endTime",
+        "parameters.ids"
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "object": "data",
+      "array": "sensors",
+      "value": "result",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
