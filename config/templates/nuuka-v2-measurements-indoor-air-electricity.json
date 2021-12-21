@@ -1,6 +1,6 @@
 {
     "plugins": [
-      "nuuka-v2-p2"
+      "nuuka-v2-measurements-indoor-air-electricity"
     ],
     "protocol": "rest",
     "authConfig": {

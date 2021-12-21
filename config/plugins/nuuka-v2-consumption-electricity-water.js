@@ -224,8 +224,11 @@ const output = async (config, output) => {
         var arr = [];
         output.data.sensors.forEach(function (item) {
 
-            item.measurements.forEach((date) => {
-                date.timestamp = moment(date.timestamp).local().format();               
+            item.measurements.forEach((data) => {
+                data.timestamp = moment(data.timestamp).local().format();
+                if (data["@type"] === "MeasureWaterConsumptionLiter") {
+                    data.value = data.value * 3000;
+                }            
             });
 
             var existing = arr.filter(function (v, i) {
@@ -233,6 +236,7 @@ const output = async (config, output) => {
             });
             if (existing.length) {
                 var existingIndex = arr.indexOf(existing[0]);
+                console.log(item.measurements);
                 arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
             } else {
                 arr.push(item);

@@ -1,5 +1,5 @@
 {
-    "template": "nuuka-v2-p1",
+    "template": "nuuka-v2-consumption-electricity-water",
     "static": {
         "url": "https://nuukacustomerwebapi.azurewebsites.net/",
         "email": "",
@@ -7,7 +7,8 @@
         "dataTypes": {
             "MeasureElectricityConsumptionKilowattHour": 1,
             "MeasureHeatingElectricityConsumptionKilowattHour": 2,
-            "OtherConsumption": 3
+            "MeasureWaterConsumptionLiter" : 3,
+            "MeasureCoolingElectricityConsumptionKilowattHour" : 4
         }
     },
     "dynamic": {

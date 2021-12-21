@@ -1,5 +1,5 @@
 {
-    "template": "nuuka-v2-p2",
+    "template": "nuuka-v2-measurements-indoor-air-electricity",
     "static": {
         "baseurl": "https://nuukacustomerwebapi.azurewebsites.net/api/v2.0", 
         "email": "",
