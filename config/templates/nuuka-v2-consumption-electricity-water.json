@@ -1,6 +1,6 @@
 {
     "plugins": [
-        "nuuka-v2-p1"
+        "nuuka-v2-consumption-electricity-water"
     ],
     "protocol": "custom",
     "authConfig": {
@@ -20,7 +20,8 @@
     "measurementType": {
         "1": "MeasureElectricityConsumptionKilowattHour",
         "2": "MeasureHeatingElectricityConsumptionKilowattHour",
-        "3": "MeasureOtherConsumption"
+        "3": "MeasureWaterConsumptionLiter",
+        "4" : "MeasureCoolingElectricityConsumptionKilowattHour"
     },
     "dataPropertyMappings": {
         "type": "EnergyTypeID",

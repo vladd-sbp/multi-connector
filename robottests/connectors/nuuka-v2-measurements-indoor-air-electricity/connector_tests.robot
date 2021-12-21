@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     tampu-uri - REST
+Documentation     nuuka-v2-measurements-indoor-air-electricity - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
@@ -16,16 +16,26 @@ ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
 
-${ID1}                       31070
-${ID2}                       31071
+&{ID1}                       buildingId=2410  dataPointId=48268
+&{ID2}                       buildingId=2410  dataPointId=48268
 ${STARTTIME}               	 2021-11-26T09:26:00+00:00
 ${ENDTIME}                 	 2021-11-27T09:26:00+00:00
 @{IDS}                       
 ...                          ${ID1}
-...                          ${ID2}
+#...                          ${ID2}
+${DATA_TYPE_1}               MeasureElectricityConsumptionKilowattHour
+${DATA_TYPE_2}               MeasureHeatingElectricityConsumptionKilowattHour
+${DATA_TYPE_3}               MeasureAirTemperatureCelsiusDegree
+${DATA_TYPE_4}               MeasureAirCO2LevelPPM
 
+@{DATA_TYPES_LIST}           
+...                          ${DATA_TYPE_1}
+...                          ${DATA_TYPE_2}
+...                          ${DATA_TYPE_3}
+...                          ${DATA_TYPE_4}
 
-&{BROKER_BODY_PARAMETERS}    ids=@{IDS}                
+&{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+...                          dataTypes=@{DATA_TYPES_LIST}
 ...                          startTime=${STARTTIME}
 ...                          endTime=${ENDTIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
@@ -75,8 +85,9 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/
+    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/
     Object                response body data
-    Array                 response body data serviceRequest
-  
-  
+    Array                 response body data sensors
+    Object                response body data sensors 0 id
+    Array                 response body data sensors 0 measurements
+    String                response body data sensors 0 measurements 0 @type

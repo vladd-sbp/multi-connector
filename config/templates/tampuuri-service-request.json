@@ -1,6 +1,6 @@
 {
     "plugins": [
-      "tampuuri-p1"
+      "tampuuri-service-request"
     ],
     "protocol": "rest",
     "authConfig": {
