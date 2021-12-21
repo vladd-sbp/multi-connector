@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation     Nuuka-v2 - REST
+Documentation     nuuka-v2-consumption-electricity-water - REST
 Library           Collections
 Library           DateTime
 Library           PoTLib
