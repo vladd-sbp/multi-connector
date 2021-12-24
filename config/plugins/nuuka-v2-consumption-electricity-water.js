@@ -2,11 +2,10 @@
 /**
  * Module dependencies.
  */
-const router = require('express').Router();
 const cache = require('../../app/cache');
-const rp = require('request-promise');
-const crypto = require('crypto');
-
+const winston = require('../../logger');
+const mrequest = require('request');
+const moment = require('moment')
 /**
  * OAuth2 authentication plugin.
  */
@@ -67,32 +66,17 @@ const updateToken = async (authConfig, refresh) => {
  * @param {Object} authConfig
  * @return {Promise}
  */
-function getTokenWithPassword(authConfig) {
+async function getTokenWithPassword(authConfig) {
 
-    var token;
-
-    const option = {
-        method: 'POST',
-        url: authConfig.url + authConfig.authPath,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: {
-
-            email: authConfig.email,
-            password: authConfig.password,
-
-        },
-        json: true,
-
-    };
-    return rp(option).then(function (result) {
-        return Promise.resolve(result);
-    }).catch(function (err) {
+    try {
+        const authurl = `${authConfig.url}/api/v2.0/ClientToken?userName=${authConfig.email}&password=${authConfig.password}&grantType=password&format=json`;
+        const token = await makeRequest(authurl);
+        return Promise.resolve({ token });
+    } catch (err) {
+        console.error(err);
         return Promise.reject(err);
-    });
+    }
 }
-
 
 
 /**
@@ -104,6 +88,7 @@ function getTokenWithPassword(authConfig) {
  * @return {Promise} Grant
  */
 const requestToken = async (authConfig, refresh) => {
+
     // Get grant from cache (only for refresh purposes)
     let grant;
     grant = cache.getDoc('grants', authConfig.productCode);
@@ -143,12 +128,8 @@ const onerror = async (authConfig, err) => {
     switch (err.statusCode) {
         /** 401 - Unauthorized. */
         case 401:
-            /** SmartWatcher Senaatti specific response handling. */
-            if (authConfig.url === 'https://smartwatcher.northeurope.cloudapp.azure.com:4443/') {
-                return updateToken(authConfig, true);
-            } else {
-                return updateToken(authConfig, false);
-            }
+            return updateToken(authConfig, false);
+
         /** 403 - Token expired. */
         case 403:
             return updateToken(authConfig, true);
@@ -183,12 +164,8 @@ const request = async (config, options) => {
             grant = await requestToken(config.authConfig);
             if (!grant.token) return promiseRejectWithError(500, 'Authentication failed.');
         }
-        const pathType = (options.url.split("?")[0]).split("/")[8];
-        const newpathType = config.dataPropertyMappings[pathType] != undefined ? config.dataPropertyMappings[pathType] : pathType
-        options.url = options.url.replace(pathType, newpathType);
-        config.measurementType = pathType;
-        // Authorize request.
-        options.headers.Authorization = 'Bearer ' + (grant.token);
+
+        config.authConfig.headers.Authorization = grant.token;
         return options;
     }
     catch (err) {
@@ -205,39 +182,13 @@ const request = async (config, options) => {
  * @return {Object}
  */
 const parameters = async (config, parameters) => {
-
     try {
-        const combine = ([head, ...[headTail, ...tailTail]]) => {
-            if (!headTail) return head;
-
-            const combined = headTail.reduce((acc, x) => {
-                return acc.concat(head.map(h => `{"id" : "${h}", "dataType": "${x}"}`))
-            }, []);
-
-            return combine([combined, ...tailTail]);
-        }
-        var combination = combine([parameters.ids, parameters.dataTypes]);
-        parameters.ids = combination.map(JSON.parse);
-        parameters.dataTypes = null;
-        let startDate = parameters.start;
-        let endDate = parameters.end;
-        parameters.startTime = startDate.valueOf();
-        parameters.endTime = endDate.valueOf();
-        if (parameters.startTime && parameters.endTime) {
-            // Sort timestamps to correct order.
-            if (parameters.endTime < parameters.startTime) {
-                const start = parameters.endTime;
-                parameters.endTime = parameters.startTime;
-                parameters.startTime = start;
-            }
-            let time = parameters.endTime - parameters.startTime;
-            if (time <= 86400000) {
-
-                return parameters;
-            }
-            else
-                return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
-        }
+        parameters.dataTypes = parameters.dataTypes.map((dataType) => {
+            return config.static.dataTypes[dataType];
+        }).join(",");
+        parameters.startTime = parameters.start;
+        parameters.endTime = parameters.end;
+        return parameters;
     } catch (err) {
         return promiseRejectWithError(500, 'Search interval must be less than 24 hours');
     }
@@ -252,11 +203,10 @@ const parameters = async (config, parameters) => {
  * @return {Object}
  */
 const data = async (config, data) => {
-    const tmp = {}
-    tmp[config.measurementType] = data.type;
+    const tmp = {};
+    tmp[config.measurementType[`${data.type}`]] = data.value;
     return tmp;
 };
-
 
 /**
  * Transforms output to Platform of Trust context schema.
@@ -266,32 +216,44 @@ const data = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-   
-    var arr = [];
-    output.data.sensors.forEach(function (item) {
-        var existing = arr.filter(function (v, i) {
-            return v.id == item.id;
-        });
-        if (existing.length) {
-            var existingIndex = arr.indexOf(existing[0]);
-            arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
-        } else {
-            arr.push(item);
-        }
-    });
 
-    const result = {
-        [config.output.context]: config.output.contextValue,
-        [config.output.object]: {
-            [config.output.array]: [],
-        },
-    };
-    for (let i = 0; i < arr.length; i++) {
-        result[config.output.object][config.output.array].push(arr[i]);
+    if (output.data.sensors.length === 0) {
+        return promiseRejectWithError(500, 'Incorrect Parameters');
     }
+    else {
+        var arr = [];
+        output.data.sensors.forEach(function (item) {
 
-    return result;
-    
+            item.measurements.forEach((data) => {
+                data.timestamp = moment(data.timestamp).local().format();
+                if (data["@type"] === "MeasureWaterConsumptionLiter") {
+                    data.value = data.value * 3000;
+                }            
+            });
+
+            var existing = arr.filter(function (v, i) {
+                return v.id == item.id;
+            });
+            if (existing.length) {
+                var existingIndex = arr.indexOf(existing[0]);
+                console.log(item.measurements);
+                arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
+            } else {
+                arr.push(item);
+            }
+        });
+
+        const result = {
+            [config.output.context]: config.output.contextValue,
+            [config.output.object]: {
+                [config.output.array]: [],
+            },
+        };
+        for (let i = 0; i < arr.length; i++) {
+            result[config.output.object][config.output.array].push(arr[i]);
+        }
+        return result;
+    }
 }
 
 /**
@@ -302,15 +264,38 @@ const output = async (config, output) => {
  * @return {Object}
  */
 const response = async (config, data) => {
-    for (var i = 0; i < data.length; i++) {
-        data[i].timestamp = data[i]['time'];
-        delete data[i].time;
+
+    try {
+        // nuuka api call
+        const res = await makeRequest(`${config.authConfig.url}${data}
+        &$token=${config.authConfig.headers.Authorization}`);
+
+        return res;
+    } catch (err) {
+        winston.log('error', err);
+        return promiseRejectWithError(err.statusCode, err.message);
     }
-    return data;
 };
 
+const makeRequest = (url) => {
+    return new Promise((resolve, reject) => {
+        mrequest(url, (error, response, body) => {
+            if (error) {
+                console.error('error:', error); // Print the error if one occurred
+                return reject(error);
+            }
+            if (!response || response.statusCode !=200) {
+                if (response) {
+                    return reject (response);
+                }
+            }
+            return resolve(JSON.parse(body));
+        });
+    });
+}
+
 module.exports = {
-    name: 'smartwatcher',
+    name: 'nuuka-v2-p1',
     request,
     onerror,
     data,

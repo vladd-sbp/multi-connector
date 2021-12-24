@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/nuuka-v2-consumption-electricity-water/result
+connectors/nuuka-v2-consumption-electricity-water/connector_tests.robot

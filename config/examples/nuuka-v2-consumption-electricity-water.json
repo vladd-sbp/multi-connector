@@ -1,0 +1,27 @@
+{
+    "template": "nuuka-v2-consumption-electricity-water",
+    "static": {
+        "url": "https://nuukacustomerwebapi.azurewebsites.net/",
+        "email": "",
+        "password": "",
+        "dataTypes": {
+            "MeasureElectricityConsumptionKilowattHour": 1,
+            "MeasureHeatingElectricityConsumptionKilowattHour": 2,
+            "MeasureWaterConsumptionLiter" : 3,
+            "MeasureCoolingElectricityConsumptionKilowattHour" : 4
+        }
+    },
+    "dynamic": {
+        "dataPropertyMappings": "type",
+        "authConfig.path": [
+            "ids",
+            "startTime",
+            "endTime",
+            "dataTypes",
+            "token"
+        ]
+    },
+    "request": {
+        "ids": "<configId>"
+    }
+}

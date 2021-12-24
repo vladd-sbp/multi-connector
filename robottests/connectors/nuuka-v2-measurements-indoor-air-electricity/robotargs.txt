@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/nuuka-v2-measurements-indoor-air-electricity/result
+connectors/nuuka-v2-measurements-indoor-air-electricity/connector_tests.robot
