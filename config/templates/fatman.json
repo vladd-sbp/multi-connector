@@ -1,0 +1,35 @@
+{
+    "plugins": [
+      "fatman"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${baseurl}",
+      "headers": {
+        "Ocp-Apim-Subscription-Key": "${Subscription-Key}"
+    },
+      "matainanceTaskPath": "/maintenance-task/maintenance-tasks/",
+      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&buildingId=${id}"
+    },
+    "dataObjects": [],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+        "query": {}
+    },
+    "input": {
+      "required": [
+        "parameters.startTime",
+        "parameters.endTime"
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "object": "data",
+      "array": "sensors",
+      "value": "result",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
