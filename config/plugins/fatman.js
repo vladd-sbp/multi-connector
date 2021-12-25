@@ -1,27 +1,7 @@
 'use strict';
 const rp = require('request-promise');
 
-/**
-* Manipulates request parameters.
-*
-* @param {Object} config
-* @param {Object} parameters
-* @return {Object}
-*/
-const parameters = async (config, parameters) => {
-    try {
 
-        if (parameters.ids && parameters.ids.length > 0) {
-            return parameters;
-        }
-        else {
-            parameters.ids = [''];
-            return parameters;
-        }
-    } catch (err) {
-        return parameters;
-    }
-};
 
 /**
  * Splits processes.
@@ -77,9 +57,14 @@ const output = async (config, output) => {
         },
     };
     let maintainanceTask = []
-    for (let i = 0; i < output.data.sensors.length; i++) {
-        for (let j = 0; j < output.data.sensors[i].measurements.length; j++) {
-            let taskInfo = await getMaintainanceTaskInfo(config, output.data.sensors[i].measurements[j].result.maintenanceTaskId);
+    for (let i = 0; i < output.data.serviceRequest.length; i++) {
+        for (let j = 0; j < output.data.serviceRequest[i].measurements.length; j++) {
+            let taskInfo = {}
+            taskInfo['@type'] = "Case";
+            taskInfo.idLocal = config.parameters.ids[i].id;
+            taskInfo.status = output.data.serviceRequest[i].measurements[j].value.status;
+            let task = await getMaintainanceTaskInfo(config, output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId);
+            taskInfo = Object.assign(taskInfo, task)
             maintainanceTask.push(taskInfo)
         }
     }
@@ -91,7 +76,6 @@ const output = async (config, output) => {
 
 module.exports = {
     name: 'fatman',
-    parameters,
     output,
     response,
 };
