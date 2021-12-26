@@ -1,6 +1,6 @@
 'use strict';
 const rp = require('request-promise');
-
+const _ = require('lodash');
 
 
 /**
@@ -73,6 +73,18 @@ const output = async (config, output) => {
         }
     }
 
+     // filter Based On taskStatus
+     if (config.parameters.taskStatus && config.parameters.taskStatus.length > 0) {
+
+        for (let x = 0; x < maintainanceTask.length; x++) {
+            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.taskStatus.includes(o["status"]) });
+        }
+    }else{
+        for (let x = 0; x < maintainanceTask.length; x++) {
+            maintainanceTask = _.filter(maintainanceTask, function (o) { return o.hasOwnProperty("status") });
+        }
+    }
+    
     result[config.output.object][config.output.array] = maintainanceTask;
 
     return result;
