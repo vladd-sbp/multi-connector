@@ -73,11 +73,11 @@ const output = async (config, output) => {
         }
     }
 
-     // filter Based On taskStatus
-     if (config.parameters.taskStatus && config.parameters.taskStatus.length > 0) {
+     // filter Based On status
+     if (config.parameters.status && config.parameters.status.length > 0) {
 
         for (let x = 0; x < maintainanceTask.length; x++) {
-            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.taskStatus.includes(o["status"]) });
+            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"]) });
         }
     }else{
         for (let x = 0; x < maintainanceTask.length; x++) {
