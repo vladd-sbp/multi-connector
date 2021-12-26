@@ -16,7 +16,19 @@
         "": ""
     },
     "generalConfig": {
-        "query": {}
+        "query": {},
+        "sourceName": {
+          "dataObjectProperty": "name"
+        },
+        "hardwareId": {
+          "pathIndex": 4
+        },
+        "measurement": {
+          "pathIndex": 5
+        },
+        "timestamp": {
+          "dataObjectProperty": "timestamp"
+        }
     },
     "input": {
       "required": [

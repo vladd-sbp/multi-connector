@@ -11,6 +11,9 @@ const rp = require('request-promise');
  * @return {Object}
  */
 const response = async (config, data) => {
+    if (data.length == 0)
+        return [{ "maintenanceTaskId": 0 }]
+    console.log("response", data)
     return data;
 }
 
@@ -57,14 +60,17 @@ const output = async (config, output) => {
         },
     };
     let maintainanceTask = []
+    console.log(output.data.serviceRequest.length)
     for (let i = 0; i < output.data.serviceRequest.length; i++) {
         for (let j = 0; j < output.data.serviceRequest[i].measurements.length; j++) {
             let taskInfo = {}
             taskInfo['@type'] = "Case";
             taskInfo.idLocal = config.parameters.ids[i].id;
-            taskInfo.status = output.data.serviceRequest[i].measurements[j].value.status;
-            let task = await getMaintainanceTaskInfo(config, output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId);
-            taskInfo = Object.assign(taskInfo, task)
+            if (output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId > 0) {
+                taskInfo.status = output.data.serviceRequest[i].measurements[j].value.status;
+                let task = await getMaintainanceTaskInfo(config, output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId);
+                taskInfo = Object.assign(taskInfo, task)
+            }
             maintainanceTask.push(taskInfo)
         }
     }
