@@ -13,7 +13,6 @@ const rp = require('request-promise');
 const response = async (config, data) => {
     if (data.length == 0)
         return [{ "maintenanceTaskId": 0 }]
-    console.log("response", data)
     return data;
 }
 
@@ -60,7 +59,6 @@ const output = async (config, output) => {
         },
     };
     let maintainanceTask = []
-    console.log(output.data.serviceRequest.length)
     for (let i = 0; i < output.data.serviceRequest.length; i++) {
         for (let j = 0; j < output.data.serviceRequest[i].measurements.length; j++) {
             let taskInfo = {}
