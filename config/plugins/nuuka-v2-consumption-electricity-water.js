@@ -204,8 +204,19 @@ const parameters = async (config, parameters) => {
  */
 const data = async (config, data) => {
     const tmp = {};
-    tmp[config.measurementType[`${data.type}`]] = data.value;
-    return tmp;
+    if(data.type===1){
+        if(data.GroupDescription=='Electricity'){
+            tmp[config.measurementType[`${data.type}`]] = data.value;
+            return tmp;
+        }else{
+            return tmp;
+        }
+    }
+    else{
+        tmp[config.measurementType[`${data.type}`]] = data.value;
+        return tmp;
+    }
+    
 };
 
 /**
@@ -222,6 +233,7 @@ const output = async (config, output) => {
     }
     else {
         var arr = [];
+        console.log(output.data.sensors[0].measurements.length)
         output.data.sensors.forEach(function (item) {
 
             item.measurements.forEach((data) => {
@@ -236,7 +248,6 @@ const output = async (config, output) => {
             });
             if (existing.length) {
                 var existingIndex = arr.indexOf(existing[0]);
-                console.log(item.measurements);
                 arr[existingIndex].measurements = arr[existingIndex].measurements.concat(item.measurements);
             } else {
                 arr.push(item);
