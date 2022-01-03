@@ -53,7 +53,7 @@
         "timestamp": "timestamp",
         "array": "sensors",
         "object": "data",
-        "value": "value",
+        "value": "data",
         "data": "measurements",
         "id": "id",
         "type": "@type"
