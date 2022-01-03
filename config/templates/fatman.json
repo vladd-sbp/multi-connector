@@ -38,7 +38,7 @@
       ]
     },
     "output": {
-      "contextValue":"https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/",
       "object": "data",
       "array": "serviceRequest",
       "value": "value",

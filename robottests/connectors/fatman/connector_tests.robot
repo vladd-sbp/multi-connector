@@ -18,14 +18,22 @@ ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
 
 ${ID1}                       2076
 ${ID2}                       22397
+
+${DATA_TYPE_1}               InProgress
+${DATA_TYPE_2}               Ready
+
 ${STARTTIME}               	 2018-06-11T00:00:00+00:00
 ${ENDTIME}                 	 2019-06-11T00:00:00+00:00
 @{IDS}                       
 ...                          ${ID1}
 ...                          ${ID2}
 
+@{DATA_TYPES_LIST}           
+#...                          ${DATA_TYPE_1}
+...                          ${DATA_TYPE_2}
 
-&{BROKER_BODY_PARAMETERS}    ids=@{IDS}                
+&{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+...                          status=@{DATA_TYPES_LIST}              
 ...                          startTime=${STARTTIME}
 ...                          endTime=${ENDTIME}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
@@ -75,8 +83,8 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/
+    String                response body @context                                  https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/
     Object                response body data
-    Array                 response body data sensors
+    Array                 response body data serviceRequest
   
   
