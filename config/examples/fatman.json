@@ -1,0 +1,21 @@
+{
+    "template": "fatman",
+    "static": {
+        "baseurl": "https://frame.azure-api.net",
+        "Subscription-Key": ""
+    },
+    "dynamic": {
+        "authConfig.path": [
+            "ids",
+            "start",
+            "end"
+        ]
+    },
+    "request": {
+        "ids": [
+            {
+                "id": "<id>"
+            }
+        ]
+    }
+}

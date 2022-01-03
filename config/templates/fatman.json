@@ -1,0 +1,48 @@
+{
+    "plugins": [
+      "fatman"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${baseurl}",
+      "headers": {
+        "Ocp-Apim-Subscription-Key": "${Subscription-Key}"
+    },
+      "matainanceTaskPath": "/maintenance-task/maintenance-tasks/",
+      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&buildingId=${id}"
+    },
+    "dataObjects": [],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+        "query": {},
+        "sourceName": {
+          "dataObjectProperty": "name"
+        },
+        "hardwareId": {
+          "pathIndex": 4
+        },
+        "measurement": {
+          "pathIndex": 5
+        },
+        "timestamp": {
+          "dataObjectProperty": "timestamp"
+        }
+    },
+    "input": {
+      "required": [
+        "parameters.startTime",
+        "parameters.endTime",
+        "parameters.ids"
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/",
+      "object": "data",
+      "array": "serviceRequest",
+      "value": "value",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
