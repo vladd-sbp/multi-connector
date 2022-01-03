@@ -11,8 +11,8 @@ Following data sources are supported out of the box. Example configs can be foun
 - Vastuu API
 - Luotettva Kumppani Interpretations
 - Luotettva Kumppani Report Pdf
-- Nuuka v2 Consumtion electricity Water
-- Nukka v2 Measurements Indoor Air electricity
+- Nuuka v2 Consumtion electricity Water ( nuuka-v2-consumption-electricity-water )
+- Nukka v2 Measurements Indoor Air electricity ( nuuka-v2-measurements-indoor-air-electricity )
 - Tampuuri Service Request
 - Vilpe
 
@@ -152,9 +152,11 @@ Output can be found at /temp folder. Content of each file is set to the variable
 ## Set Exports
 ```
 export POT_AUTH_DISABLED=true
-export POT_PRODUCT_CODE=fatman
+
 export POT_CLIENT_SECRET=""
 export POT_APP_ACCESS_TOKEN=""
+
+export POT_PRODUCT_CODE=fatman
 ```
 ## Docker
 
