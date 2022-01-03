@@ -4,6 +4,7 @@ greenlock.d/
 wsdl/
 temp/
 out/
+log/
 
 robottests/poetry.lock
 package-lock.json
