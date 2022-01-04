@@ -229,6 +229,9 @@ const output = async (config, output) => {
 
             item.measurements.forEach((data) => {
                 data.timestamp = moment(data.timestamp).local().format();
+                data.value=data.data.value;
+                data.description=data.data.description;
+                delete data.data;
                 if (data["@type"] === "MeasureWaterConsumptionLiter") {
                     data.value = data.value * 3000;
                 }            
