@@ -67,7 +67,30 @@ const output = async (config, output) => {
             if (output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId > 0) {
                 taskInfo.status = output.data.serviceRequest[i].measurements[j].value.status;
                 let task = await getMaintainanceTaskInfo(config, output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId);
-                taskInfo = Object.assign(taskInfo, task)
+
+                let temp = {
+                    taskId:task.id,
+                    templateId: task.maintenanceTaskDefaultId,
+                    title: { identification: task.title.identification, categorizationLocal: task.title.name },
+                    name: task.name,
+                    descriptionGeneral:task.description,
+                    qualityDescription: task.qualityDescription,
+                    Location: { id: task.asset.id, type: task.asset.type },
+                    taskTypeId: task.taskTypeId,
+                    contractorId: task.contractorId,
+                    executor: task.subcontractorId,
+                    responsibleId: task.responsibleId,
+                    basisOfChargeId: task.basisOfChargeId,
+                    acknowledgementRequired: task.acknowledgementRequired,
+                    commentRequired: task.commentRequired,
+                    attachmentRequired: task.attachmentRequired,
+                    frequency: task.frequency,
+                    price: task.price,
+                    additionalInformation: task.additionalInformation,
+                    activeSchedule:task.activeSchedule
+                }
+               
+                taskInfo = Object.assign(taskInfo, temp)
             }
             maintainanceTask.push(taskInfo)
         }
