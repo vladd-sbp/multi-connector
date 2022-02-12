@@ -87,11 +87,20 @@ async function getDataFromAPi(config, KohdeId, Year) {
  */
 const output = async (config, output) => {
     var arr = [];
-    output.data.serviceRequest.forEach(function (item) {
-        arr.push({
-            "@type": "Case",
-            "idLocal": item.measurements[0].value.KohdeId,
-            "Tehtavat": formDataOnDate(config, item.measurements[0].value.Tehtavat)
+    output.data.maintenanceInformation.forEach(function (item) {
+        item.measurements[0].value.Tehtavat.forEach(function (obj) {
+            let processInstance = forProcessInstance(obj.Nimi, obj.Toimenpiteet,config)
+            if (processInstance.length > 0) {
+                arr.push({
+                    "@type": "Process",
+                    "idLocal": obj.Id,
+                    "name": obj.Nimi,
+                    "descriptionGeneral": obj.TyoOhje,
+                    "operator": forOperator(obj.Vastuut),
+                    "processInstance": processInstance
+                })
+            }
+
         })
     });
     var result = {
@@ -103,6 +112,28 @@ const output = async (config, output) => {
     return result;
 }
 
+/**
+ * Sends forProcessInstance  .
+ *
+ * @param {Array} data
+ * @return {Array}
+ */
+function forProcessInstance(name, data,config) {
+    let arr = [];
+    data.forEach(obj => {
+        if (obj.Tyonsuoritusaika === null) {
+            arr.push({
+                "@type": "Process",
+                "idLocal": obj.Id,
+                "name": name,
+                "scheduledStart": obj.Alkaa,
+                "scheduledEnd": obj.Loppuu
+            })
+        }
+    })
+  let arr2=formDataOnDate(config,arr)
+    return arr2;
+}
 
 /**
  * Sends formDataOnDate  .
@@ -110,31 +141,44 @@ const output = async (config, output) => {
  * @param {Object} config
  * @return {Array}
  */
-function formDataOnDate(config, data) {
+ function formDataOnDate(config, data) {
     let start = moment(config.parameters.start).format('YYYY-MM-DD');
     let end = moment(config.parameters.end).format('YYYY-MM-DD');
     let arr1 = [];
-    data.forEach(function (item) {
-        let arr2 = [];
-        item.Toimenpiteet.forEach(function (i) {
-            if (i.Tyonsuoritusaika === null) {
-                let alkaaDate = moment(i.Alkaa).format('YYYY-MM-DD');
-                let loppuuDate = moment(i.Loppuu).format('YYYY-MM-DD');
-                if((moment(alkaaDate).isBetween(start, end, undefined, '[]')) || (moment(loppuuDate).isBetween(start, end, undefined, '[]'))) {
-                    arr2.push(i)
-                }
-
-            }
-        })
-        if(arr2.length>0){
-            arr1.push({ "Id": item.Id, "Toimenpiteet": arr2 })
+    data.forEach(function (i) {
+        let alkaaDate = moment(i.scheduledStart).format('YYYY-MM-DD');
+        let loppuuDate = moment(i.scheduledEnd).format('YYYY-MM-DD');
+        if ((moment(alkaaDate).isBetween(start, end, undefined, '[]')) || (moment(loppuuDate).isBetween(start, end, undefined, '[]'))) {
+            arr1.push(i)
         }
     })
     return arr1;
 }
 
+/**
+ * Sends forOperator  .
+ *
+ * @param {Array} data
+ * @return {Array}
+ */
+function forOperator(data) {
+    let arr = [];
+    data.forEach(item => {
+        item.Vastuullinen.forEach(obj => {
+            arr.push({
+                "@type": "Organization",
+                "idLocal": obj.Id,
+                "idOfficial": obj.YritysId,
+                "name": obj.Nimi
+            })
+        })
+    })
+    return arr;
+}
+
+
 module.exports = {
-    name: 'tampuUri-2',
+    name: 'tampuuri-service-request-2',
     output,
     request,
     response

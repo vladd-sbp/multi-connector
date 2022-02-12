@@ -1,47 +1,40 @@
 {
-    "plugins": [
-      "tampuuri-service-request-2"
-    ],
-    "protocol": "rest",
-    "authConfig": {
-      "url": "${baseurl}",
-     
-      "method":"GET",
-      "headers": {
-        "X-TampuuriAvain": "${TampuuriAvain}",
-        "X-AsiakasNimi": "${AsiakasNimi}",
-        "X-Ohjelmistoversio": "${Ohjelmistoversio}",
-        "X-TiliNimi": "${TiliNimi}",
-        "X-Kayttajatunnus": "${Kayttajatunnus}",
-        "X-Salasana": "${Salasana}",
-        "Content-Type": "${Content-Type}"
-      },
-        "path": "/huoltokirja/huoltokalenteri?KohdeId=${id}&Vuosi=${start}"
+  "plugins": [
+    "tampuuri-service-request-2"
+  ],
+  "protocol": "rest",
+  "authConfig": {
+    "url": "${baseurl}",
+    "method": "GET",
+    "headers": {
+      "X-TampuuriAvain": "${TampuuriAvain}",
+      "X-AsiakasNimi": "${AsiakasNimi}",
+      "X-Ohjelmistoversio": "${Ohjelmistoversio}",
+      "X-TiliNimi": "${TiliNimi}",
+      "X-Kayttajatunnus": "${Kayttajatunnus}",
+      "X-Salasana": "${Salasana}",
+      "Content-Type": "${Content-Type}"
     },
-    "dataObjects": [],
-   
-    
-    "dataPropertyMappings": {
-        "": ""
-    },
-    "generalConfig": {
-      
-    },
-    "input": {
-      "required": [
-        "parameters.startTime",
-        "parameters.endTime",
-        "parameters.ids"
-      ]
-    },
-    "output": {
-      "contextValue":"https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/",
-      "object": "data",
-    
-      "array": "serviceRequest",
-   
-      "value": "value",
-      "data": "measurements",
-      "id": "id"
-    }
+    "path": "/huoltokirja/huoltokalenteri?KohdeId=${id}&Vuosi=${start}"
+  },
+  "dataObjects": [],
+  "dataPropertyMappings": {
+    "": ""
+  },
+  "generalConfig": {},
+  "input": {
+    "required": [
+      "parameters.startTime",
+      "parameters.endTime",
+      "parameters.ids"
+    ]
+  },
+  "output": {
+    "contextValue": "https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation",
+    "object": "data",
+    "array": "maintenanceInformation",
+    "value": "value",
+    "data": "measurements",
+    "id": "id"
   }
+}
