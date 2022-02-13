@@ -3,6 +3,50 @@ const rp = require('request-promise');
 const _ = require('lodash');
 
 
+
+/**
+ * Composes authorization header and
+ * includes it to the http request options.
+ *
+ * @param {Object} config
+ * @param {Object} options
+ * @return {Object}
+ */
+const request = async (config, options) => {
+
+    try {
+        if (options.url.includes("Building")) {
+            options.url = options.url.replace("Building", "buildingId");
+        } else if (options.url.includes("RealEstate")) {
+            options.url = options.url.replace("RealEstate", "propertyId");
+        } else {
+            promiseRejectWithError(500, 'type of undefined');
+        }
+        return options;
+    }
+    catch (err) {
+        return Promise.reject(err);
+    }
+
+};
+
+/**
+ * Returns promise reject with error.
+ *
+ * @param {Number} [code]
+ * @param {String} [msg]
+ *   Error message.
+ * @param {String} [reference]
+ *   Additional info about the cause of the error.
+ * @return {Promise}
+ */
+const promiseRejectWithError = function (code, msg, reference) {
+    const err = new Error(msg || 'Internal Server Error.');
+    err.httpStatusCode = code || 500;
+    err.reference = reference;
+    return Promise.reject(err);
+};
+
 /**
  * Splits processes.
  *
@@ -59,62 +103,81 @@ const output = async (config, output) => {
         },
     };
     let maintainanceTask = []
-    for (let i = 0; i < output.data.serviceRequest.length; i++) {
-        for (let j = 0; j < output.data.serviceRequest[i].measurements.length; j++) {
-            let taskInfo = {}
-            taskInfo['@type'] = "Case";
-            taskInfo.idLocal = config.parameters.ids[i].id;
-            if (output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId > 0) {
-                taskInfo.status = output.data.serviceRequest[i].measurements[j].value.status;
-                let task = await getMaintainanceTaskInfo(config, output.data.serviceRequest[i].measurements[j].value.maintenanceTaskId);
-
+    for (let i = 0; i < output.data.maintenanceInformation.length; i++) {
+        for (let j = 0; j < output.data.maintenanceInformation[i].measurements.length; j++) {
+            if (output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId > 0) {
+                let taskInfo = {}
+                taskInfo['@type'] = config.parameters.ids[i]['@type'];
+                let task = await getMaintainanceTaskInfo(config, output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId);
                 let temp = {
-                    taskId:task.id,
-                    templateId: task.maintenanceTaskDefaultId,
-                    title: { identification: task.title.identification, categorizationLocal: task.title.name },
+                    idLocal:task.id,
                     name: task.name,
                     descriptionGeneral:task.description,
-                    qualityDescription: task.qualityDescription,
-                    Location: { id: task.asset.id, type: task.asset.type },
-                    taskTypeId: task.taskTypeId,
-                    contractorId: task.contractorId,
-                    executor: task.subcontractorId,
-                    responsibleId: task.responsibleId,
-                    basisOfChargeId: task.basisOfChargeId,
-                    acknowledgementRequired: task.acknowledgementRequired,
-                    commentRequired: task.commentRequired,
-                    attachmentRequired: task.attachmentRequired,
-                    frequency: task.frequency,
-                    price: task.price,
                     additionalInformation: task.additionalInformation,
-                    activeSchedule:task.activeSchedule
+                    executor: [
+                        {
+                            "@type": "Organization",
+                            "idLocal":task.contractorId
+                        }
+                    ],
+                    operator: [
+                        {
+                            "@type": "Organization",
+                            "idLocal":task.contractorId
+                        }
+                    ],
+                    location: [
+                        {
+                            "@type": config.parameters.ids[i]['@type'],
+                            "idLocal": task.asset && task.asset.id
+                        },
+                    ],
+                    processInstance: [
+                        {
+                            "@type": "Process",
+                            "idLocal": output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId.toString().concat("_", output.data.maintenanceInformation[i].measurements[j].value.dueDate),
+                            "name": task.name,
+                            "descriptionGeneral":task.description,
+                            "additionalInformation": task.additionalInformation,
+                            "status": [
+                                {
+                                    "@type": "Status",
+                                    "status":output.data.maintenanceInformation[i].measurements[j].value.status,
+                                    "updated": output.data.maintenanceInformation[i].measurements[j].value.time,
+                                    "comment": output.data.maintenanceInformation[i].measurements[j].value.comment,
+                                    "updater": {
+                                        "@type": "Organization",
+                                        "idLocal": output.data.maintenanceInformation[i].measurements[j].value.updater,
+                                        "name": output.data.maintenanceInformation[i].measurements[j].value.updater
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
-               
                 taskInfo = Object.assign(taskInfo, temp)
+                maintainanceTask.push(taskInfo)
             }
-            maintainanceTask.push(taskInfo)
+           
         }
     }
 
-     // filter Based On status
-     if (config.parameters.status && config.parameters.status.length > 0) {
+    // filter Based On status
+    if (config.parameters.status && config.parameters.status.length > 0) {
 
         for (let x = 0; x < maintainanceTask.length; x++) {
-            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"]) });
-        }
-    }else{
-        for (let x = 0; x < maintainanceTask.length; x++) {
-            maintainanceTask = _.filter(maintainanceTask, function (o) { return o.hasOwnProperty("status") });
+            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"][0].status) });
         }
     }
-    
-    result[config.output.object][config.output.array] = maintainanceTask;
+
+     result[config.output.object][config.output.array] = maintainanceTask;
 
     return result;
 }
 
 module.exports = {
     name: 'fatman',
+    request,
     output,
     response,
 };

@@ -9,7 +9,7 @@
         "Ocp-Apim-Subscription-Key": "${Subscription-Key}"
     },
       "matainanceTaskPath": "/maintenance-task/maintenance-tasks/",
-      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&buildingId=${id}"
+      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&${@type}=${id}"
     },
     "dataObjects": [],
     "dataPropertyMappings": {
@@ -38,9 +38,9 @@
       ]
     },
     "output": {
-      "contextValue":"https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/",
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation",
       "object": "data",
-      "array": "serviceRequest",
+      "array": "maintenanceInformation",
       "value": "value",
       "data": "measurements",
       "id": "id"
