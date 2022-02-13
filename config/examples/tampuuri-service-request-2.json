@@ -1,0 +1,27 @@
+{
+    "template": "tampuuri-service-request",
+    "static": {
+        "baseurl": "https://api.tampuuri.fi/v10/api",
+        "TampuuriAvain": "",
+        "AsiakasNimi": "",
+        "Ohjelmistoversio": "",
+        "TiliNimi": "",
+        "Kayttajatunnus": "",
+        "Salasana": "",
+        "Content-Type": "application/json"
+    },
+    "dynamic": {
+        "authConfig.path": [
+            "ids"
+        ]
+      
+    },
+    "request": {
+        "ids": [{
+            "id": "<id>"
+        }]
+
+    }
+ 
+   
+}
