@@ -9,7 +9,7 @@
         "Ocp-Apim-Subscription-Key": "${Subscription-Key}"
     },
       "matainanceTaskPath": "/maintenance-task/maintenance-tasks/",
-      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&${@type}=${id}"
+      "path": "/maintenance-task/acknowledgements?from=${start}&to=${end}&${@type}=${idLocal}"
     },
     "dataObjects": [],
     "dataPropertyMappings": {
@@ -32,9 +32,8 @@
     },
     "input": {
       "required": [
-        "parameters.startTime",
-        "parameters.endTime",
-        "parameters.ids"
+        "parameters.period",
+        "parameters.targetObject"
       ]
     },
     "output": {

@@ -1,7 +1,27 @@
 'use strict';
 const rp = require('request-promise');
 const _ = require('lodash');
+const moment = require('moment');
 
+/**
+ * Splits period to start and end properties .
+ *
+ * @param {Object} config
+ * @param {Object/String} parameters
+ * @return {Object}
+ */
+ const parameters = async (config, parameters) => {
+    try {
+        if (Object.hasOwnProperty.call(parameters, 'period')) {
+            parameters.start = moment(parameters.period.split('/')[0]).format('YYYY-MM-DD');
+            parameters.end = moment(parameters.period.split('/')[1]).format('YYYY-MM-DD');
+            delete parameters.period;
+        }
+        return parameters;
+    } catch (e) {
+        return parameters;
+    }
+};
 
 
 /**
@@ -13,6 +33,7 @@ const _ = require('lodash');
  * @return {Object}
  */
 const request = async (config, options) => {
+    console.log(options)
 
     try {
         if (options.url.includes("Building")) {
@@ -107,7 +128,7 @@ const output = async (config, output) => {
         for (let j = 0; j < output.data.maintenanceInformation[i].measurements.length; j++) {
             if (output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId > 0) {
                 let taskInfo = {}
-                taskInfo['@type'] = config.parameters.ids[i]['@type'];
+                taskInfo['@type'] = config.parameters.targetObject[i]['@type'];
                 let task = await getMaintainanceTaskInfo(config, output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId);
                 let temp = {
                     idLocal:task.id,
@@ -128,7 +149,7 @@ const output = async (config, output) => {
                     ],
                     location: [
                         {
-                            "@type": config.parameters.ids[i]['@type'],
+                            "@type": config.parameters.targetObject[i]['@type'],
                             "idLocal": task.asset && task.asset.id
                         },
                     ],
@@ -180,6 +201,7 @@ module.exports = {
     request,
     output,
     response,
+    parameters
 };
 
 

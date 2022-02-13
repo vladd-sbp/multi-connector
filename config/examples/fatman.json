@@ -6,15 +6,16 @@
     },
     "dynamic": {
         "authConfig.path": [
-            "ids",
+            "targetObject",
             "start",
             "end"
         ]
     },
     "request": {
-        "ids": [
+        "targetObject": [
             {
-                "id": "<id>"
+                "@type":"<type>",
+                "idLocal": "<id>"
             }
         ]
     }
