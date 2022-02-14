@@ -4,6 +4,27 @@ const moment = require('moment');
 const rp = require('request-promise');
 
 /**
+ * Splits period to start and end properties .
+ *
+ * @param {Object} config
+ * @param {Object/String} parameters
+ * @return {Object}
+ */
+const parameters = async (config, parameters) => {
+    try {
+        if (Object.hasOwnProperty.call(parameters, 'period')) {
+            parameters.start = moment(parameters.period.split('/')[0]).format('YYYY-MM-DD');
+            parameters.end = moment(parameters.period.split('/')[1]).format('YYYY-MM-DD');
+            delete parameters.period;
+        }
+
+        return parameters;
+    } catch (e) {
+        return parameters;
+    }
+};
+
+/**
  * Composes authorization header and
  * includes it to the http request options.
  *
@@ -89,7 +110,7 @@ const output = async (config, output) => {
     var arr = [];
     output.data.maintenanceInformation.forEach(function (item) {
         item.measurements[0].value.Tehtavat.forEach(function (obj) {
-            let processInstance = forProcessInstance(obj.Nimi, obj.Toimenpiteet,config)
+            let processInstance = forProcessInstance(obj.Nimi, obj.Toimenpiteet, config)
             if (processInstance.length > 0) {
                 arr.push({
                     "@type": "Process",
@@ -118,7 +139,7 @@ const output = async (config, output) => {
  * @param {Array} data
  * @return {Array}
  */
-function forProcessInstance(name, data,config) {
+function forProcessInstance(name, data, config) {
     let arr = [];
     data.forEach(obj => {
         if (obj.Tyonsuoritusaika === null) {
@@ -131,7 +152,7 @@ function forProcessInstance(name, data,config) {
             })
         }
     })
-  let arr2=formDataOnDate(config,arr)
+    let arr2 = formDataOnDate(config, arr)
     return arr2;
 }
 
@@ -141,7 +162,7 @@ function forProcessInstance(name, data,config) {
  * @param {Object} config
  * @return {Array}
  */
- function formDataOnDate(config, data) {
+function formDataOnDate(config, data) {
     let start = moment(config.parameters.start).format('YYYY-MM-DD');
     let end = moment(config.parameters.end).format('YYYY-MM-DD');
     let arr1 = [];
@@ -179,6 +200,7 @@ function forOperator(data) {
 
 module.exports = {
     name: 'tampuuri-service-request-2',
+    parameters,
     output,
     request,
     response

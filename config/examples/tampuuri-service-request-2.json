@@ -1,5 +1,5 @@
 {
-    "template": "tampuuri-service-request",
+    "template": "tampuuri-service-request-2",
     "static": {
         "baseurl": "https://api.tampuuri.fi/v10/api",
         "TampuuriAvain": "",
@@ -8,20 +8,19 @@
         "TiliNimi": "",
         "Kayttajatunnus": "",
         "Salasana": "",
-        "Content-Type": "application/json"
+        "Content-Type": ""
     },
     "dynamic": {
         "authConfig.path": [
-            "ids"
+            "targetObject",
+            "start"
         ]
-      
     },
     "request": {
-        "ids": [{
-            "id": "<id>"
-        }]
-
+        "targetObject": [
+            {
+                "idLocal": "<idLocal>"
+            }
+        ]
     }
- 
-   
 }

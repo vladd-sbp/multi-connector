@@ -10,7 +10,7 @@ const moment = require('moment');
  * @param {Object/String} parameters
  * @return {Object}
  */
- const parameters = async (config, parameters) => {
+const parameters = async (config, parameters) => {
     try {
         if (Object.hasOwnProperty.call(parameters, 'period')) {
             parameters.start = moment(parameters.period.split('/')[0]).format('YYYY-MM-DD');
@@ -33,8 +33,6 @@ const moment = require('moment');
  * @return {Object}
  */
 const request = async (config, options) => {
-    console.log(options)
-
     try {
         if (options.url.includes("Building")) {
             options.url = options.url.replace("Building", "buildingId");
@@ -128,23 +126,23 @@ const output = async (config, output) => {
         for (let j = 0; j < output.data.maintenanceInformation[i].measurements.length; j++) {
             if (output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId > 0) {
                 let taskInfo = {}
-                taskInfo['@type'] = config.parameters.targetObject[i]['@type'];
+                taskInfo['@type'] =  "Process";
                 let task = await getMaintainanceTaskInfo(config, output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId);
                 let temp = {
-                    idLocal:task.id,
+                    idLocal: task.id,
                     name: task.name,
-                    descriptionGeneral:task.description,
+                    descriptionGeneral: task.description,
                     additionalInformation: task.additionalInformation,
                     executor: [
                         {
                             "@type": "Organization",
-                            "idLocal":task.contractorId
+                            "idLocal": task.contractorId
                         }
                     ],
                     operator: [
                         {
                             "@type": "Organization",
-                            "idLocal":task.contractorId
+                            "idLocal": task.contractorId
                         }
                     ],
                     location: [
@@ -158,12 +156,12 @@ const output = async (config, output) => {
                             "@type": "Process",
                             "idLocal": output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId.toString().concat("_", output.data.maintenanceInformation[i].measurements[j].value.dueDate),
                             "name": task.name,
-                            "descriptionGeneral":task.description,
+                            "descriptionGeneral": task.description,
                             "additionalInformation": task.additionalInformation,
                             "status": [
                                 {
                                     "@type": "Status",
-                                    "status":output.data.maintenanceInformation[i].measurements[j].value.status,
+                                    "status": output.data.maintenanceInformation[i].measurements[j].value.status,
                                     "updated": output.data.maintenanceInformation[i].measurements[j].value.time,
                                     "comment": output.data.maintenanceInformation[i].measurements[j].value.comment,
                                     "updater": {
@@ -179,7 +177,7 @@ const output = async (config, output) => {
                 taskInfo = Object.assign(taskInfo, temp)
                 maintainanceTask.push(taskInfo)
             }
-           
+
         }
     }
 
@@ -191,7 +189,7 @@ const output = async (config, output) => {
         }
     }
 
-     result[config.output.object][config.output.array] = maintainanceTask;
+    result[config.output.object][config.output.array] = maintainanceTask;
 
     return result;
 }

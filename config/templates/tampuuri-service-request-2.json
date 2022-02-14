@@ -15,7 +15,7 @@
       "X-Salasana": "${Salasana}",
       "Content-Type": "${Content-Type}"
     },
-    "path": "/huoltokirja/huoltokalenteri?KohdeId=${id}&Vuosi=${start}"
+    "path": "/huoltokirja/huoltokalenteri?KohdeId=${idLocal}&Vuosi=${start}"
   },
   "dataObjects": [],
   "dataPropertyMappings": {
@@ -24,9 +24,8 @@
   "generalConfig": {},
   "input": {
     "required": [
-      "parameters.startTime",
-      "parameters.endTime",
-      "parameters.ids"
+      "parameters.period",
+      "parameters.targetObject"
     ]
   },
   "output": {
