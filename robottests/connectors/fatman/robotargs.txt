@@ -1,3 +1,0 @@
---pythonpath lib
---outputdir connectors/fatman/result
-connectors/fatman/connector_tests.robot

@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/tampuuri-maintenance-task/result
+connectors/tampuuri-maintenance-task/connector_tests.robot

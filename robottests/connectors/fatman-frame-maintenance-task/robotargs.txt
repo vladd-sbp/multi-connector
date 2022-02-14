@@ -1,0 +1,3 @@
+--pythonpath lib
+--outputdir connectors/fatman-frame-maintenance-task/result
+connectors/fatman-frame-maintenance-task/connector_tests.robot

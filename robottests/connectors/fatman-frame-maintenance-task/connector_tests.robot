@@ -16,26 +16,36 @@ ${APP_TOKEN}                 %{POT_APP_ACCESS_TOKEN}
 ${CLIENT_SECRET}             %{POT_CLIENT_SECRET}
 ${PRODUCT_CODE}              %{POT_PRODUCT_CODE}
 
-${ID1}                       2076
-${ID2}                       22397
+${ID1LOCAL}                  22397
+${ID1TYPE}                   Building
+
+${ID2LOCAL}                  22397
+${ID2TYPE}                   Building
+
+&{TARGET_OBJECT1}
+...                          idLocal=${ID1LOCAL}
+...                          @type=${ID1TYPE}
+
+&{TARGET_OBJECT2}
+...                          idLocal=${ID2LOCAL}
+...                          @type=${ID2TYPE}
+
+@{TARGET_OBJECTS}
+...                          ${TARGET_OBJECT1}
+#...                          ${TARGET_OBJECT2}
 
 ${DATA_TYPE_1}               InProgress
 ${DATA_TYPE_2}               Ready
 
-${STARTTIME}               	 2018-06-11T00:00:00+00:00
-${ENDTIME}                 	 2019-06-11T00:00:00+00:00
-@{IDS}                       
-...                          ${ID1}
-...                          ${ID2}
+${PERIOD}               	 2018-06-11T00:00:00+00:00/2019-06-11T00:00:00+00:00
 
 @{DATA_TYPES_LIST}           
 #...                          ${DATA_TYPE_1}
-...                          ${DATA_TYPE_2}
+#...                          ${DATA_TYPE_2}
 
-&{BROKER_BODY_PARAMETERS}    ids=@{IDS}
+&{BROKER_BODY_PARAMETERS}    targetObject=@{TARGET_OBJECTS}
 ...                          status=@{DATA_TYPES_LIST}              
-...                          startTime=${STARTTIME}
-...                          endTime=${ENDTIME}
+...                          period=${PERIOD}
 &{BROKER_BODY}               productCode=${PRODUCT_CODE}
 ...                          parameters=${BROKER_BODY_PARAMETERS}
 
@@ -83,8 +93,8 @@ fetch, 200
     ${body}               Get Body
     Fetch Data Product    ${body}
     Integer               response status                                         200
-    String                response body @context                                  https://standards-ontotest.oftrust.net/v2/Context/DataProductOutput/ServiceRequest/
+    String                response body @context                                  https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation
     Object                response body data
-    Array                 response body data serviceRequest
+    Array                 response body data maintenanceInformation
   
   
