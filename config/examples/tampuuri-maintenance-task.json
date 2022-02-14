@@ -1,5 +1,5 @@
 {
-    "template": "tampuuri-service-request-2",
+    "template": "tampuuri-maintenance-task",
     "static": {
         "baseurl": "https://api.tampuuri.fi/v10/api",
         "TampuuriAvain": "",

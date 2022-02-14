@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "tampuuri-service-request-2"
+    "tampuuri-maintenance-task"
   ],
   "protocol": "rest",
   "authConfig": {

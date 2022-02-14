@@ -1,5 +1,5 @@
 {
-    "template": "fatman",
+    "template": "fatman-frame-maintenance-task",
     "static": {
         "baseurl": "https://frame.azure-api.net",
         "Subscription-Key": ""
