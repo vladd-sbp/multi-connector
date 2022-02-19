@@ -262,15 +262,6 @@ const output = async (config, output) => {
         }
     }
 
-
-    // // filter Based On status
-    // if (config.parameters.status && config.parameters.status.length > 0) {
-
-    //     for (let x = 0; x < maintainanceTask.length; x++) {
-    //         maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"][0].status) });
-    //     }
-    // }
-
     result[config.output.object][config.output.array] = maintainanceTask;
 
     return result;
