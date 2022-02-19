@@ -107,6 +107,107 @@ function getMaintainanceTaskInfo(config, maintenanceTaskId) {
     }
 }
 
+
+/**
+ * Sends due dates request .
+ *
+ * @param {Object} config
+ * @return {Promise}
+ */
+function getDueDatesInfo(config, maintenanceTaskId, task) {
+
+    try {
+
+        const option = {
+            method: 'GET',
+            url: config.authConfig.url + '/maintenance-task/maintenance-tasks/' + maintenanceTaskId + '/duedates',
+            headers: config.authConfig.headers,
+            qs: {
+                "from": config.parameters.start,
+                "to": config.parameters.end
+
+            },
+            json: true,
+            resolveWithFullResponse: true,
+        };
+        return rp(option).then(async function (result) {
+            let dueDates = []
+            let statusAck = await getStatusInfo(config, maintenanceTaskId)
+            result.body.forEach(item => {
+                let obj = {}
+                obj = {
+                    "@type": "Process",
+                    "idLocal": item.maintenanceTaskId.toString().concat("_", item.deadline),
+                    "name": task.name,
+                    "descriptionGeneral": task.description,
+                    "additionalInformation": task.additionalInformation,
+                    "status": []
+                }
+                let status = _.filter(statusAck, function (o) { return item.deadline == o.dueDate });
+
+                if (status.length == 0) {
+                    obj.status = [{
+                        "@type": "Status",
+                        "status": "Unhandled",
+                        "updated": new Date(),
+                        "comment": null,
+                        "updater": null
+                    }]
+                }
+                else {
+                    status.forEach((x, i) => {
+                        obj.status[i] = {
+                            "@type": "Status",
+                            "status": x.status,
+                            "updated": x.time,
+                            "comment": x.comment,
+                            "scheduledEnd": item.deadline,
+                            "updater": {
+                                "@type": "Organization",
+                                "idLocal": x.updater,
+                                "name": x.updater
+                            }
+                        }
+                    })
+                }
+                dueDates.push(obj)
+            })
+            return Promise.resolve(dueDates);
+        }).catch(function (err) {
+            return Promise.reject(err);
+        });
+    } catch (err) {
+        return Promise.reject(err);;
+    }
+}
+
+/**
+ * Sends Status Ack request .
+ *
+ * @param {Object} config
+ * @return {Promise}
+ */
+function getStatusInfo(config, maintenanceTaskId) {
+
+    try {
+
+        const option = {
+            method: 'GET',
+            url: config.authConfig.url + '/maintenance-task/maintenance-tasks/' + maintenanceTaskId + '/acknowledgements',
+            headers: config.authConfig.headers,
+            json: true,
+            resolveWithFullResponse: true,
+        };
+        return rp(option).then(function (result) {
+            return Promise.resolve(result.body);
+        }).catch(function (err) {
+            return Promise.reject(err);
+        });
+    } catch (err) {
+        return Promise.reject(err);;
+    }
+}
+
 /**
  * Transforms output to Platform of Trust context schema.
  *
@@ -123,11 +224,12 @@ const output = async (config, output) => {
     };
     let maintainanceTask = []
     for (let i = 0; i < output.data.maintenanceInformation.length; i++) {
-        for (let j = 0; j < output.data.maintenanceInformation[i].measurements.length; j++) {
-            if (output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId > 0) {
+        let maintainanceTaskIds = _.uniq(_.map(output.data.maintenanceInformation[i].measurements, 'value.maintenanceTaskId'));
+        for (let j = 0; j < maintainanceTaskIds.length; j++) {
+            if (maintainanceTaskIds[j] > 0) {
                 let taskInfo = {}
-                taskInfo['@type'] =  "Process";
-                let task = await getMaintainanceTaskInfo(config, output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId);
+                taskInfo['@type'] = "Process";
+                let task = await getMaintainanceTaskInfo(config, maintainanceTaskIds[j]);
                 let temp = {
                     idLocal: task.id,
                     name: task.name,
@@ -142,37 +244,16 @@ const output = async (config, output) => {
                     operator: [
                         {
                             "@type": "Organization",
-                            "idLocal": task.contractorId
+                            "idLocal": task.responsibleId
                         }
                     ],
                     location: [
                         {
-                            "@type": config.parameters.targetObject[i]['@type'],
+                            "@type": task.asset && task.asset.type,
                             "idLocal": task.asset && task.asset.id
                         },
                     ],
-                    processInstance: [
-                        {
-                            "@type": "Process",
-                            "idLocal": output.data.maintenanceInformation[i].measurements[j].value.maintenanceTaskId.toString().concat("_", output.data.maintenanceInformation[i].measurements[j].value.dueDate),
-                            "name": task.name,
-                            "descriptionGeneral": task.description,
-                            "additionalInformation": task.additionalInformation,
-                            "status": [
-                                {
-                                    "@type": "Status",
-                                    "status": output.data.maintenanceInformation[i].measurements[j].value.status,
-                                    "updated": output.data.maintenanceInformation[i].measurements[j].value.time,
-                                    "comment": output.data.maintenanceInformation[i].measurements[j].value.comment,
-                                    "updater": {
-                                        "@type": "Organization",
-                                        "idLocal": output.data.maintenanceInformation[i].measurements[j].value.updater,
-                                        "name": output.data.maintenanceInformation[i].measurements[j].value.updater
-                                    }
-                                }
-                            ]
-                        }
-                    ]
+                    processInstance: await getDueDatesInfo(config, maintainanceTaskIds[j], task)
                 }
                 taskInfo = Object.assign(taskInfo, temp)
                 maintainanceTask.push(taskInfo)
@@ -181,13 +262,14 @@ const output = async (config, output) => {
         }
     }
 
-    // filter Based On status
-    if (config.parameters.status && config.parameters.status.length > 0) {
 
-        for (let x = 0; x < maintainanceTask.length; x++) {
-            maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"][0].status) });
-        }
-    }
+    // // filter Based On status
+    // if (config.parameters.status && config.parameters.status.length > 0) {
+
+    //     for (let x = 0; x < maintainanceTask.length; x++) {
+    //         maintainanceTask = _.filter(maintainanceTask, function (o) { return config.parameters.status.includes(o["status"][0].status) });
+    //     }
+    // }
 
     result[config.output.object][config.output.array] = maintainanceTask;
 
