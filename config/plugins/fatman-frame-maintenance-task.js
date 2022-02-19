@@ -141,6 +141,7 @@ function getDueDatesInfo(config, maintenanceTaskId, task) {
                     "name": task.name,
                     "descriptionGeneral": task.description,
                     "additionalInformation": task.additionalInformation,
+                    "scheduledEnd": item.deadline,
                     "status": []
                 }
                 let status = _.filter(statusAck, function (o) { return item.deadline == o.dueDate });
@@ -161,7 +162,6 @@ function getDueDatesInfo(config, maintenanceTaskId, task) {
                             "status": x.status,
                             "updated": x.time,
                             "comment": x.comment,
-                            "scheduledEnd": item.deadline,
                             "updater": {
                                 "@type": "Organization",
                                 "idLocal": x.updater,
