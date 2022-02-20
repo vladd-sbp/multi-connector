@@ -15,6 +15,9 @@ Following data sources are supported out of the box. Example configs can be foun
 - Nukka v2 Measurements Indoor Air electricity ( nuuka-v2-measurements-indoor-air-electricity )
 - Tampuuri Service Request
 - Vilpe
+- fatman-frame-maintenance-task
+- tampuuri-maintenance-task
+- tampuuri-service-request
 
 
 ## Getting Started
