@@ -142,15 +142,30 @@ const output = async (config, output) => {
 function forProcessInstance(name, data, config) {
     let arr = [];
     data.forEach(obj => {
-        if (obj.Tyonsuoritusaika === null) {
             arr.push({
                 "@type": "Process",
                 "idLocal": obj.Id,
                 "name": name,
                 "scheduledStart": obj.Alkaa,
-                "scheduledEnd": obj.Loppuu
+                "scheduledEnd": obj.Loppuu,
+                "status": obj.Kuitattu ? [
+                    {
+                      "@type": "Status",
+                      "status": "Completed",
+                      "updated": obj.Kuittausaika,
+                      "updater": {
+                        "idLocal": obj.Kuittaaja[0].Id,
+                        "name": obj.Kuittaaja[0].Nimi
+                      }
+                    }
+                  ]:[
+                    {
+                      "@type": "Status",
+                      "status": "Unhandled",
+                      "updated": obj.Alkaa
+                    }
+                  ]
             })
-        }
     })
     let arr2 = formDataOnDate(config, arr)
     return arr2;
