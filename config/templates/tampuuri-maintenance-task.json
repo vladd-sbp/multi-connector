@@ -29,7 +29,7 @@
     ]
   },
   "output": {
-    "contextValue": "https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation",
+    "contextValue":"https://standards.oftrust.net/v2/Context/DataProductOutput/MaintenanceInformation/?v=3.2",
     "object": "data",
     "array": "maintenanceInformation",
     "value": "value",
