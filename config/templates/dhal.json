@@ -1,0 +1,37 @@
+{
+    "plugins": [
+        "dhal"
+        
+    ],
+    "protocol": "sftp",
+    "authConfig": {
+        "url": "${url}",
+        "port": "${port}",
+        "fromPath": "${fromPath}",
+        "toPath": "${toPath}",
+        "proxyHost": "${proxyHost}",
+        "proxyPort": "${proxyPort}",
+        "username": "${username}",
+        "password": "${password}",
+        "path": "/${targetObject.name}"
+    },
+    "dataObjects": [
+       
+    ],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+      
+    },
+    "input": {
+        "required": [
+            
+        ]
+    },
+    "output": {
+        "contextValue": "https://standards.oftrust.net/v2/Context/DataProductOutput/Document/",
+        "array": "document",
+        "data": "data"
+    }
+}

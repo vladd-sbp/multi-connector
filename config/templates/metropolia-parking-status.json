@@ -1,0 +1,51 @@
+{
+  "plugins": [
+    "metropolia-parking-status"
+  ],
+  "protocol": "rest",
+  "authConfig": {
+    "url": "${url}",
+    "authContentType": "application/json",
+    "username": "${username}",
+    "password": "${password}",
+    "headers": {
+      "Authorization": ""
+    },
+    "path": "/status"
+  },
+  "measurementType": "MeasurePresence",
+  "dataObjects": [
+    ""
+  ],
+  "dataPropertyMappings": {
+    "": ""
+  },
+  "generalConfig": {
+    "query": {},
+    "sourceName": {
+      "dataObjectProperty": "name"
+    },
+    "hardwareId": {
+      "pathIndex": 4
+    },
+    "measurement": {
+      "pathIndex": 5
+    },
+    "timestamp": {
+      "dataObjectProperty": "timestamp"
+    }
+  },
+  "input": {
+      "required": [
+          "parameters"
+      ]
+  },
+  "output": {
+    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+    "array": "sensors",
+    "object": "data",
+    "value": "result",
+    "data": "measurements",
+    "id": "id"
+  }
+}
