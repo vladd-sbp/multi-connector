@@ -1,0 +1,15 @@
+{
+  "template": "metropolia-parking-status",
+  "static": {
+    "url": "https://kitsi-parkki.metropolia.fi:8080",
+    "username": "",
+    "password": ""
+  },
+  "dynamic": {
+  },
+  "request": {
+    "ids": [{
+      "id": "<id>"
+  }]
+  }
+}
