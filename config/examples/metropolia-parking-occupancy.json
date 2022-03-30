@@ -1,5 +1,5 @@
 {
-  "template": "metropolia-parking-status",
+  "template": "metropolia-parking-occupancy",
   "static": {
     "url": "https://kitsi-parkki.metropolia.fi:8080",
     "username": "",

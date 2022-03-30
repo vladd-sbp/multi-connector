@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "metropolia-parking-status"
+    "metropolia-parking-occupancy"
   ],
   "protocol": "rest",
   "authConfig": {

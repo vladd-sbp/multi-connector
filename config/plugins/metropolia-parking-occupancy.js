@@ -91,7 +91,7 @@ const output = async (config, output) => {
 
 
 module.exports = {
-    name: 'metropolia-parking-status',
+    name: 'metropolia-parking-occupancy',
     request,
     output,
     response
