@@ -1,0 +1,17 @@
+{
+    "template": "betoni360-ncc",
+    "static": {
+        "baseurl": "https://constructionconnector-dev.ncc.info",
+        "Subscription-Key": ""
+    },
+    "dynamic": {
+        "authConfig.path": [
+            "ids"
+        ]
+    },
+    "request": {
+        "ids": [{
+            "id": "<id>"
+        }]
+    }
+}

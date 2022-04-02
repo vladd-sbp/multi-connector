@@ -1,0 +1,24 @@
+{
+    "template": "betoni360-ncc-post",
+    "static": {
+        "baseurl": "https://constructionconnector-dev.ncc.info",
+        "Subscription-Key": ""
+    },
+    "dynamic": {
+
+        "authConfig.body": [
+            "ids"
+          ]
+    },
+    "request": {
+        "ids": [
+            {
+                "elementGuid": "<elementGuid>",
+                "elementDesignStatus": "<elementDesignStatus>",
+                "erectionPlannedEndDate": "<erectionPlannedEndDate>",
+                "fabricationPlant": "<fabricationPlant>",
+                "fabricationActualEndDate": "<fabricationActualEndDate>"
+            }
+        ]
+    }
+}
