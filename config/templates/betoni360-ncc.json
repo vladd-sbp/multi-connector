@@ -1,0 +1,46 @@
+{
+    "plugins": [
+      "betoni360-ncc"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${baseurl}",
+      "headers": {
+        "x-api-key": "${Subscription-Key}",
+        "accept": "text/plain"
+    },
+      "path": "/api/ElementData?elementGuid=${id}"
+    },
+    "dataObjects": [],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+        "query": {},
+        "sourceName": {
+          "dataObjectProperty": "name"
+        },
+        "hardwareId": {
+          "pathIndex": 4
+        },
+        "measurement": {
+          "pathIndex": 5
+        },
+        "timestamp": {
+          "dataObjectProperty": "timestamp"
+        }
+    },
+    "input": {
+      "required": [
+       
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation",
+      "object": "data",
+      "array": "maintenanceInformation",
+      "value": "value",
+      "data": "product",
+      "id": "id"
+    }
+  }

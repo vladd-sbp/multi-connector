@@ -1,0 +1,55 @@
+{
+    "plugins": [
+      "betoni360-ncc-post"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "method": "POST",
+      "url": "${baseurl}",
+      "headers": {
+        "x-api-key": "${Subscription-Key}",
+        "Content-Type": "application/json",
+        "accept": "*/*"
+    },
+      "path": "/api/ElementData",
+      "body":  {
+        "elementGuid": "${elementGuid}",
+        "elementDesignStatus": "${elementDesignStatus}",
+        "erectionPlannedEndDate": "${erectionPlannedEndDate}",
+        "fabricationPlant": "${fabricationPlant}",
+        "fabricationActualEndDate": "${fabricationActualEndDate}"
+      }
+    },
+    "dataObjects": [],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+        "query": {},
+        "sourceName": {
+          "dataObjectProperty": "name"
+        },
+        "hardwareId": {
+          "pathIndex": 4
+        },
+        "measurement": {
+          "pathIndex": 5
+        },
+        "timestamp": {
+          "dataObjectProperty": "timestamp"
+        }
+    },
+    "input": {
+      "required": [
+        "parameters.ids"
+      ]
+    },
+    "output": {
+      "contextValue":"https://standards.oftrust.net/v2/DataExample/DataProductParameters/ProductCatalog",
+      "object": "data",
+      "array": "maintenanceInformation",
+      "value": "value",
+      "data": "product",
+      "id": "id"
+    }
+  }
