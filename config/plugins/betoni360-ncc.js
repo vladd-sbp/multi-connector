@@ -40,12 +40,28 @@ const response = async (config, data) => {
  * @return {Object}
  */
 const output = async (config, output) => {
-    var arr = {};
+    var arr = [];
 
     output.data.maintenanceInformation.forEach(function (item) {
 
         item.product.forEach((data) => {
-            arr= data.value
+            arr.push({
+                "@type": "Product",
+                "ifcGuid": data.value.elementGuid,
+                "design" :{
+                  "@type": "Design",
+                  "status": data.value.elementDesignStatus
+                },
+                "production": {
+                  "@type": "Production",
+                  "location": data.value.fabricationPlant,
+                  "actualEnd": data.value.fabricationActualEndDate
+                },
+                "installation": {
+                  "@type": "Installation",
+                  "plannedEnd": data.value.erectionPlannedEndDate
+                }
+              })
             
         });
     });

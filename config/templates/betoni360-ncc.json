@@ -32,11 +32,11 @@
     },
     "input": {
       "required": [
-       
+        "parameters.ids"
       ]
     },
     "output": {
-      "contextValue":"https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/MaintenanceInformation",
+      "contextValue":"https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/ProductCatalog",
       "object": "data",
       "array": "maintenanceInformation",
       "value": "value",
