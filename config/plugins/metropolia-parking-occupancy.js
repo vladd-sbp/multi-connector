@@ -65,9 +65,7 @@ const output = async (config, output) => {
                         "value": (data.result.link_quality == '1.0' ? true : false)
                     }
                 ],
-                "id": {
-                    "vendorId": data.result.vendor_id
-                }
+                "id":  data.result.vendor_id
             })
         });
     });
@@ -76,7 +74,7 @@ const output = async (config, output) => {
     })
     // filter Based On ids
     if (vendorIds.length > 0) {
-        arr = _.filter(arr, function (o) { return vendorIds.includes(o.id.vendorId) });
+        arr = _.filter(arr, function (o) { return vendorIds.includes(o.id) });
     }
 
     const result = {
