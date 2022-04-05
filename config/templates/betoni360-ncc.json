@@ -9,7 +9,7 @@
         "x-api-key": "${Subscription-Key}",
         "accept": "text/plain"
     },
-      "path": "/api/ElementData?elementGuid=${id}"
+      "path": "/api/ElementData?elementGuid=${ifcGuid}"
     },
     "dataObjects": [],
     "dataPropertyMappings": {
@@ -32,7 +32,7 @@
     },
     "input": {
       "required": [
-        "parameters.ids"
+        "parameters.targetObject"
       ]
     },
     "output": {
