@@ -6,12 +6,15 @@
     },
     "dynamic": {
         "authConfig.path": [
-            "ids"
+            "targetObject"
         ]
     },
     "request": {
-        "ids": [{
-            "id": "<id>"
-        }]
+        "targetObject": [
+            {
+                "@type":"<type>",
+                "ifcGuid": "<ifcGuid>"
+            }
+        ]
     }
 }
