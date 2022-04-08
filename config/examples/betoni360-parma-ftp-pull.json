@@ -1,0 +1,27 @@
+{
+    "template": "betoni360-parma-ftp-pull",
+    "static": {
+        "url": "",
+        "port": "21",
+        "fromPath": "/test/parma",
+        "toPath": "/test/parma",
+        "username": "",
+        "password": ""
+    },
+    "dynamic": {
+        "authConfig.path": "targetObject.ifcGuid"
+    },
+    "plugins" : {
+        "download-link": {
+            "ttl": "300"
+        }
+    },
+    "request": {
+        "targetObject":  
+            {
+                "@type":"<type>",
+                "ifcGuid": "<ifcGuid>"
+            }
+        
+    }
+}

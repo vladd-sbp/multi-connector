@@ -1,0 +1,42 @@
+{
+    "plugins": [
+        "betoni360-parma-ftp-pull"
+    ],
+    "protocol": "ftp",
+    "authConfig": {
+        "url": "${url}",
+        "port": "${port}",
+        "secure": "${secure}",
+        "fromPath": "${fromPath}",
+        "toPath": "${toPath}",
+        "username": "${username}",
+        "password": "${password}",
+        "path": "/${targetObject.ifcGuid}"
+    },
+    "dataObjects": [
+        "data"
+    ],
+    "dataPropertyMappings": {
+        "": ""
+    },
+    "generalConfig": {
+        "hardwareId": {
+            "dataObjectProperty": ""
+        },
+        "sourceName": {
+            "dataObjectProperty": ""
+        },
+        "timestamp": {
+            "dataObjectProperty": ""
+        }
+    },
+    "input": {
+        "required": [
+            "parameters.targetObject"
+        ]
+    },
+    "output": {
+        "contextValue": "https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/ProductCatalog",
+        "array": "product"
+    }
+}

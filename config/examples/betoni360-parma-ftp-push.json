@@ -1,0 +1,23 @@
+{
+    "template": "betoni360-parma-ftp-push",
+    "static": {
+        "url": "",
+        "port": "21",
+        "fromPath": "/test/parma",
+        "toPath": "/test/parma",
+        "username": "",
+        "password": ""
+    },
+    "dynamic": {
+    },
+    "plugins" : {
+        "download-link": {
+            "ttl": "300"
+        }
+    },
+    "request": {
+        "targetObject": {
+            "name": "<filename>"
+        }
+    }
+}
