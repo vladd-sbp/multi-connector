@@ -65,8 +65,6 @@ const downloadFiles = async (client, path, productCode) => {
         // Try path as a directory.
         files = await client.list(path);
     } catch (err) {
-
-
         try {
             // Try path as a filename.
             const parts = path.split('/');

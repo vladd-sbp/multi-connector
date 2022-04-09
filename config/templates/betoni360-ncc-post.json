@@ -14,8 +14,6 @@
       "path": "/api/ElementData",
       "body":  {
         "elementGuid": "${elementGuid}",
-        "elementDesignStatus": "${elementDesignStatus}",
-        "erectionPlannedEndDate": "${erectionPlannedEndDate}",
         "fabricationPlant": "${fabricationPlant}",
         "fabricationActualEndDate": "${fabricationActualEndDate}"
       }

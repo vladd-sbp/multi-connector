@@ -14,8 +14,6 @@
         "ids": [
             {
                 "elementGuid": "<elementGuid>",
-                "elementDesignStatus": "<elementDesignStatus>",
-                "erectionPlannedEndDate": "<erectionPlannedEndDate>",
                 "fabricationPlant": "<fabricationPlant>",
                 "fabricationActualEndDate": "<fabricationActualEndDate>"
             }

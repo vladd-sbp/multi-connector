@@ -14,8 +14,6 @@ const request = async (config, options) => {
         options.json = true,
             options.body = {
                 "elementGuid": options.body[0].elementGuid,
-                "elementDesignStatus": options.body[0].elementDesignStatus === "null" ? null : options.body[0].elementDesignStatus,
-                "erectionPlannedEndDate": options.body[0].erectionPlannedEndDate,
                 "fabricationPlant": options.body[0].fabricationPlant === "null" ? null : options.body[0].fabricationPlant,
                 "fabricationActualEndDate": options.body[0].fabricationActualEndDate
             }
