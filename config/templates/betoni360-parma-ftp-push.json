@@ -11,7 +11,7 @@
         "toPath": "${toPath}",
         "username": "${username}",
         "password": "${password}",
-        "path": ""
+        "path": "/${targetObject.name}"
     },
     "dataObjects": [
         "data"
