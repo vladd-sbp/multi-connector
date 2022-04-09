@@ -18,6 +18,7 @@ Following data sources are supported out of the box. Example configs can be foun
 - fatman-frame-maintenance-task
 - tampuuri-maintenance-task
 - tampuuri-service-request
+- Metropolia-parking-occupancy
 
 
 ## Getting Started
