@@ -19,6 +19,11 @@ Following data sources are supported out of the box. Example configs can be foun
 - tampuuri-maintenance-task
 - tampuuri-service-request
 - Metropolia-parking-occupancy
+- betoni360-ncc-post
+- betoni360-ncc
+- betoni360-parma-ftp-pull
+- betoni360-parma-ftp-push
+
 
 
 ## Getting Started
