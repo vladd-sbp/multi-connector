@@ -10,13 +10,30 @@
  */
  const parameters = async (config, parameters) => {
     try {
-      // console.log(parameters)
        parameters.targetObject.content=JSON.stringify(parameters.targetObject.content)
         return parameters;
     } catch (e) {
         return parameters;
     }
 };
+
+/**
+ * Pick custom ttl.
+ *
+ * @param {Object} config
+ * @param {Object} template
+ * @return {Object}
+ */
+ const template = async (config, template) => {
+    try {
+        template.authConfig.secure=template.authConfig.secure === 'true' ? true : false
+
+    } catch (err) {
+        return template;
+    }
+    return template;
+};
+
 
 // /**
 //  * Response data Mapping
@@ -81,7 +98,8 @@
 
 module.exports = {
     name: 'Betoni360-parma-ftp-push',
-    parameters
+    parameters,
+    template
     
     
 };

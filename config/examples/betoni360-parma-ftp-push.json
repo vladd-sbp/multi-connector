@@ -3,6 +3,7 @@
     "static": {
         "url": "",
         "port": "21",
+        "secure":"true",
         "fromPath": "/test/parma",
         "toPath": "/test/parma",
         "username": "",

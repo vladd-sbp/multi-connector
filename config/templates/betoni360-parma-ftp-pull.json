@@ -11,7 +11,7 @@
         "toPath": "${toPath}",
         "username": "${username}",
         "password": "${password}",
-        "path": "/${targetObject.ifcGuid}"
+        "path": "${ifcGuid}"
     },
     "dataObjects": [
         "data"

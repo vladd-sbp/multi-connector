@@ -3,13 +3,16 @@
     "static": {
         "url": "",
         "port": "21",
+        "secure":"true",
         "fromPath": "/test/parma",
         "toPath": "/test/parma",
         "username": "",
         "password": ""
     },
     "dynamic": {
-        "authConfig.path": "targetObject.ifcGuid"
+        "authConfig.path":  [
+            "targetObject"
+        ]
     },
     "plugins" : {
         "download-link": {
@@ -17,11 +20,11 @@
         }
     },
     "request": {
-        "targetObject":  
+        "targetObject":  [
             {
                 "@type":"<type>",
                 "ifcGuid": "<ifcGuid>"
             }
-        
+        ]
     }
 }
