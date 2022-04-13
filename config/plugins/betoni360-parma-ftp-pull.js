@@ -1,5 +1,6 @@
 'use strict';
 
+const ftp = require('../../app/protocols/ftp');
 
 /**
  * Splits period to start and end properties .
@@ -36,7 +37,6 @@ const template = async (config, template) => {
 
 
 
-
 /**
  * Detect JSON data.
  *
@@ -61,6 +61,7 @@ const isJSON = (data) => {
  */
 const response = async (config, response) => {
     try {
+        // console.log("reponse",response)
         if (typeof response.data === 'string' || response.data instanceof String) {
             response = {
                 data: {
@@ -85,6 +86,8 @@ const response = async (config, response) => {
 };
 
 
+
+
 /**
  * Transforms output to Platform of Trust context schema.
  *
@@ -96,8 +99,9 @@ const output = async (config, output) => {
     var arr = [];
 
     output.data.product.forEach(function (item) {
-
+       
         item.measurements.forEach((data) => {
+
             arr.push({
                 "@type": "Product",
                 "ifcGuid": data.value.content.elementGuid,
@@ -118,6 +122,30 @@ const output = async (config, output) => {
 
         });
     });
+    //files contained in output1 folder
+    let tmp1 = arr.map(p=>p.ifcGuid)
+
+    //files not in output1 folder
+    let tmp2 = config.parameters.targetObject.map(p=>p.ifcGuid.split(".")[0])
+
+    //new files to include in input1 folder
+    var tmp3 = tmp2.filter(e=>!tmp1.includes(e));
+
+      if (tmp3.length>0) {
+        tmp3.forEach(async function (item) {
+            config.parameters.targetObject = {
+                "content": JSON.stringify({
+                    "elementGuid": parseInt(item),
+                    "elementDesignStatus": null,
+                    "erectionPlannedEndDate": null,
+                    "fabricationPlant": null,
+                    "fabricationActualEndDate": null
+                }),
+                "name": `${item}.json`
+            }
+         await ftp.getData(config, [`${item}.json`], false);
+        })
+        }
 
     const result = {
         [config.output.context]: config.output.contextValue,

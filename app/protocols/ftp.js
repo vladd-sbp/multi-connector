@@ -60,32 +60,22 @@ const checkDir = async (filepath) => {
  */
 const downloadFiles = async (client, path, productCode) => {
     let files;
-    let filename = true;
+    const filename = path.includes('.');
     try {
-        // Try path as a directory.
         files = await client.list(path);
     } catch (err) {
-        try {
-            // Try path as a filename.
-            const parts = path.split('/');
-            parts.pop();
-            files = (await client.list(parts.join('/')))
-                .filter(file => path.split('/').includes(file.name));
-            filename = true;
-        } catch (err) {
-            // winston.log('error', err.message);
-            return;
-        }
+        files = [];
     }
     if (!Array.isArray(files)) { return; }
     if (path.slice(-1) === '/') {
         path = path.slice(0, -1);
     }
-    
+
     // Skip directories.
     files = (Array.isArray(files) ? files : [files]).filter(item => item.type !== 2);
+
     for (let i = 0; i < files.length; i++) {
-        const from = path + (filename ?  '': (path !== '/' ? '/' : '') + files[i].name );
+        const from = path + (filename ? '' : (path !== '/' ? '/' : '') + files[i].name);
         const to = DOWNLOAD_DIR + productCode + from;
         await checkDir(to);
         try {
@@ -93,6 +83,8 @@ const downloadFiles = async (client, path, productCode) => {
             await client.downloadTo(to, from);
             // Attach dir.
             files[i].path = from;
+            // Take only filename.
+            files[i].name = files[i].name.split('/').pop();
             // Read file content.
             files[i].data = fs.readFileSync(to, 'base64');
         } catch (err) {
@@ -153,8 +145,7 @@ const deleteFile = async (client, path) => {
  */
 const createClient = async (config = {}, productCode, clientId = uuidv4()) => {
     const options = {
-        port: 21
-
+        port: 21,
     };
 
     if (Object.hasOwnProperty.call(config.authConfig, 'url')) {
@@ -185,7 +176,6 @@ const createClient = async (config = {}, productCode, clientId = uuidv4()) => {
         clients[productCode][clientId] = new ftp.Client();
     }
 
-
     await clients[productCode][clientId].access(options);
     return clients[productCode][clientId];
 };
@@ -212,7 +202,7 @@ const getData = async (config = {}, pathArray, skipHandling = false) => {
 
             // Fetch content.
             const url = doc.url;
-            const response = url ? await rp({method: 'GET', url, resolveWithFullResponse: true, encoding: null}) : {body:doc.content};
+            const response = url ? await rp({method: 'GET', url, resolveWithFullResponse: true, encoding: null}) : {body: doc.content};
             const content = response.body;
 
             // Write file to filesystem.
