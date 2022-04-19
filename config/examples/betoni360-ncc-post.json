@@ -7,11 +7,11 @@
     "dynamic": {
 
         "authConfig.body": [
-            "ids"
+            "targetObject"
           ]
     },
     "request": {
-        "ids": [
+        "targetObject": [
             {
                 "elementGuid": "<elementGuid>",
                 "fabricationPlant": "<fabricationPlant>",
