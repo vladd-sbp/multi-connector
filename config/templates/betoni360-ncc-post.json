@@ -39,7 +39,7 @@
     },
     "input": {
       "required": [
-        "parameters.ids"
+        "parameters.targetObject"
       ]
     },
     "output": {

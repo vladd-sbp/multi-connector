@@ -135,7 +135,7 @@ const output = async (config, output) => {
         tmp3.forEach(async function (item) {
             config.parameters.targetObject = {
                 "content": JSON.stringify({
-                    "elementGuid": parseInt(item),
+                    "elementGuid": item,
                     "elementDesignStatus": null,
                     "erectionPlannedEndDate": null,
                     "fabricationPlant": null,
