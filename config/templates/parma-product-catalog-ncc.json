@@ -1,6 +1,6 @@
 {
     "plugins": [
-        "betoni360-parma-ftp-pull"
+        "parma-product-catalog-ncc"
     ],
     "protocol": "ftp",
     "authConfig": {

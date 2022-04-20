@@ -1,5 +1,5 @@
 {
-    "template": "betoni360-ncc-post",
+    "template": "ncc-product-catalog-parma-update",
     "static": {
         "baseurl": "https://constructionconnector-dev.ncc.info",
         "Subscription-Key": ""

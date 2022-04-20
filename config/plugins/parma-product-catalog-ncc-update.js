@@ -132,7 +132,7 @@ const response = async (config, response) => {
 
 
 module.exports = {
-    name: 'Betoni360-parma-ftp-push',
+    name: 'parma-product-catalog-ncc-update',
     parameters,
     template,
     response,

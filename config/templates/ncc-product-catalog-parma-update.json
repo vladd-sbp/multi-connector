@@ -1,15 +1,22 @@
 {
     "plugins": [
-      "betoni360-ncc"
+      "ncc-product-catalog-parma-update"
     ],
     "protocol": "rest",
     "authConfig": {
+      "method": "POST",
       "url": "${baseurl}",
       "headers": {
         "x-api-key": "${Subscription-Key}",
-        "accept": "text/plain"
+        "Content-Type": "application/json",
+        "accept": "*/*"
     },
-      "path": "/api/ElementData?elementGuid=${ifcGuid}"
+      "path": "/api/ElementData",
+      "body":  {
+        "elementGuid": "${elementGuid}",
+        "fabricationPlant": "${fabricationPlant}",
+        "fabricationActualEndDate": "${fabricationActualEndDate}"
+      }
     },
     "dataObjects": [],
     "dataPropertyMappings": {
@@ -36,7 +43,7 @@
       ]
     },
     "output": {
-      "contextValue":"https://standards-ontotest.oftrust.net/v2/DataExample/DataProductParameters/ProductCatalog",
+      "contextValue":"https://standards.oftrust.net/v2/DataExample/DataProductParameters/ProductCatalog",
       "object": "data",
       "array": "maintenanceInformation",
       "value": "value",

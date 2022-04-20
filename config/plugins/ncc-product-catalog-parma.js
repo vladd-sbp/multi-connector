@@ -78,7 +78,7 @@ const output = async (config, output) => {
 
 
 module.exports = {
-    name: 'betoni360-ncc',
+    name: 'ncc-product-catalog-parma',
     request,
     output,
     response

@@ -1,5 +1,5 @@
 {
-    "template": "betoni360-parma-ftp-push",
+    "template": "parma-product-catalog-ncc-update",
     "static": {
         "url": "",
         "port": "21",

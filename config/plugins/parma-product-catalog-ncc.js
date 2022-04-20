@@ -160,7 +160,7 @@ const output = async (config, output) => {
 
 
 module.exports = {
-    name: 'Betoni360-parma-ftp-pull',
+    name: 'parma-product-catalog-ncc',
     output,
     parameters,
     template,
