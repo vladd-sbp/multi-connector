@@ -1,5 +1,5 @@
 'use strict';
-
+const rp = require('request-promise');
 
 /**
  * Composes authorization header and
@@ -17,7 +17,6 @@ const request = async (config, options) => {
                 "fabricationPlant": options.body[0].fabricationPlant === "null" ? null : options.body[0].fabricationPlant,
                 "fabricationActualEndDate": options.body[0].fabricationActualEndDate
             }
-        options.body[0]
         return options;
     }
     catch (err) {
@@ -68,12 +67,40 @@ const output = async (config, output) => {
     if (output.data.maintenanceInformation.length === 0) {
         return promiseRejectWithError(500, 'Incorrect Parameters');
     }
-    var arr = {};
+    if (config.parameters.targetObject.length > output.data.maintenanceInformation.length) {
+        for (let i = 1; i < config.parameters.targetObject.length; i++) {
+            const option = {
+                method: 'POST',
+                url: config.authConfig.url + config.authConfig.path,
+                body: {
+                    elementGuid: config.parameters.targetObject[i].elementGuid,
+                    fabricationPlant: config.parameters.targetObject[i].fabricationPlant,
+                    fabricationActualEndDate: config.parameters.targetObject[i].fabricationActualEndDate
+                },
+                headers: config.authConfig.headers,
+                resolveWithFullResponse: true,
+                query: [],
+                gzip: true,
+                encoding: null,
+                json: true
+            }
+            await rp(option).then(function (result) {
+                output.data.maintenanceInformation.push(
+                    {
+                        id: undefined, product: [{
+                            value: JSON.parse(result.request.body)
+                        }]
+                    })
+            }).catch(function (err) {
+                return Promise.reject(err);
+            });
+        }
+    }
+    var arr = [];
 
     output.data.maintenanceInformation.forEach(function (item) {
-
         item.product.forEach((data) => {
-            arr = data.value
+            arr.push(data.value)
 
         });
     });
