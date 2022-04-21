@@ -11,7 +11,9 @@ const rp = require('request-promise');
  */
 const request = async (config, options) => {
     try {
+        options.body = Array.isArray(options.body) ? options.body : [options.body]
         options.json = true,
+        console.log(options)
             options.body = {
                 "elementGuid": options.body[0].elementGuid,
                 "fabricationPlant": options.body[0].fabricationPlant === "null" ? null : options.body[0].fabricationPlant,
