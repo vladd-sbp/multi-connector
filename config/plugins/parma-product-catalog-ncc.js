@@ -11,6 +11,7 @@ const ftp = require('../../app/protocols/ftp');
  */
 const parameters = async (config, parameters) => {
     try {
+        parameters.targetObject = Array.isArray(parameters.targetObject) ? parameters.targetObject : [parameters.targetObject]
         return parameters;
     } catch (e) {
         return parameters;
@@ -99,7 +100,7 @@ const output = async (config, output) => {
     var arr = [];
 
     output.data.product.forEach(function (item) {
-       
+
         item.measurements.forEach((data) => {
 
             arr.push({
@@ -123,15 +124,15 @@ const output = async (config, output) => {
         });
     });
     //files contained in output1 folder
-    let tmp1 = arr.map(p=>p.ifcGuid)
+    let tmp1 = arr.map(p => p.ifcGuid)
 
     //files not in output1 folder
-    let tmp2 = config.parameters.targetObject.map(p=>p.ifcGuid.split(".")[0])
+    let tmp2 = config.parameters.targetObject.map(p => p.ifcGuid.split(".")[0])
 
     //new files to include in input1 folder
-    var tmp3 = tmp2.filter(e=>!tmp1.includes(e));
+    var tmp3 = tmp2.filter(e => !tmp1.includes(e));
 
-      if (tmp3.length>0) {
+    if (tmp3.length > 0) {
         tmp3.forEach(async function (item) {
             config.parameters.targetObject = {
                 "content": JSON.stringify({
@@ -143,9 +144,9 @@ const output = async (config, output) => {
                 }),
                 "name": `${item}.json`
             }
-         await ftp.getData(config, [`${item}.json`], false);
+            await ftp.getData(config, [`${item}.json`], false);
         })
-        }
+    }
 
     const result = {
         [config.output.context]: config.output.contextValue,
