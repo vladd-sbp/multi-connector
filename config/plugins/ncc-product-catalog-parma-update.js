@@ -11,6 +11,7 @@ const rp = require('request-promise');
  */
 const request = async (config, options) => {
     try {
+        options.body = Array.isArray(options.body) ? options.body : [options.body]
         options.json = true,
             options.body = {
                 "elementGuid": options.body[0].elementGuid,
