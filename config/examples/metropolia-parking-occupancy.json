@@ -1,15 +1,15 @@
 {
-  "template": "metropolia-parking-occupancy",
-  "static": {
-    "url": "https://kitsi-parkki.metropolia.fi:8080",
-    "username": "",
-    "password": ""
-  },
-  "dynamic": {
-  },
-  "request": {
-    "ids": [{
-      "id": "<id>"
-  }]
+    "template": "metropolia-parking-occupancy",
+    "static": {
+      "url": "https://kitsi-parkki.metropolia.fi:8080",
+      "username": "",
+      "password": ""
+    },
+    "dynamic": {
+    },
+    "request": {
+      "ids": [{
+        "id": "<id>"
+    }]
+    }
   }
-}

@@ -62,7 +62,7 @@ const output = async (config, output) => {
                     {
                         "@type": config.measurementType,
                         "timestamp": data.timestamp,
-                        "value": (data.result.used == 1 ? true : false)
+                        "value": (data.result.link_quality == '1.0' ? true : false)
                     }
                 ],
                 "id":  data.result.vendor_id
@@ -89,7 +89,7 @@ const output = async (config, output) => {
 
 
 module.exports = {
-    name: 'metropolia-parking-occupancy',
+    name: 'metropolia-parking-status',
     request,
     output,
     response

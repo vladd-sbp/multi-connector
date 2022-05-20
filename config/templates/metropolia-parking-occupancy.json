@@ -1,51 +1,51 @@
 {
-  "plugins": [
-    "metropolia-parking-occupancy"
-  ],
-  "protocol": "rest",
-  "authConfig": {
-    "url": "${url}",
-    "authContentType": "application/json",
-    "username": "${username}",
-    "password": "${password}",
-    "headers": {
-      "Authorization": ""
+    "plugins": [
+      "metropolia-parking-occupancy"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${url}",
+      "authContentType": "application/json",
+      "username": "${username}",
+      "password": "${password}",
+      "headers": {
+        "Authorization": ""
+      },
+      "path": "/occupancy"
     },
-    "path": "/status"
-  },
-  "measurementType": "MeasurePresence",
-  "dataObjects": [
-    ""
-  ],
-  "dataPropertyMappings": {
-    "": ""
-  },
-  "generalConfig": {
-    "query": {},
-    "sourceName": {
-      "dataObjectProperty": "name"
+    "measurementType": "Occupancy",
+    "dataObjects": [
+      ""
+    ],
+    "dataPropertyMappings": {
+      "": ""
     },
-    "hardwareId": {
-      "pathIndex": 4
+    "generalConfig": {
+      "query": {},
+      "sourceName": {
+        "dataObjectProperty": "name"
+      },
+      "hardwareId": {
+        "pathIndex": 4
+      },
+      "measurement": {
+        "pathIndex": 5
+      },
+      "timestamp": {
+        "dataObjectProperty": "timestamp"
+      }
     },
-    "measurement": {
-      "pathIndex": 5
+    "input": {
+        "required": [
+            "parameters"
+        ]
     },
-    "timestamp": {
-      "dataObjectProperty": "timestamp"
+    "output": {
+      "contextValue": "https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "array": "sensors",
+      "object": "data",
+      "value": "result",
+      "data": "measurements",
+      "id": "id"
     }
-  },
-  "input": {
-      "required": [
-          "parameters"
-      ]
-  },
-  "output": {
-    "contextValue": "https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
-    "array": "sensors",
-    "object": "data",
-    "value": "result",
-    "data": "measurements",
-    "id": "id"
   }
-}
