@@ -1,0 +1,50 @@
+{
+    "plugins": [
+      "stavanger"
+    ],
+    "protocol": "rest",
+    "authConfig": {
+      "url": "${url}",
+      "username": "${username}",
+      "password": "${password}",
+      "headers": {
+        "Cache-Control": "no-cache",
+        "Ocp-Apim-Subscription-Key": "${Subscription-Key}"
+    },
+      "path": "/getdata?Tag=${id}"
+    },
+    "dataObjects": [
+      ""
+    ],
+    "dataPropertyMappings": {
+      "": ""
+    },
+    "generalConfig": {
+      "query": {},
+      "sourceName": {
+        "dataObjectProperty": "name"
+      },
+      "hardwareId": {
+        "pathIndex": 4
+      },
+      "measurement": {
+        "pathIndex": 5
+      },
+      "timestamp": {
+        "dataObjectProperty": "timestamp"
+      }
+    },
+    "input": {
+        "required": [
+            "parameters"
+        ]
+    },
+    "output": {
+      "contextValue": "https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "array": "sensors",
+      "object": "data",
+      "value": "result",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
