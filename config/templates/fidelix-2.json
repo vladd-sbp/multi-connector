@@ -1,0 +1,49 @@
+{
+    "plugins": [
+      "soap-basic",
+      "fidelix-2"
+      
+    ],
+    "protocol": "soap",
+    "authConfig": {
+      "url": "http://${ipAddress}/WebServices/Fidelix.asmx",
+      "username": "${username}",
+      "password": "${password}",
+      "headers": "${headers}",
+      "wsdl": "${wsdl}",
+      "function": "Fidelix.FidelixSoap.setPointData",
+      "path": {
+         "point_id":"${targetObject.0.location.idLocal}",
+         "state":"${state}",
+         "val":"${targetObject.0.processValue.0.processValue}"
+        }
+    },
+    "dataObjects": [
+      ""
+    ],
+    "dataPropertyMappings": {
+      "${type}": "setPointDataResult"
+    },
+    "input": {
+      "required": [
+          "parameters.targetObject"
+      ]
+  },
+    "generalConfig": {
+      "hardwareId": {
+        "dataObjectProperty": "hardwareId"
+      },
+      "timestamp": {
+        "dataObjectProperty": "timestamp"
+      }
+    },
+    "output": {
+      "contextValue": "https://standards.oftrust.net/v2/Context/DataProductContext/Sensor/",
+      "array": "process",
+      "object": "data",
+      "value": "result",
+      "data": "measurements",
+      "id": "id"
+    }
+  }
+  
