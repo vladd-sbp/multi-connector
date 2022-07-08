@@ -63,7 +63,7 @@ function getWSDL (config) {
     } else {
         /** Basic authentication. */
         return new Promise((resolve, reject) => {
-            request({url: protocol + username + ':' + password + '@' + url.replace(protocol, '')},
+            request({url: url, auth: {user: username, pass: password}},
                 function (err, response, body) {
                     if (err) reject(err);
                     else resolve(body);
