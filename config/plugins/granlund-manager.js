@@ -6,6 +6,7 @@ const _ = require('lodash');
 const rp = require('request-promise');
 const RRule = require('rrule').RRule;
 const cache = require('../../app/cache');
+const {queue} = require('../../app/lib/queue');
 const winston = require('../../logger.js');
 const transformer = require('../../app/lib/transformer');
 const noteSchema = require('../schemas/note_granlund-manager-v4.0.json');
@@ -13,9 +14,10 @@ const serviceRequestSchema = require('../schemas/service-request_granlund-manage
 const maintenanceInformationSchema = require('../schemas/maintenance-information_granlund-manager-v3.2.json');
 
 /**
- * Grandlund Manager transformer.
+ * Granlund Manager transformer.
  */
 
+const name = 'granlund-manager';
 const UPDATE_TIME = 10 * 60 * 1000;
 const STORAGE_TIME = 20 * 24 * 60 * 60 * 1000;
 
@@ -96,12 +98,15 @@ const getTask = async (config, value, skip = false, priority = 0) => {
             const options = await oauth2.request(config, {});
             const url = `${(Array.isArray(config.authConfig.path) ? config.authConfig.path[0] : config.authConfig.path).split('/').slice(0, 5).join('/')}/maintenance-tasks/${value.Task.Id}`;
             const {body} = await request('GET', url, {...options.headers, 'Content-Type': 'application/json'});
-            cache.setDoc(config.productCode, value.Task.Id, body, STORAGE_TIME / 1000);
+            // Store completed tasks permanently.
+            const ttl = value.Task.StateId === 90 ? 0 : STORAGE_TIME / 1000;
+            cache.setDoc(config.productCode, value.Task.Id, body, ttl);
             return body;
         } else {
             const ttl = cache.getTtl(config.productCode, value.Task.Id) || 0;
             const expiration = ttl - STORAGE_TIME + UPDATE_TIME;
-            if (new Date().getTime() > expiration && !skip) {
+            // Update only tasks which have not been completed.
+            if (new Date().getTime() > expiration && !skip && value.Task.StateId !== 90) {
                 getTask(config, value, true);
             }
             return cached;
@@ -205,14 +210,21 @@ const handleData = async (config, id, data, index) => {
                 try {
                     // Create idLocal from description.
                     const description = value.Request;
-                    const regExp = /\[(.*?)]/g;
-                    const matches = _.uniq(((description || '').match(regExp) || []).filter(tag => tag.length > 2).map(s => s.slice(1, -1)));
+                    let regExp = /\[(.*?)]/g;
+                    let removeOuterBrackets = true;
+                    if (Object.hasOwnProperty.call(config.parameters, 'pattern')) {
+                        regExp = config.parameters.pattern;
+                        removeOuterBrackets = false;
+                    }
+                    const matches = _.uniq(((description || '').match(regExp) || []).filter(tag => tag.length > 2).map(s => removeOuterBrackets ? s.slice(1, -1) : s));
                     if (matches[0]) {
-                        value.CodedObject.Id2 = matches[0].split(' ')[0];
-                        const name = matches[0].split(' ');
-                        name.shift();
+                        value.CodedObject.Id2 = matches[0].split(' ')[0] || matches[0];
+                        const name = matches[0].split(' ').filter(i => i !== '');
+                        if (name.length > 1) {
+                            name.shift();
+                        }
                         value.CodedObject.Name2 = name.join(' ');
-                        value.CodedObject.DisplayName2 = `${value.CodedObject.Id2} ${value.CodedObject.Name2}`;
+                        value.CodedObject.DisplayName2 = `${value.CodedObject.Id2}${value.CodedObject.Name2 !== value.CodedObject.Id2 ? ' ' + value.CodedObject.Name2 : ''}`;
                     }
                 } catch (err) {
                     console.log(err.message);
@@ -237,14 +249,32 @@ const handleData = async (config, id, data, index) => {
                 value.updated = new Date().toISOString();
                 value.Jobs = (value.Jobs || []).map(j => {
                     switch (j.StateId) {
+                        case 10:
+                            j.State = 'Not Scheduled';
+                            break;
+                        case 15:
+                            j.State = 'Late';
+                            break;
+                        case 20:
+                            j.State = 'Ongoing'; // Late
+                            break;
+                        case 30:
+                            j.State = 'Ongoing'; // Job has StartDate
+                            break;
+                        case 40:
+                            j.State = 'Inactive';
+                            break;
                         case 60:
                             j.State = 'New'; // Job doesnt have StartDate
+                            break;
+                        case 80:
+                            j.State = 'Completed'; // Late
                             break;
                         case 90:
                             j.State = 'Completed'; // Job has DoneDate
                             break;
-                        case 30:
-                            j.State = 'Ongoing'; // Job has StartDate
+                        case 100:
+                            j.State = 'Dismissed';
                             break;
                     }
                     j.TaskDate = value.Task.TaskDate;
@@ -254,14 +284,32 @@ const handleData = async (config, id, data, index) => {
                     return {...j, Mission: value.Mission};
                 });
                 switch (value.Task.StateId) {
+                    case 10:
+                        value.Task.State = 'Not Scheduled';
+                        break;
+                    case 15:
+                        value.Task.State = 'Late';
+                        break;
+                    case 20:
+                        value.Task.State = 'Ongoing'; // Late
+                        break;
+                    case 30:
+                        value.Task.State = 'Ongoing'; // Job has StartDate
+                        break;
+                    case 40:
+                        value.Task.State = 'Inactive';
+                        break;
                     case 60:
                         value.Task.State = 'New'; // Job doesnt have StartDate
+                        break;
+                    case 80:
+                        value.Task.State = 'Completed'; // Late
                         break;
                     case 90:
                         value.Task.State = 'Completed'; // Job has DoneDate
                         break;
-                    case 30:
-                        value.Task.State = 'Ongoing'; // Job has StartDate
+                    case 100:
+                        value.Task.State = 'Dismissed';
                         break;
                 }
                 value.CodedObject = (value.Jobs || []).map(j => j.CodedObject);
@@ -510,6 +558,26 @@ const output = async (config, output) => {
             console.log(err.message);
         }
 
+        // Filter out duplicate service request.
+        try {
+            const known = [];
+            result[config.output.object][config.output.array] = result[config.output.object][config.output.array].map((t) => {
+                if (Object.hasOwnProperty.call(t, 'serviceRequest')) {
+                    t.serviceRequest = t.serviceRequest.filter((t) => {
+                        const isDuplicate = known.includes(t.idLocal);
+                        if (!isDuplicate) {
+                            known.push(t.idLocal);
+                        }
+                        return !isDuplicate;
+                    });
+                }
+                return t;
+            });
+        } catch (err) {
+            console.log('Duplicate filter fail');
+            console.log(err.message);
+        }
+
         if (result[config.output.object][config.output.array].length === 1) {
             result[config.output.object] =
                 result[config.output.object][config.output.array][0];
@@ -534,7 +602,7 @@ const output = async (config, output) => {
  * @param {String/Object/Array} [body]
  * @return {Promise}
  */
-function request (method, url, headers, body) {
+const request = async (method, url, headers, body) => {
     const options = {
         method: method,
         uri: url,
@@ -544,11 +612,13 @@ function request (method, url, headers, body) {
         headers: headers,
     };
 
-    return rp(options).then(result => Promise.resolve(result))
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-}
+    try {
+        const result = await queue(`${name}-${Math.round(Math.random())}`, rp, [options]);
+        return Promise.resolve(result);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};
 
 const exportEquipmentObjects = (data, dataKey, criteria) => {
     const output = data[dataKey].map(b => exportEquipmentObjects(b, dataKey, criteria)).flat();
@@ -675,7 +745,7 @@ const template = async (config, template) => {
  * Expose plugin methods.
  */
 module.exports = {
-    name: 'granlund-manager',
+    name,
     template,
     response,
     output,

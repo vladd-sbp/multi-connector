@@ -13,8 +13,8 @@ const fs = require('fs');
 /**
  * Congrid quality document creator plugin.
  */
-
-const DOWNLOAD_DIR = './temp';
+const storagePath = process.env.STORAGE_PATH || './';
+const DOWNLOAD_DIR = `${storagePath}temp`;
 
 // Source mapping.
 const documentSchema = {
@@ -150,6 +150,11 @@ const documentSchema = {
                                 'type': 'string',
                                 'title': 'Update time',
                                 'description': 'Last update time.',
+                            },
+                            metadata: {
+                                $id: '#/properties/data/properties/document/items/properties/metadata',
+                                source: 'metadata',
+                                type: 'object',
                             },
                             'created': {
                                 '$id': '#/properties/data/properties/document/items/properties/created',

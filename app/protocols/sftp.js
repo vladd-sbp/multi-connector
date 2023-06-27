@@ -5,6 +5,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const rp = require('request-promise');
+const {wait} = require('../lib/utils');
 const winston = require('../../logger.js');
 const Client = require('ssh2-sftp-client');
 const response = require('../lib/response');
@@ -16,8 +17,12 @@ const SocksClient = require('socks').SocksClient;
  * Handles connection to server and file fetching.
  */
 
+let port = 2224;
+const ports = {};
+const servers = {};
 const clients = {};
-const DOWNLOAD_DIR = './temp/';
+const storagePath = process.env.STORAGE_PATH || './';
+const DOWNLOAD_DIR = `${storagePath}temp/`;
 
 /**
  * Generates random UUIDv4.
@@ -364,9 +369,60 @@ const remove = async (config= {}, pathArray, clientId) => {
 };
 
 /**
+ * Initiates actions required by MQTT protocol.
+ *
+ * @param {Object} config
+ * @param {String} productCode
+ */
+const connect = async (config, productCode) => {
+    try {
+        // Check for SFTP-server plugin.
+        if (Object.hasOwnProperty.call(config, 'plugins')) {
+            if (Object.hasOwnProperty.call(config.plugins, 'sftp-server')) {
+                // Reserve port.
+                let reservedPort = port;
+                // Reuse same port and close previous server.
+                if (Object.hasOwnProperty.call(ports, productCode)) {
+                    reservedPort = ports[productCode];
+                    try {
+                        if (Object.hasOwnProperty.call(servers, productCode)) {
+                            try {
+                                winston.log('info', `${productCode}: Close SFTP server on port ${ports[productCode]}.`);
+                                servers[productCode].close(() => {
+                                    winston.log('info', `${productCode}: SFTP server closed on port ${ports[productCode]}.`);
+                                });
+                            } catch (err) {
+                                winston.log('error', err.message);
+                            }
+                            await wait(2000);
+                            delete servers[productCode];
+                        }
+                    } catch (err) {
+                        winston.log('error', err.message);
+                    }
+                } else {
+                    port++;
+                }
+                // Start local server.
+                ports[productCode] = reservedPort;
+                winston.log('info', `${productCode}: Start SFTP server on port ${reservedPort}.`);
+                servers[productCode] = await require('../.' + './config/plugins' + '/' + 'sftp-server' + '.js').connect(config, {
+                    ...config.plugins['sftp-server'],
+                    productCode,
+                    port: reservedPort,
+                });
+            }
+        }
+    } catch (err) {
+        winston.log('error', err.message);
+    }
+};
+
+/**
  * Expose library functions.
  */
 module.exports = {
+    connect,
     getData,
     sendData,
     checkDir,

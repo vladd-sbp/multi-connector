@@ -269,7 +269,7 @@ const fetchPublicKeys = async (URLs, count = 0) => {
                 url: URLs[j],
                 env: process.env.NODE_ENV || 'development',
                 key: replaceAll(body.toString(), '\\n', '\n'),
-            });
+            }, 0);
         }
     }
 };
@@ -420,10 +420,10 @@ const updateConfigs = async (dataProducts, blacklist = []) => {
                         : errors.push(productCode + ' - Missing required field: template');
                 } else {
                     winston.log('info', 'Update ' + productCode);
-                    cache.setDoc('configs', productCode, {
+                    connector.handleFile('configs', productCode, JSON.stringify({
                         template,
                         ...config,
-                    });
+                    }), false);
                     result.push({
                         productCode,
                         name: items[i].name,
